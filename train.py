@@ -8,7 +8,7 @@ from src.model import *
 TRAINSET = 'CoNaLa' # CoNaLa, CoNaLa-Large, Django
 
 ''' TODO
-    00. Setup Desktop
+    00. Setup Desktop.
     01. 추후 MultiGPU 사용이 필요할 시 class MultiGPU 추가
 '''
 
