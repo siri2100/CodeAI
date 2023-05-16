@@ -1,0 +1,4 @@
+# 01. Huggingface Download : pip install git+https://github.com/huggingface/transformers
+# 02. Pytorch Download     : https://pytorch.org/get-started/locally/
+
+sentencepiece==0.1.99

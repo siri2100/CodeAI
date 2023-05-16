@@ -5,7 +5,8 @@ import torch
 import torch.nn as nn
 
 from src.data import *
-from model_alpha import *
+from src.model_alpha import *
+
 
 EXP_NAME      = 'v1.0.0'
 TRAINSET      = 'CoNaLa' # CoNaLa, CoNaLa-Large, Django
@@ -17,7 +18,6 @@ LEARNING_RATE = 1e-4
         CUDA    : 11.8
         PyTorch : 2.0.0
         Python  : 3.9.16
-
 
     00. Setup Desktop.
     01. 추후 MultiGPU 사용이 필요할 시 class MultiGPU 추가
