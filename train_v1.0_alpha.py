@@ -5,7 +5,7 @@ import torch
 import torch.nn as nn
 
 from src.data import *
-from src.model_alpha import *
+from src.model import *
 
 
 EXP_NAME      = 'v1.0.0'
@@ -13,14 +13,17 @@ TRAINSET      = 'CoNaLa' # CoNaLa, CoNaLa-Large, Django
 EPOCH         = 2
 LEARNING_RATE = 1e-4
 
-''' TODO
-    VERSION
-        CUDA    : 11.8
-        PyTorch : 2.0.0
-        Python  : 3.9.16
 
-    00. Setup Desktop.
-    01. 추후 MultiGPU 사용이 필요할 시 class MultiGPU 추가
+'''VERSION
+    CUDA        : 11.8
+    PyTorch     : 2.0.0
+    Python      : 3.9.16
+    model 이름  : nato phonetic alphabet순으로 정함 (추후 정리)
+'''
+
+''' TODO
+    01. model.py : MarianCG Model 구현
+    02. v1.0_alpha 학습 및 평가하기
 '''
 
 
@@ -34,7 +37,7 @@ class SingleGPU(nn.Module):
         self.train_loader = DataLoader(data_train, batch_size=1, shuffle=True, num_workers=1)
         self.valid_loader = DataLoader(data_valid, batch_size=1, shuffle=False, num_workers=1)
 
-        self.model = CodeAI_v1_0()
+        self.model = CodeAI_V10_Alpha()
 
         self.optimizer = torch.optim.Adam(self.model.parameters(), lr=LEARNING_RATE)
         self.loss = nn.L1Loss()
@@ -42,11 +45,11 @@ class SingleGPU(nn.Module):
     def forward(self, epoch):
         # 01. Train
         self.model.train()
-        for idx, (natural_language, code_gt) in enumerate(self.train_loader):
+        for idx, (nl, code_gt) in enumerate(self.train_loader):
             print(f'Train Loop || Epoch : {epoch+1}, Iteration : {idx + 1}/{len(self.train_loader)}')
 
             # 01-1. Forward Propagation
-            code_pd = self.model(natural_language[0])
+            code_pd = self.model(nl[0])
 
             # 01-2. Backward Propagation
             # self.optimizer.zero_grad()
@@ -60,11 +63,11 @@ class SingleGPU(nn.Module):
 
         # 02. Valid
         self.model.eval()
-        for idx, (natural_language, code_gt) in enumerate(self.valid_loader):
+        for idx, (nl, code_gt) in enumerate(self.valid_loader):
             print(f'Valid Loop || Epoch : {epoch+1}, Iteration : {idx + 1}/{len(self.valid_loader)}')
 
             # 02-1. Forward Propagation
-            code_pd = self.model(natural_language[0])
+            code_pd = self.model(nl[0])
 
 
 

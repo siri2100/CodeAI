@@ -1,7 +1,9 @@
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 
-model = AutoModelForSeq2SeqLM.from_pretrained("AhmedSSoliman/MarianCG-CoNaLa-Large")
 tokenizer = AutoTokenizer.from_pretrained("AhmedSSoliman/MarianCG-CoNaLa-Large")
+model = AutoModelForSeq2SeqLM.from_pretrained("AhmedSSoliman/MarianCG-CoNaLa-Large")
+print(model)
+print(model.config)
 
 
 NL_input = "send a signal `signal.sigusr1` to the current process"
