@@ -12,3 +12,5 @@ while True:
     output_code = tokenizer.decode(output[0], skip_special_tokens=True)
     print(output)
     print(output_code)
+    
+print()
