@@ -22,8 +22,8 @@ LEARNING_RATE = 1e-4
 '''
 
 ''' TODO
-    01. model.py : MarianCG Model 구현
-    02. v1.0_alpha 학습 및 평가하기
+    01. v1.0_alpha(Transformer) 파라미터 설정
+    02. Transformer 공부
 '''
 
 
@@ -37,7 +37,7 @@ class SingleGPU(nn.Module):
         self.train_loader = DataLoader(data_train, batch_size=1, shuffle=True, num_workers=1)
         self.valid_loader = DataLoader(data_valid, batch_size=1, shuffle=False, num_workers=1)
 
-        self.model = CodeAI_V10_Alpha()
+        self.model = Model_V10_Alpha()
 
         self.optimizer = torch.optim.Adam(self.model.parameters(), lr=LEARNING_RATE)
         self.loss = nn.L1Loss()
