@@ -11,7 +11,9 @@ from src.model import *
 EXP_NAME      = 'v1.0.0'
 TRAINSET      = 'CoNaLa' # CoNaLa, CoNaLa-Large, Django
 EPOCH         = 2
+BATCH_SIZE    = 2
 LEARNING_RATE = 1e-4
+DEVICE        = 'cpu'
 
 
 '''VERSION
@@ -34,10 +36,21 @@ class SingleGPU(nn.Module):
 
         data_train = CoNaLa('train.csv')
         data_valid = CoNaLa('valid.csv')
-        self.train_loader = DataLoader(data_train, batch_size=1, shuffle=True, num_workers=1)
-        self.valid_loader = DataLoader(data_valid, batch_size=1, shuffle=False, num_workers=1)
-
-        self.model = Model_V10_Alpha()
+        self.train_loader = DataLoader(data_train, batch_size=BATCH_SIZE, shuffle=True, num_workers=1)
+        self.valid_loader = DataLoader(data_valid, batch_size=BATCH_SIZE, shuffle=False, num_workers=1)
+        self.model = Model_V10_Alpha(
+            src_vocab_size=10,
+            tgt_vocab_size=10,
+            device=DEVICE,
+            max_len=512,
+            d_embed=10,
+            n_layer=1,
+            d_model=10,
+            h=10,
+            d_ff=2048,
+            drop_rate=0.1,
+            norm_eps=1e-5,
+        )
 
         self.optimizer = torch.optim.Adam(self.model.parameters(), lr=LEARNING_RATE)
         self.loss = nn.L1Loss()
@@ -49,7 +62,7 @@ class SingleGPU(nn.Module):
             print(f'Train Loop || Epoch : {epoch+1}, Iteration : {idx + 1}/{len(self.train_loader)}')
 
             # 01-1. Forward Propagation
-            code_pd = self.model(nl[0])
+            code_pd = self.model(nl, code_gt)
 
             # 01-2. Backward Propagation
             # self.optimizer.zero_grad()
@@ -68,8 +81,6 @@ class SingleGPU(nn.Module):
 
             # 02-1. Forward Propagation
             code_pd = self.model(nl[0])
-
-
 
 
 if __name__ == "__main__":

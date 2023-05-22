@@ -282,19 +282,18 @@ class Model_V10_Alpha(nn.Module):
                  norm_eps
                  ):
         super(Model_V10_Alpha, self).__init__()
-        copy = copy.deepcopy
         src_token_embed = TokenEmbedding(d_embed, src_vocab_size)
         tgt_token_embed = TokenEmbedding(d_embed, tgt_vocab_size)
         pos_embed = PositionalEncoding(d_embed, max_len, device)
-        src_embed = TransformerEmbedding(src_token_embed, copy(pos_embed), drop_rate)
-        tgt_embed = TransformerEmbedding(tgt_token_embed, copy(pos_embed), drop_rate)
+        src_embed = TransformerEmbedding(src_token_embed, copy.deepcopy(pos_embed), drop_rate)
+        tgt_embed = TransformerEmbedding(tgt_token_embed, copy.deepcopy(pos_embed), drop_rate)
         attention = MultiHeadAttentionLayer(d_model, h, nn.Linear(d_embed, d_model), nn.Linear(d_model, d_embed), drop_rate)
         position_ff = PositionWiseFeedForwardLayer(nn.Linear(d_embed, d_ff), nn.Linear(d_ff, d_embed), drop_rate)
         norm = nn.LayerNorm(d_embed, norm_eps)
-        encoder_block = EncoderBlock(copy(attention), copy(position_ff), copy(norm), drop_rate)
-        decoder_block = DecoderBlock(copy(attention), copy(attention), copy(position_ff), copy(norm), drop_rate)
-        encoder = Encoder(encoder_block, n_layer, copy(norm))
-        decoder = Decoder(decoder_block, n_layer, copy(norm))
+        encoder_block = EncoderBlock(copy.deepcopy(attention), copy.deepcopy(position_ff), copy.deepcopy(norm), drop_rate)
+        decoder_block = DecoderBlock(copy.deepcopy(attention), copy.deepcopy(attention), copy.deepcopy(position_ff), copy.deepcopy(norm), drop_rate)
+        encoder = Encoder(encoder_block, n_layer, copy.deepcopy(norm))
+        decoder = Decoder(decoder_block, n_layer, copy.deepcopy(norm))
         generator = nn.Linear(d_model, tgt_vocab_size)
 
         self.src_embed = src_embed
