@@ -1,32 +1,17 @@
-import csv
-import os
+from typing import Iterable, List
 
-import torch
-from torch.utils.data import DataLoader
+from torchtext.data.utils import get_tokenizer
 from torchtext.vocab import build_vocab_from_iterator
-import torchtext.transforms as T
-from transformers import AutoTokenizer
-import sentencepiece as spm
-from torch.utils.data import Dataset
-from torch.utils.data import DataLoader
+from torchtext.datasets import multi30k, Multi30k
 
-from utils import save_pkl, load_pkl
-
-
-"""
-@author : Hansu Kim(@cpm0722)
-@when : 2022-08-21
-@github : https://github.com/cpm0722
-@homepage : https://cpm0722.github.io
-"""
 
 ''' TODO
     01. 추후 Multi30k 벤치마킹하여 CoNaLa 구현 (아래 코드 참고)
 '''
 
 ''' CoNaLa
-MAX_LEN = 512
-class CoNaLa(Dataset):
+    MAX_LEN = 512
+    class CoNaLa(Dataset):
     def __init__(self, file_name):
         super().__init__()
         self.nl = []
@@ -52,179 +37,64 @@ class CoNaLa(Dataset):
         return x, y
 '''
 
+SRC_LANGUAGE = 'de'
+TGT_LANGUAGE = 'en'
+# 특수 기호와 인덱스를 정의함
+UNK_IDX, PAD_IDX, BOS_IDX, EOS_IDX = 0, 1, 2, 3
+# 토큰들이 어휘집(vocab)에 인덱스 순서대로 잘 삽입되어 있는지 확인합니다.
+special_symbols = ['<unk>', '<pad>', '<bos>', '<eos>']
 
-class Multi30k():
-
-    def __init__(self,
-                 lang=("en", "de"),
-                 max_seq_len=256,
-                 unk_idx=0,
-                 pad_idx=1,
-                 sos_idx=2,
-                 eos_idx=3,
-                 vocab_min_freq=2):
-
-        self.dataset_name = "multi30k"
-        self.lang_src, self.lang_tgt = lang
-        self.max_seq_len = max_seq_len
-        self.unk_idx = unk_idx
-        self.pad_idx = pad_idx
-        self.sos_idx = sos_idx
-        self.eos_idx = eos_idx
-        self.unk = "<unk>"
-        self.pad = "<pad>"
-        self.sos = "<sos>"
-        self.eos = "<eos>"
-        self.specials={
-                self.unk: self.unk_idx,
-                self.pad: self.pad_idx,
-                self.sos: self.sos_idx,
-                self.eos: self.eos_idx
-                }
-        self.vocab_min_freq = vocab_min_freq
-
-        self.tokenizer_src = self.build_tokenizer(self.lang_src)
-        self.tokenizer_tgt = self.build_tokenizer(self.lang_tgt)
-
-        self.train = None
-        self.valid = None
-        self.test = None
-        self.build_dataset()
-
-        self.vocab_src = None
-        self.vocab_tgt = None
-        self.build_vocab()
-
-        self.transform_src = None
-        self.transform_tgt = None
-        self.build_transform()
+token_transform = {}
+vocab_transform = {}
+token_transform[SRC_LANGUAGE] = get_tokenizer('spacy', language='de_core_news_sm')
+token_transform[TGT_LANGUAGE] = get_tokenizer('spacy', language='en_core_web_sm')
 
 
-    def build_dataset(self, raw_dir="raw", cache_dir=".data"):
-        cache_dir = os.path.join(cache_dir, self.dataset_name)
-        raw_dir = os.path.join(cache_dir, raw_dir)
-        os.makedirs(raw_dir, exist_ok=True)
-
-        train_file = os.path.join(cache_dir, "train.pkl")
-        valid_file = os.path.join(cache_dir, "valid.pkl")
-        test_file = os.path.join(cache_dir, "test.pkl")
-
-        if os.path.exists(train_file):
-            self.train = load_pkl(train_file)
-        else:
-            with open(os.path.join(raw_dir, "train.en"), "r") as f:
-                train_en = [text.rstrip() for text in f]
-            with open(os.path.join(raw_dir, "train.de"), "r") as f:
-                train_de = [text.rstrip() for text in f]
-            self.train = [(en, de) for en, de in zip(train_en, train_de)]
-            save_pkl(self.train , train_file)
-
-        if os.path.exists(valid_file):
-            self.valid = load_pkl(valid_file)
-        else:
-            with open(os.path.join(raw_dir, "val.en"), "r") as f:
-                valid_en = [text.rstrip() for text in f]
-            with open(os.path.join(raw_dir, "val.de"), "r") as f:
-                valid_de = [text.rstrip() for text in f]
-            self.valid = [(en, de) for en, de in zip(valid_en, valid_de)]
-            save_pkl(self.valid, valid_file)
-
-        if os.path.exists(test_file):
-            self.test = load_pkl(test_file)
-        else:
-            with open(os.path.join(raw_dir, "test_2016_flickr.en"), "r") as f:
-                test_en = [text.rstrip() for text in f]
-            with open(os.path.join(raw_dir, "test_2016_flickr.de"), "r") as f:
-                test_de = [text.rstrip() for text in f]
-            self.test = [(en, de) for en, de in zip(test_en, test_de)]
-            save_pkl(self.test, test_file)
+# 토큰 목록을 생성하기 위한 헬퍼 함수
+def yield_tokens(data_iter: Iterable, language: str) -> List[str]:
+    language_index = {SRC_LANGUAGE: 0, TGT_LANGUAGE: 1}
+    for data_sample in data_iter:
+        yield token_transform[language](data_sample[language_index[language]])
 
 
-    def build_vocab(self, cache_dir=".data"):
-        assert self.train is not None
-        def yield_tokens(is_src=True):
-            for text_pair in self.train:
-                if is_src:
-                    yield [str(token) for token in self.tokenizer_src(text_pair[0])]
-                else:
-                    yield [str(token) for token in self.tokenizer_tgt(text_pair[1])]
+for ln in [SRC_LANGUAGE, TGT_LANGUAGE]:
+    # 학습용 데이터 반복자
+    train_iter = Multi30k(split='train', language_pair=(SRC_LANGUAGE, TGT_LANGUAGE))
+    # torchtext의 vocab 객체 생성
+    vocab_transform[ln] = build_vocab_from_iterator(yield_tokens(train_iter, ln),
+                                                    min_freq=1,
+                                                    specials=special_symbols,
+                                                    special_first=True)
 
-        cache_dir = os.path.join(cache_dir, self.dataset_name)
-        os.makedirs(cache_dir, exist_ok=True)
-
-        vocab_src_file = os.path.join(cache_dir, f"vocab_{self.lang_src}.pkl")
-        if os.path.exists(vocab_src_file):
-            vocab_src = load_pkl(vocab_src_file)
-        else:
-            vocab_src = build_vocab_from_iterator(yield_tokens(is_src=True), min_freq=self.vocab_min_freq, specials=self.specials.keys())
-            vocab_src.set_default_index(self.unk_idx)
-            save_pkl(vocab_src, vocab_src_file)
-
-        vocab_tgt_file = os.path.join(cache_dir, f"vocab_{self.lang_tgt}.pkl")
-        if os.path.exists(vocab_tgt_file):
-            vocab_tgt = load_pkl(vocab_tgt_file)
-        else:
-            vocab_tgt = build_vocab_from_iterator(yield_tokens(is_src=False), min_freq=self.vocab_min_freq, specials=self.specials.keys())
-            vocab_tgt.set_default_index(self.unk_idx)
-            save_pkl(vocab_tgt, vocab_tgt_file)
-
-        self.vocab_src = vocab_src
-        self.vocab_tgt = vocab_tgt
+# 'UNK_IDX'를 기본 인덱스로 설정합니다.
+for ln in [SRC_LANGUAGE, TGT_LANGUAGE]:
+    vocab_transform[ln].set_default_index(UNK_IDX)
 
 
-    def build_tokenizer(self, lang):
-        from torchtext.data.utils import get_tokenizer
-        spacy_lang_dict = {
-                'en': "en_core_web_sm",
-                'de': "de_core_news_sm"
-                }
-        assert lang in spacy_lang_dict.keys()
-        return get_tokenizer("spacy", spacy_lang_dict[lang])
+# 데이터를 텐서로 조합(collate)하는 함수
+def collate_fn(batch):
+    src_batch, tgt_batch = [], []
+    for src_sample, tgt_sample in batch:
+        src_batch.append(text_transform[SRC_LANGUAGE](src_sample.rstrip("\n")))
+        tgt_batch.append(text_transform[TGT_LANGUAGE](tgt_sample.rstrip("\n")))
+    src_batch = pad_sequence(src_batch, padding_value=PAD_IDX)
+    tgt_batch = pad_sequence(tgt_batch, padding_value=PAD_IDX)
+    return src_batch, tgt_batch
 
 
-    def build_transform(self):
-        def get_transform(self, vocab):
-            return T.Sequential(
-                    T.VocabTransform(vocab),
-                    T.Truncate(self.max_seq_len-2),
-                    T.AddToken(token=self.sos_idx, begin=True),
-                    T.AddToken(token=self.eos_idx, begin=False),
-                    T.ToTensor(padding_value=self.pad_idx))
-
-        self.transform_src = get_transform(self, self.vocab_src)
-        self.transform_tgt = get_transform(self, self.vocab_tgt)
+def generate_square_subsequent_mask(sz):
+    mask = (torch.triu(torch.ones((sz, sz), device=DEVICE)) == 1).transpose(0, 1)
+    mask = mask.float().masked_fill(mask == 0, float('-inf')).masked_fill(mask == 1, float(0.0))
+    return mask
 
 
-    def collate_fn(self, pairs):
-        src = [self.tokenizer_src(pair[0]) for pair in pairs]
-        tgt = [self.tokenizer_tgt(pair[1]) for pair in pairs]
-        batch_src = self.transform_src(src)
-        batch_tgt = self.transform_tgt(tgt)
-        return (batch_src, batch_tgt)
+def create_mask(src, tgt):
+    tgt_mask = generate_square_subsequent_mask(tgt.shape[0])                                # 23 x 23
+    src_mask = torch.zeros((src.shape[0], src.shape[0]),device=DEVICE).type(torch.bool)     # 27 x 27
+    src_padding_mask = (src == PAD_IDX).transpose(0, 1)                                     # PAD_IDX = 1, 128 x 27
+    tgt_padding_mask = (tgt == PAD_IDX).transpose(0, 1)                                     # 128 x 23
+    return src_mask, tgt_mask, src_padding_mask, tgt_padding_mask
 
-
-    def get_iter(self, **kwargs):
-        if self.transform_src is None:
-            self.build_transform()
-        train_iter = DataLoader(self.train, collate_fn=self.collate_fn, **kwargs)
-        valid_iter = DataLoader(self.valid, collate_fn=self.collate_fn, **kwargs)
-        test_iter = DataLoader(self.test, collate_fn=self.collate_fn, **kwargs)
-        return train_iter, valid_iter, test_iter
-
-
-    def translate(self, model, src_sentence: str, decode_func):
-        model.eval()
-        src = self.transform_src([self.tokenizer_src(src_sentence)]).view(1, -1)
-        num_tokens = src.shape[1]
-        tgt_tokens = decode_func(model,
-                                 src,
-                                 max_len=num_tokens+5,
-                                 start_symbol=self.sos_idx,
-                                 end_symbol=self.eos_idx).flatten().cpu().numpy()
-        tgt_sentence = " ".join(self.vocab_tgt.lookup_tokens(tgt_tokens))
-        return tgt_sentence
-
-if __name__ == "__main__":
     trainset = CoNaLa('train.csv')
     valset = CoNaLa('valid.csv')
     testset = CoNaLa('test.csv')
