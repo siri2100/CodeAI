@@ -29,18 +29,19 @@ DEVICE        = 'cpu'
 '''
 
 DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-
 NUM_EPOCHS = 2
+BATCH_SIZE = 128
+
 SRC_LANGUAGE = 'de'
 TGT_LANGUAGE = 'en'
-SRC_VOCAB_SIZE = len(vocab_transform[SRC_LANGUAGE])
-TGT_VOCAB_SIZE = len(vocab_transform[TGT_LANGUAGE])
-EMB_SIZE = 512
-NHEAD = 8
-FFN_HID_DIM = 512
-BATCH_SIZE = 128
+
 NUM_ENCODER_LAYERS = 3
 NUM_DECODER_LAYERS = 3
+EMB_SIZE = 512
+NHEAD = 8
+SRC_VOCAB_SIZE = len(vocab_transform[SRC_LANGUAGE])
+TGT_VOCAB_SIZE = len(vocab_transform[TGT_LANGUAGE])
+FFN_HID_DIM = 512
 
 
 class SingleGPU(nn.Module):
@@ -53,37 +54,34 @@ class SingleGPU(nn.Module):
         self.train_loader = DataLoader(data_train, batch_size=BATCH_SIZE, collate_fn=collate_fn, num_workers=1)
         self.valid_loader = DataLoader(data_valid, batch_size=BATCH_SIZE, collate_fn=collate_fn, num_workers=1)
         
-        # self.model = Model_V10_Alpha(
-        #     src_vocab_size=10,
-        #     tgt_vocab_size=10,
-        #     device=DEVICE,
-        #     max_len=512,
-        #     d_embed=10,
-        #     n_layer=1,
-        #     d_model=10,
-        #     h=10,
-        #     d_ff=2048,
-        #     drop_rate=0.1,
-        #     norm_eps=1e-5,)
-        # self.model = self.model.to(DEVICE)
-        # for p in self.model.parameters():
-        #     if p.dim() > 1:
-        #         nn.init.xavier_uniform_(p)
+        self.model = Model_V10_Alpha(
+            NUM_DECODER_LAYERS,
+            NUM_ENCODER_LAYERS,
+            EMB_SIZE,
+            NHEAD,
+            SRC_VOCAB_SIZE,
+            TGT_VOCAB_SIZE,
+            FFN_HID_DIM
+        )
+        self.model = self.model.to(DEVICE)
+        for p in self.model.parameters():
+            if p.dim() > 1:
+                nn.init.xavier_uniform_(p)
 
         # self.optimizer = torch.optim.Adam(self.model.parameters(), lr=LEARNING_RATE)
         # self.loss_fn = nn.CrossEntropyLoss(ignore_index=1)
-        
+
     def forward(self, epoch):
         # 01. Train
-        # self.model.train()
+        self.model.train()
         for idx, (src, tgt) in enumerate(self.train_loader):
-            print(f'Train Loop || Epoch : {epoch+1}, Iteration : {idx + 1}/{len(self.train_loader)}')
+            print(f'Train Loop || Epoch : {epoch+1}, Iteration : {idx + 1}')
             # 01-0. Preprocess
             src, tgt = src.to(DEVICE), tgt.to(DEVICE)
-            src_mask, tgt_mask, src_padding_mask, tgt_padding_mask = create_mask(src, tgt[:-1])
+            src_mask, tgt_mask, src_padding_mask, tgt_padding_mask = create_mask(src, tgt[:-1], DEVICE)
 
             # 01-1. Forward Propagation
-            # code_pd = self.model(src, tgt)
+            code_pd = self.model(src, tgt)
 
             # 01-2. Backward Propagation
             # self.optimizer.zero_grad()

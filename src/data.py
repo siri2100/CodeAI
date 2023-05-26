@@ -1,5 +1,7 @@
 from typing import Iterable, List
 
+import torch
+from torch.nn.utils.rnn import pad_sequence
 from torchtext.data.utils import get_tokenizer
 from torchtext.vocab import build_vocab_from_iterator
 from torchtext.datasets import multi30k, Multi30k
@@ -44,6 +46,7 @@ UNK_IDX, PAD_IDX, BOS_IDX, EOS_IDX = 0, 1, 2, 3
 # 토큰들이 어휘집(vocab)에 인덱스 순서대로 잘 삽입되어 있는지 확인합니다.
 special_symbols = ['<unk>', '<pad>', '<bos>', '<eos>']
 
+text_transform = {}
 token_transform = {}
 vocab_transform = {}
 token_transform[SRC_LANGUAGE] = get_tokenizer('spacy', language='de_core_news_sm')
@@ -71,6 +74,30 @@ for ln in [SRC_LANGUAGE, TGT_LANGUAGE]:
     vocab_transform[ln].set_default_index(UNK_IDX)
 
 
+# 순차적인 작업들을 하나로 묶는 헬퍼 함수
+def sequential_transforms(*transforms):
+    def func(txt_input):
+        for transform in transforms:
+            txt_input = transform(txt_input)
+        return txt_input
+    return func
+
+
+# BOS/EOS를 추가하고 입력 순서(sequence) 인덱스에 대한 텐서를 생성하는 함수
+def tensor_transform(token_ids: List[int]):
+    return torch.cat((torch.tensor([BOS_IDX]),
+                      torch.tensor(token_ids),
+                      torch.tensor([EOS_IDX])))
+
+
+# 출발어(src)와 도착어(tgt) 원시 문자열들을 텐서 인덱스로 변환하는 변형(transform)
+text_transform = {}
+for ln in [SRC_LANGUAGE, TGT_LANGUAGE]:
+    text_transform[ln] = sequential_transforms(token_transform[ln], # 토큰화(Tokenization)
+                                               vocab_transform[ln], # 수치화(Numericalization)
+                                               tensor_transform) # BOS/EOS를 추가하고 텐서를 생성
+
+
 # 데이터를 텐서로 조합(collate)하는 함수
 def collate_fn(batch):
     src_batch, tgt_batch = [], []
@@ -82,15 +109,15 @@ def collate_fn(batch):
     return src_batch, tgt_batch
 
 
-def generate_square_subsequent_mask(sz):
-    mask = (torch.triu(torch.ones((sz, sz), device=DEVICE)) == 1).transpose(0, 1)
+def generate_square_subsequent_mask(sz, device):
+    mask = (torch.triu(torch.ones((sz, sz), device=device)) == 1).transpose(0, 1)
     mask = mask.float().masked_fill(mask == 0, float('-inf')).masked_fill(mask == 1, float(0.0))
     return mask
 
 
-def create_mask(src, tgt):
-    tgt_mask = generate_square_subsequent_mask(tgt.shape[0])                                # 23 x 23
-    src_mask = torch.zeros((src.shape[0], src.shape[0]),device=DEVICE).type(torch.bool)     # 27 x 27
+def create_mask(src, tgt, device):
+    tgt_mask = generate_square_subsequent_mask(tgt.shape[0], device)                                # 23 x 23
+    src_mask = torch.zeros((src.shape[0], src.shape[0]), device=device).type(torch.bool)     # 27 x 27
     src_padding_mask = (src == PAD_IDX).transpose(0, 1)                                     # PAD_IDX = 1, 128 x 27
     tgt_padding_mask = (tgt == PAD_IDX).transpose(0, 1)                                     # 128 x 23
     return src_mask, tgt_mask, src_padding_mask, tgt_padding_mask
