@@ -12,7 +12,7 @@ from src.model import *
 EXP_NAME      = 'v1.0'
 TRAINSET      = 'CoNaLa' # CoNaLa, CoNaLa-Large, Django
 EPOCH         = 2
-BATCH_SIZE    = 2
+BATCH_SIZE    = 3
 LEARNING_RATE = 1e-4
 DEVICE        = 'cpu'
 
@@ -25,14 +25,13 @@ DEVICE        = 'cpu'
 '''
 
 ''' TODO
-    01. Dataset Customize
-
+    01. Dataset Customize (padding 디버깅, (0,0)이런씩으로 넣어야함)
     02. Model Customize
 '''
 
 DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 NUM_EPOCHS = 2
-BATCH_SIZE = 128
+BATCH_SIZE = 1
 
 SRC_LANGUAGE = 'de'
 TGT_LANGUAGE = 'en'
@@ -51,10 +50,14 @@ class SingleGPU(nn.Module):
         super().__init__()
         os.makedirs(f'./models/{EXP_NAME}', exist_ok=True)
 
-        data_train = Multi30k(split='train', language_pair=(SRC_LANGUAGE, TGT_LANGUAGE))
-        data_valid = Multi30k(split='valid', language_pair=(SRC_LANGUAGE, TGT_LANGUAGE))
-        self.train_loader = DataLoader(data_train, batch_size=BATCH_SIZE, collate_fn=collate_fn, num_workers=1)
-        self.valid_loader = DataLoader(data_valid, batch_size=BATCH_SIZE, collate_fn=collate_fn, num_workers=1)
+        data_train = Data_V10('train')
+        data_valid = Data_V10('valid')
+        self.train_loader = DataLoader(data_train, batch_size=BATCH_SIZE, num_workers=1)
+        self.valid_loader = DataLoader(data_valid, batch_size=BATCH_SIZE, num_workers=1)
+        # data_train = Multi30k(split='train', language_pair=(SRC_LANGUAGE, TGT_LANGUAGE))
+        # data_valid = Multi30k(split='valid', language_pair=(SRC_LANGUAGE, TGT_LANGUAGE))
+        # self.train_loader = DataLoader(data_train, batch_size=BATCH_SIZE, collate_fn=collate_fn, num_workers=1)
+        # self.valid_loader = DataLoader(data_valid, batch_size=BATCH_SIZE, collate_fn=collate_fn, num_workers=1)
         
         self.model = Model_V10_Alpha(
             NUM_DECODER_LAYERS,
@@ -76,18 +79,17 @@ class SingleGPU(nn.Module):
     def forward(self, epoch):
         # 01. Train
         self.model.train()
-        for idx, (src, gt) in enumerate(self.train_loader):
-            print(f'Train Loop || Epoch : {epoch+1}, Iteration : {idx + 1}')
+        for idx, (src, dst) in enumerate(self.train_loader):
+            print(f'Train Loop || Epoch : {epoch+1}, Iteration : {idx + 1} / {len(self.train_loader)}')
             # 01-0. Preprocess
-            src, gt = src.to(DEVICE), gt.to(DEVICE)
-            src_mask, gt_mask, src_padding_mask, gt_padding_mask = create_mask(src, gt[:-1, :], DEVICE)
+            src_mask, dst_mask, src_padding_mask, dst_padding_mask = create_mask(src, dst[:-1, :], DEVICE)
 
             # 01-1. Forward Propagation
-            pd = self.model(src, gt[:-1, :], src_mask, gt_mask, src_padding_mask, gt_padding_mask, src_padding_mask)
+            dst_pd = self.model(src, dst[:-1, :], src_mask, dst_mask, src_padding_mask, dst_padding_mask, src_padding_mask)
 
             # 01-2. Backward Propagation
             self.optimizer.zero_grad()
-            loss = self.loss_fn(pd.reshape(-1, pd.shape[-1]), gt[1:, :].reshape(-1))
+            loss = self.loss_fn(dst_pd.reshape(-1, dst_pd.shape[-1]), dst[1:, :].reshape(-1))
             loss.backward()
             self.optimizer.step()
 
@@ -98,19 +100,19 @@ class SingleGPU(nn.Module):
         # 02. Valid
         with torch.no_grad():
             self.model.eval()
-            for idx, (src, gt) in enumerate(self.valid_loader):
-                print(f'Valid Loop || Epoch : {epoch+1}, Iteration : {idx + 1}')
+            for idx, (src, dst) in enumerate(self.valid_loader):
+                print(f'Valid Loop || Epoch : {epoch+1}, Iteration : {idx + 1} / {len(self.valid_loader)}')
 
                 # 01-0. Preprocess
-                src, gt = src.to(DEVICE), gt.to(DEVICE)
-                src_mask, gt_mask, src_padding_mask, gt_padding_mask = create_mask(src, gt[:-1, :], DEVICE)
+                src, dst = src.to(DEVICE), dst.to(DEVICE)
+                src_mask, dst_mask, src_padding_mask, dst_padding_mask = create_mask(src, dst[:-1, :], DEVICE)
 
                 # 01-1. Forward Propagation
-                pd = self.model(src, gt[:-1, :], src_mask, gt_mask, src_padding_mask, gt_padding_mask, src_padding_mask)
+                dst_pd = self.model(src, dst[:-1, :], src_mask, dst_mask, src_padding_mask, dst_padding_mask, src_padding_mask)
 
                 # 01-2. Backward Propagation
                 self.optimizer.zero_grad()
-                loss = self.loss_fn(pd.reshape(-1, pd.shape[-1]), gt[1:, :].reshape(-1))
+                loss = self.loss_fn(dst_pd.reshape(-1, dst_pd.shape[-1]), dst[1:, :].reshape(-1))
                 loss.backward()
 
 

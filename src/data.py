@@ -1,6 +1,8 @@
 from typing import Iterable, List
 
 import torch
+import torch.nn as nn
+import torch.nn.functional as F
 from torch.nn.utils.rnn import pad_sequence
 from torchtext.data.utils import get_tokenizer
 from torchtext.vocab import build_vocab_from_iterator
@@ -41,8 +43,11 @@ from torchtext.datasets import multi30k, Multi30k
 
 SRC_LANGUAGE = 'de'
 TGT_LANGUAGE = 'en'
-# 특수 기호와 인덱스를 정의함
-UNK_IDX, PAD_IDX, BOS_IDX, EOS_IDX = 0, 1, 2, 3
+UNK_IDX = 0
+PAD_IDX = 1
+BOS_IDX = 2
+EOS_IDX = 3
+
 # 토큰들이 어휘집(vocab)에 인덱스 순서대로 잘 삽입되어 있는지 확인합니다.
 special_symbols = ['<unk>', '<pad>', '<bos>', '<eos>']
 
@@ -116,15 +121,52 @@ def generate_square_subsequent_mask(sz, device):
 
 
 def create_mask(src, tgt, device):
-    tgt_mask = generate_square_subsequent_mask(tgt.shape[0], device)                                # 23 x 23
-    src_mask = torch.zeros((src.shape[0], src.shape[0]), device=device).type(torch.bool)     # 27 x 27
+    tgt_mask = generate_square_subsequent_mask(tgt.shape[0], device)                        # 23 x 23
+    src_mask = torch.zeros((src.shape[0], src.shape[0]), device=device).type(torch.bool)    # 27 x 27
     src_padding_mask = (src == PAD_IDX).transpose(0, 1)                                     # PAD_IDX = 1, 128 x 27
     tgt_padding_mask = (tgt == PAD_IDX).transpose(0, 1)                                     # 128 x 23
     return src_mask, tgt_mask, src_padding_mask, tgt_padding_mask
 
-    trainset = CoNaLa('train.csv')
-    valset = CoNaLa('valid.csv')
-    testset = CoNaLa('test.csv')
-    print(len(trainset))
-    print(len(valset))
-    print(len(testset))
+
+class Data_V10(nn.Module):
+    def __init__(self, split='train'):  
+        super(Data_V10, self).__init__()
+        # 01. Load
+        self.src = []
+        self.dst = []
+        self.src_maxlen = 0
+        self.dst_maxlen = 0
+        with open(f'./data/Multi30k/{split}_en.csv', 'r') as f:
+            while True:
+                ln = f.readline().rstrip()
+                if not ln: break
+                self.src_maxlen = max(self.src_maxlen, len(ln))
+                self.src.append(ln)
+        with open(f'./data/Multi30k/{split}_en.csv', 'r') as f:
+            while True:
+                ln = f.readline().rstrip()
+                if not ln: break
+                self.dst_maxlen = max(self.dst_maxlen, len(ln))
+                self.dst.append(ln)
+        
+        # 02. Preprocess
+        train_iter = Multi30k(split='train', language_pair=(SRC_LANGUAGE, TGT_LANGUAGE))
+        self.token_transform = get_tokenizer('spacy', language='en_core_web_sm') # 토큰화(Tokenization)
+        self.vocab_transform = build_vocab_from_iterator(yield_tokens(train_iter, 'en'), min_freq=1, specials=special_symbols, special_first=True) # 수치화(Numericalization)
+
+    def __len__(self):
+        return len(self.src)
+
+    def __getitem__(self, idx):
+        src_token = self.token_transform(self.src[idx])
+        dst_token = self.token_transform(self.dst[idx])
+        src_vocab = torch.tensor(self.vocab_transform(src_token))
+        dst_vocab = torch.tensor(self.vocab_transform(dst_token))
+        src_pad = F.pad(src_vocab, self.src_maxlen-len(src_vocab))
+        dst_pad = F.pad(dst_vocab, self.dst_maxlen-len(dst_vocab))
+        return src_vocab, dst_vocab
+
+    def tensor_transform(token_ids: List[int]):
+        # BOS/EOS를 추가하고 입력 순서(sequence) 인덱스에 대한 텐서를 생성하는 함수
+        return torch.cat((torch.tensor([BOS_IDX]), torch.tensor(token_ids), torch.tensor([EOS_IDX])))
+
