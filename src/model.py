@@ -110,7 +110,7 @@ class TokenEmbedding(nn.Module):
         return self.embedding(tokens.long()) * math.sqrt(self.emb_size)
 
 
-class Model(nn.Module):
+class Model_V10_Alpha(nn.Module):
     def __init__(self,
                  num_encoder_layers: int,
                  num_decoder_layers: int,
@@ -121,7 +121,7 @@ class Model(nn.Module):
                  dim_feedforward: int=512,
                  dropout: float=0.1
                 ):
-        super(Model, self).__init__()
+        super(Model_V10_Alpha, self).__init__()
         self.transformer = Transformer(d_model=emb_size,
                                        nhead=nhead,
                                        num_encoder_layers=num_encoder_layers,

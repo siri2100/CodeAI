@@ -9,7 +9,7 @@ from src.data import *
 from src.model import *
 
 
-EXP_NAME      = 'v1.0.0'
+EXP_NAME      = 'v1.0'
 TRAINSET      = 'CoNaLa' # CoNaLa, CoNaLa-Large, Django
 EPOCH         = 2
 BATCH_SIZE    = 2
@@ -25,7 +25,9 @@ DEVICE        = 'cpu'
 '''
 
 ''' TODO
-    01. Multi30k예제 따라하고 있음 (현재 dataset loading부분)
+    01. Dataset Customize
+
+    02. Model Customize
 '''
 
 DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -68,38 +70,48 @@ class SingleGPU(nn.Module):
             if p.dim() > 1:
                 nn.init.xavier_uniform_(p)
 
-        # self.optimizer = torch.optim.Adam(self.model.parameters(), lr=LEARNING_RATE)
-        # self.loss_fn = nn.CrossEntropyLoss(ignore_index=1)
+        self.optimizer = torch.optim.Adam(self.model.parameters(), lr=LEARNING_RATE)
+        self.loss_fn = nn.CrossEntropyLoss(ignore_index=1)
 
     def forward(self, epoch):
         # 01. Train
         self.model.train()
-        for idx, (src, tgt) in enumerate(self.train_loader):
+        for idx, (src, gt) in enumerate(self.train_loader):
             print(f'Train Loop || Epoch : {epoch+1}, Iteration : {idx + 1}')
             # 01-0. Preprocess
-            src, tgt = src.to(DEVICE), tgt.to(DEVICE)
-            src_mask, tgt_mask, src_padding_mask, tgt_padding_mask = create_mask(src, tgt[:-1], DEVICE)
+            src, gt = src.to(DEVICE), gt.to(DEVICE)
+            src_mask, gt_mask, src_padding_mask, gt_padding_mask = create_mask(src, gt[:-1, :], DEVICE)
 
             # 01-1. Forward Propagation
-            code_pd = self.model(src, tgt)
+            pd = self.model(src, gt[:-1, :], src_mask, gt_mask, src_padding_mask, gt_padding_mask, src_padding_mask)
 
             # 01-2. Backward Propagation
-            # self.optimizer.zero_grad()
-            # loss = self.loss(src[0], tgt)
-            # loss.backward()
-            # self.optimizer.step()
+            self.optimizer.zero_grad()
+            loss = self.loss_fn(pd.reshape(-1, pd.shape[-1]), gt[1:, :].reshape(-1))
+            loss.backward()
+            self.optimizer.step()
 
         # 01-3. Save
         epoch_num = str(epoch).rjust(3, '0')
         torch.save(self.model.state_dict(), f'./models/{EXP_NAME}/epoch_{epoch_num}.pth')
 
         # 02. Valid
-        self.model.eval()
-        for idx, (src, tgt) in enumerate(self.valid_loader):
-            print(f'Valid Loop || Epoch : {epoch+1}, Iteration : {idx + 1}/{len(self.valid_loader)}')
+        with torch.no_grad():
+            self.model.eval()
+            for idx, (src, gt) in enumerate(self.valid_loader):
+                print(f'Valid Loop || Epoch : {epoch+1}, Iteration : {idx + 1}')
 
-            # 02-1. Forward Propagation
-            code_pd = self.model(src)
+                # 01-0. Preprocess
+                src, gt = src.to(DEVICE), gt.to(DEVICE)
+                src_mask, gt_mask, src_padding_mask, gt_padding_mask = create_mask(src, gt[:-1, :], DEVICE)
+
+                # 01-1. Forward Propagation
+                pd = self.model(src, gt[:-1, :], src_mask, gt_mask, src_padding_mask, gt_padding_mask, src_padding_mask)
+
+                # 01-2. Backward Propagation
+                self.optimizer.zero_grad()
+                loss = self.loss_fn(pd.reshape(-1, pd.shape[-1]), gt[1:, :].reshape(-1))
+                loss.backward()
 
 
 if __name__ == "__main__":
