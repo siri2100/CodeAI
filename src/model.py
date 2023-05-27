@@ -100,7 +100,7 @@ class PositionalEncoding(nn.Module):
 
 
 class TokenEmbedding(nn.Module):
-    def __init__(self, vocab_size: int, emb_size):
+    def __init__(self, vocab_size, emb_size):
         super(TokenEmbedding, self).__init__()
         self.embedding = nn.Embedding(vocab_size, emb_size)
         self.emb_size = emb_size
@@ -111,6 +111,7 @@ class TokenEmbedding(nn.Module):
 
 class Model_V10_Alpha(nn.Module):
     def __init__(self,
+                 device,
                  num_encoder_layers: int,
                  num_decoder_layers: int,
                  emb_size: int,
@@ -118,9 +119,10 @@ class Model_V10_Alpha(nn.Module):
                  src_vocab_size: int,
                  dst_vocab_size: int,
                  dim_feedforward: int=512,
-                 dropout: float=0.1
+                 dropout: float=0.1,
                 ):
         super(Model_V10_Alpha, self).__init__()
+        self.device = device
         self.transformer = Transformer(d_model=emb_size,
                                        nhead=nhead,
                                        num_encoder_layers=num_encoder_layers,
@@ -134,18 +136,13 @@ class Model_V10_Alpha(nn.Module):
         self.dst_tok_emb = TokenEmbedding(dst_vocab_size, emb_size)
         self.positional_encoding = PositionalEncoding(emb_size, dropout=dropout)
 
-    def forward(self,
-                src:Tensor,
-                dst:Tensor,
-                src_mask:Tensor,
-                dst_mask:Tensor,
-                src_padding_mask:Tensor,
-                dst_padding_mask:Tensor,
-                memory_key_padding_mask:Tensor):
-        src_emb = self.positional_encoding(self.src_tok_emb(src))
-        dst_emb = self.positional_encoding(self.dst_tok_emb(dst))
-        outs = self.transformer(src_emb, dst_emb, src_mask, dst_mask, None, src_padding_mask, dst_padding_mask, memory_key_padding_mask)
-        return self.generator(outs)
+    def forward(self, src, dst):
+        src_emb = self.src_tok_emb(src)
+        dst_emb = self.dst_tok_emb(dst)
+        src_emb = self.positional_encoding(src_emb)
+        dst_emb = self.positional_encoding(dst_emb)
+        out = self.transformer(src_emb, dst_emb)
+        return self.generator(out)
 
     def encode(self, src:Tensor, src_mask:Tensor):
         return self.transformer.encoder(self.positional_encoding(self.src_tok_emb(src)), src_mask)

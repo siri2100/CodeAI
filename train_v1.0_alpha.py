@@ -25,9 +25,9 @@ DEVICE        = 'cuda:0'
 '''
 
 ''' TODO
-    01. Model : decode
-    02. Model :  Customize
-    03. Dataset Change (Multi30k -> CoNaLa)
+    01. Model Debugging
+        기존 : pytorch 예제 data loader(tokenizer)로 model.py의 TokenEmbedding을 사용하면 가능했지만 지금은 안됨
+        방향 : conala pretrained tokenizer로 나온 src, dst를 TokenEmbedding가능하게 디버깅하자!
 '''
 
 DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -52,12 +52,13 @@ class SingleGPU(nn.Module):
         super().__init__()
         os.makedirs(f'./models/{EXP_NAME}', exist_ok=True)
 
-        data_train = Data_V10('train', MAX_LEN)
-        data_valid = Data_V10('valid', MAX_LEN)
+        data_train = Data_V10(split='train', maxlen=MAX_LEN)
+        data_valid = Data_V10(split='valid', maxlen=MAX_LEN)
         self.train_loader = DataLoader(data_train, batch_size=BATCH_SIZE, num_workers=1)
         self.valid_loader = DataLoader(data_valid, batch_size=BATCH_SIZE, num_workers=1)
         
         self.model = Model_V10_Alpha(
+            DEVICE,
             NUM_DECODER_LAYERS,
             NUM_ENCODER_LAYERS,
             EMB_SIZE,
@@ -77,13 +78,13 @@ class SingleGPU(nn.Module):
     def forward(self, epoch):
         # 01. Train
         self.model.train()
-        for idx, (src, dst) in enumerate(self.train_loader):
+        for idx, (src, src_pad_mask, dst, dst_pad_mask) in enumerate(self.train_loader):
             # 01-0. Preprocess
             src, dst = src.to(DEVICE), dst.to(DEVICE)
-            src_mask, dst_mask, src_padding_mask, dst_padding_mask = create_mask(src, dst, DEVICE)
+            src_pad_mask, dst_pad_mask = src_pad_mask.to(DEVICE), dst_pad_mask.to(DEVICE)
 
             # 01-1. Forward Propagation
-            dst_pd = self.model(src, dst, src_mask, dst_mask, src_padding_mask, dst_padding_mask, src_padding_mask)
+            dst_pd = self.model(src, dst)
 
             # 01-2. Backward Propagation
             self.optimizer.zero_grad()
@@ -100,7 +101,7 @@ class SingleGPU(nn.Module):
         # 02. Valid
         with torch.no_grad():
             self.model.eval()
-            for idx, (src, dst) in enumerate(self.valid_loader):
+            for idx, (src, src_mask, dst, dst_mask) in enumerate(self.valid_loader):
                 print(f'Valid Loop || Epoch : {epoch+1}, Iteration : {idx + 1} / {len(self.valid_loader)}')
 
                 # 01-0. Preprocess

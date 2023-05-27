@@ -3,10 +3,10 @@ from typing import Iterable, List
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from torch.nn.utils.rnn import pad_sequence
 from torchtext.data.utils import get_tokenizer
 from torchtext.vocab import build_vocab_from_iterator
-from torchtext.datasets import multi30k, Multi30k
+from torchtext.datasets import Multi30k
+from transformers import AutoTokenizer
 
 
 ''' TODO
@@ -88,13 +88,14 @@ def generate_square_subsequent_mask(sz, device):
 def create_mask(src, dst, device):
     src_mask = torch.zeros((src.shape[1], src.shape[1]), device=device).type(torch.bool)    # 27 x 27
     dst_mask = generate_square_subsequent_mask(dst.shape[1], device)                        # 23 x 23
-    src_padding_mask = (src == PAD_IDX)                                                     # PAD_IDX = 1, 128 x 27
-    dst_padding_mask = (dst == PAD_IDX)                                                     # 128 x 23
-    return src_mask, dst_mask, src_padding_mask, dst_padding_mask
+    # src_padding_mask = (src == PAD_IDX)                                                     # PAD_IDX = 1, 128 x 27
+    # dst_padding_mask = (dst == PAD_IDX)                                                     # 128 x 23
+    # return src_mask, dst_mask, src_padding_mask, dst_padding_mask
+    return src_mask, dst_mask
 
 
 class Data_V10(nn.Module):
-    def __init__(self, split='train', maxlen=512):  
+    def __init__(self, split='train', maxlen=512):
         super(Data_V10, self).__init__()
         # 01. Load
         self.src = []
@@ -113,23 +114,17 @@ class Data_V10(nn.Module):
                 self.dst.append(ln)
         
         # 02. Preprocess
-        train_iter = Multi30k(split='train', language_pair=(SRC_LANGUAGE, TGT_LANGUAGE))
-        self.token_transform = get_tokenizer('spacy', language='en_core_web_sm') # 토큰화(Tokenization)
-        self.vocab_transform = build_vocab_from_iterator(yield_tokens(train_iter, 'en'), min_freq=1, specials=special_symbols, special_first=True) # 수치화(Numericalization)
+        self.tokenizer = AutoTokenizer.from_pretrained("AhmedSSoliman/MarianCG-CoNaLa-Large")
 
     def __len__(self):
         return len(self.src)
 
     def __getitem__(self, idx):
-        src_token = self.token_transform(self.src[idx])
-        dst_token = self.token_transform(self.dst[idx])
-        src_vocab = torch.tensor(self.vocab_transform(src_token))
-        dst_vocab = torch.tensor(self.vocab_transform(dst_token))
-        src_pad = F.pad(src_vocab, (0, self.src_maxlen-len(src_vocab)))
-        dst_pad = F.pad(dst_vocab, (0, self.dst_maxlen-len(dst_vocab)))
-        return src_pad, dst_pad
-
-    def tensor_transform(token_ids: List[int]):
-        # BOS/EOS를 추가하고 입력 순서(sequence) 인덱스에 대한 텐서를 생성하는 함수
-        return torch.cat((torch.tensor([BOS_IDX]), torch.tensor(token_ids), torch.tensor([EOS_IDX])))
+        src_token = self.tokenizer(self.src[idx], padding='max_length', truncation=True, max_length=self.src_maxlen, return_tensors="pt")
+        dst_token = self.tokenizer(self.dst[idx], padding='max_length', truncation=True, max_length=self.dst_maxlen, return_tensors="pt")
+        src = src_token['input_ids'][0]
+        dst = dst_token['input_ids'][0]
+        src_pad_mask = src_token['attention_mask'][0]
+        dst_pad_mask = dst_token['attention_mask'][0]
+        return src, src_pad_mask, dst, dst_pad_mask
 
