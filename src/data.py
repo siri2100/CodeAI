@@ -79,53 +79,18 @@ for ln in [SRC_LANGUAGE, TGT_LANGUAGE]:
     vocab_transform[ln].set_default_index(UNK_IDX)
 
 
-# 순차적인 작업들을 하나로 묶는 헬퍼 함수
-def sequential_transforms(*transforms):
-    def func(txt_input):
-        for transform in transforms:
-            txt_input = transform(txt_input)
-        return txt_input
-    return func
-
-
-# BOS/EOS를 추가하고 입력 순서(sequence) 인덱스에 대한 텐서를 생성하는 함수
-def tensor_transform(token_ids: List[int]):
-    return torch.cat((torch.tensor([BOS_IDX]),
-                      torch.tensor(token_ids),
-                      torch.tensor([EOS_IDX])))
-
-
-# 출발어(src)와 도착어(tgt) 원시 문자열들을 텐서 인덱스로 변환하는 변형(transform)
-text_transform = {}
-for ln in [SRC_LANGUAGE, TGT_LANGUAGE]:
-    text_transform[ln] = sequential_transforms(token_transform[ln], # 토큰화(Tokenization)
-                                               vocab_transform[ln], # 수치화(Numericalization)
-                                               tensor_transform) # BOS/EOS를 추가하고 텐서를 생성
-
-
-# 데이터를 텐서로 조합(collate)하는 함수
-def collate_fn(batch):
-    src_batch, tgt_batch = [], []
-    for src_sample, tgt_sample in batch:
-        src_batch.append(text_transform[SRC_LANGUAGE](src_sample.rstrip("\n")))
-        tgt_batch.append(text_transform[TGT_LANGUAGE](tgt_sample.rstrip("\n")))
-    src_batch = pad_sequence(src_batch, padding_value=PAD_IDX)
-    tgt_batch = pad_sequence(tgt_batch, padding_value=PAD_IDX)
-    return src_batch, tgt_batch
-
-
 def generate_square_subsequent_mask(sz, device):
     mask = (torch.triu(torch.ones((sz, sz), device=device)) == 1).transpose(0, 1)
     mask = mask.float().masked_fill(mask == 0, float('-inf')).masked_fill(mask == 1, float(0.0))
     return mask
 
 
-def create_mask(src, tgt, device):
-    tgt_mask = generate_square_subsequent_mask(tgt.shape[0], device)                        # 23 x 23
-    src_mask = torch.zeros((src.shape[0], src.shape[0]), device=device).type(torch.bool)    # 27 x 27
-    src_padding_mask = (src == PAD_IDX).transpose(0, 1)                                     # PAD_IDX = 1, 128 x 27
-    tgt_padding_mask = (tgt == PAD_IDX).transpose(0, 1)                                     # 128 x 23
-    return src_mask, tgt_mask, src_padding_mask, tgt_padding_mask
+def create_mask(src, dst, device):
+    src_mask = torch.zeros((src.shape[1], src.shape[1]), device=device).type(torch.bool)    # 27 x 27
+    dst_mask = generate_square_subsequent_mask(dst.shape[1], device)                        # 23 x 23
+    src_padding_mask = (src == PAD_IDX)                                                     # PAD_IDX = 1, 128 x 27
+    dst_padding_mask = (dst == PAD_IDX)                                                     # 128 x 23
+    return src_mask, dst_mask, src_padding_mask, dst_padding_mask
 
 
 class Data_V10(nn.Module):
@@ -162,9 +127,9 @@ class Data_V10(nn.Module):
         dst_token = self.token_transform(self.dst[idx])
         src_vocab = torch.tensor(self.vocab_transform(src_token))
         dst_vocab = torch.tensor(self.vocab_transform(dst_token))
-        src_pad = F.pad(src_vocab, self.src_maxlen-len(src_vocab))
-        dst_pad = F.pad(dst_vocab, self.dst_maxlen-len(dst_vocab))
-        return src_vocab, dst_vocab
+        src_pad = F.pad(src_vocab, (0, self.src_maxlen-len(src_vocab)))
+        dst_pad = F.pad(dst_vocab, (0, self.dst_maxlen-len(dst_vocab)))
+        return src_pad, dst_pad
 
     def tensor_transform(token_ids: List[int]):
         # BOS/EOS를 추가하고 입력 순서(sequence) 인덱스에 대한 텐서를 생성하는 함수
