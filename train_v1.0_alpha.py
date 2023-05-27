@@ -25,19 +25,21 @@ DEVICE        = 'cuda:0'
 '''
 
 ''' TODO
-    01. Model Customize
-    02. Dataset Change (Multi30k -> CoNaLa)
+    01. Model : decode
+    02. Model :  Customize
+    03. Dataset Change (Multi30k -> CoNaLa)
 '''
 
 DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 NUM_EPOCHS = 2
-BATCH_SIZE = 64
+BATCH_SIZE = 16
 
 SRC_LANGUAGE = 'en'
 TGT_LANGUAGE = 'en'
 
 NUM_ENCODER_LAYERS = 3
 NUM_DECODER_LAYERS = 3
+MAX_LEN = 512
 EMB_SIZE = 512
 NHEAD = 8
 SRC_VOCAB_SIZE = len(vocab_transform[SRC_LANGUAGE])
@@ -50,8 +52,8 @@ class SingleGPU(nn.Module):
         super().__init__()
         os.makedirs(f'./models/{EXP_NAME}', exist_ok=True)
 
-        data_train = Data_V10('train')
-        data_valid = Data_V10('valid')
+        data_train = Data_V10('train', MAX_LEN)
+        data_valid = Data_V10('valid', MAX_LEN)
         self.train_loader = DataLoader(data_train, batch_size=BATCH_SIZE, num_workers=1)
         self.valid_loader = DataLoader(data_valid, batch_size=BATCH_SIZE, num_workers=1)
         
@@ -92,7 +94,7 @@ class SingleGPU(nn.Module):
             print(f'Train Loop || Epoch : {epoch+1}, Iteration : {idx + 1} / {len(self.train_loader)}, Loss : {loss}')
 
         # 01-3. Save
-        epoch_num = str(epoch).rjust(3, '0')
+        epoch_num = str(epoch + 1).rjust(3, '0')
         torch.save(self.model.state_dict(), f'./models/{EXP_NAME}/epoch_{epoch_num}.pth')
 
         # 02. Valid
@@ -109,9 +111,9 @@ class SingleGPU(nn.Module):
                 dst_pd = self.model(src, dst, src_mask, dst_mask, src_padding_mask, dst_padding_mask, src_padding_mask)
 
                 # 01-2. Backward Propagation
-                self.optimizer.zero_grad()
                 loss = self.loss_fn(dst_pd.reshape(-1, dst_pd.shape[-1]), dst.reshape(-1))
-                loss.backward()
+
+                print(f'Train Loop || Epoch : {epoch+1}, Iteration : {idx + 1} / {len(self.train_loader)}, Loss : {loss}')
 
 
 if __name__ == "__main__":

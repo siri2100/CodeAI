@@ -94,24 +94,22 @@ def create_mask(src, dst, device):
 
 
 class Data_V10(nn.Module):
-    def __init__(self, split='train'):  
+    def __init__(self, split='train', maxlen=512):  
         super(Data_V10, self).__init__()
         # 01. Load
         self.src = []
         self.dst = []
-        self.src_maxlen = 0
-        self.dst_maxlen = 0
+        self.src_maxlen = maxlen
+        self.dst_maxlen = maxlen
         with open(f'./data/Multi30k/{split}_en.csv', 'r') as f:
             while True:
                 ln = f.readline().rstrip()
                 if not ln: break
-                self.src_maxlen = max(self.src_maxlen, len(ln))
                 self.src.append(ln)
         with open(f'./data/Multi30k/{split}_en.csv', 'r') as f:
             while True:
                 ln = f.readline().rstrip()
                 if not ln: break
-                self.dst_maxlen = max(self.dst_maxlen, len(ln))
                 self.dst.append(ln)
         
         # 02. Preprocess
