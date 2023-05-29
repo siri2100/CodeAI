@@ -2,5 +2,8 @@
 # 02. Pytorch Download     : https://pytorch.org/get-started/locally/
 
 sentencepiece==0.1.99
-spacy==3.5.3
 torchtext==0.15.2
+
+# Tokenizer 
+spacy==3.5.3
+nltk==3.8.1

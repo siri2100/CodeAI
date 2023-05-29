@@ -25,25 +25,19 @@ DEVICE        = 'cuda:0'
 '''
 
 ''' TODO
-    01. Model Debugging
-        기존 : pytorch 예제 data loader(tokenizer)로 model.py의 TokenEmbedding을 사용하면 가능했지만 지금은 안됨
-        방향 : conala pretrained tokenizer로 나온 src, dst를 TokenEmbedding가능하게 디버깅하자!
+    01. Debugging
+        문제 : 258 iteration에서 에러 발생
 '''
 
 DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 NUM_EPOCHS = 2
-BATCH_SIZE = 16
-
-SRC_LANGUAGE = 'en'
-TGT_LANGUAGE = 'en'
+BATCH_SIZE = 8 # 16
 
 NUM_ENCODER_LAYERS = 3
 NUM_DECODER_LAYERS = 3
-MAX_LEN = 512
+MAX_LEN = 500
 EMB_SIZE = 512
 NHEAD = 8
-SRC_VOCAB_SIZE = len(vocab_transform[SRC_LANGUAGE])
-TGT_VOCAB_SIZE = len(vocab_transform[TGT_LANGUAGE])
 FFN_HID_DIM = 512
 
 
@@ -63,8 +57,8 @@ class SingleGPU(nn.Module):
             NUM_ENCODER_LAYERS,
             EMB_SIZE,
             NHEAD,
-            SRC_VOCAB_SIZE,
-            TGT_VOCAB_SIZE,
+            len(data_train.tokenizer_src),
+            len(data_train.tokenizer_dst),
             FFN_HID_DIM
         )
         self.model = self.model.to(DEVICE)
@@ -78,10 +72,9 @@ class SingleGPU(nn.Module):
     def forward(self, epoch):
         # 01. Train
         self.model.train()
-        for idx, (src, src_pad_mask, dst, dst_pad_mask) in enumerate(self.train_loader):
+        for idx, (src, dst) in enumerate(self.train_loader):
             # 01-0. Preprocess
             src, dst = src.to(DEVICE), dst.to(DEVICE)
-            src_pad_mask, dst_pad_mask = src_pad_mask.to(DEVICE), dst_pad_mask.to(DEVICE)
 
             # 01-1. Forward Propagation
             dst_pd = self.model(src, dst)
@@ -101,20 +94,17 @@ class SingleGPU(nn.Module):
         # 02. Valid
         with torch.no_grad():
             self.model.eval()
-            for idx, (src, src_mask, dst, dst_mask) in enumerate(self.valid_loader):
-                print(f'Valid Loop || Epoch : {epoch+1}, Iteration : {idx + 1} / {len(self.valid_loader)}')
-
+            for idx, (src, dst) in enumerate(self.valid_loader):
                 # 01-0. Preprocess
                 src, dst = src.to(DEVICE), dst.to(DEVICE)
-                src_mask, dst_mask, src_padding_mask, dst_padding_mask = create_mask(src, dst, DEVICE)
 
                 # 01-1. Forward Propagation
-                dst_pd = self.model(src, dst, src_mask, dst_mask, src_padding_mask, dst_padding_mask, src_padding_mask)
+                dst_pd = self.model(src, dst)
 
                 # 01-2. Backward Propagation
                 loss = self.loss_fn(dst_pd.reshape(-1, dst_pd.shape[-1]), dst.reshape(-1))
 
-                print(f'Train Loop || Epoch : {epoch+1}, Iteration : {idx + 1} / {len(self.train_loader)}, Loss : {loss}')
+                print(f'Valid Loop || Epoch : {epoch+1}, Iteration : {idx + 1} / {len(self.valid_loader)}, Loss : {loss}')
 
 
 if __name__ == "__main__":
