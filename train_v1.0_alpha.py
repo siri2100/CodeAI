@@ -16,9 +16,8 @@ from src.model import *
 
 DEVICE                      = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 TRAIN_EXP_NAME              = 'v1.0_Alpha'
-TRAIN_EPOCH                 = 2
+TRAIN_EPOCH                 = 100
 TRAIN_LEARNING_RATE         = 1e-4
-TRAIN_NUM_EPOCHS            = 100
 TRAIN_BATCH_SIZE            = 8 # 16
 DATA_TRAINSET               = 'CoNaLa' # CoNaLa, CoNaLa-Large, Django
 DATA_MAX_LEN                = 500
@@ -71,7 +70,6 @@ class SingleGPU(nn.Module):
             f.write(f'TRAIN_EXP_NAME : {TRAIN_EXP_NAME}\n')
             f.write(f'TRAIN_EPOCH : {TRAIN_EPOCH}\n')
             f.write(f'TRAIN_LEARNING_RATE : {TRAIN_LEARNING_RATE}\n')
-            f.write(f'TRAIN_NUM_EPOCHS : {TRAIN_NUM_EPOCHS}\n')
             f.write(f'TRAIN_BATCH_SIZE : {TRAIN_BATCH_SIZE}\n\n')
             f.write(f'DATA_TRAINSET : {DATA_TRAINSET}\n')
             f.write(f'DATA_MAX_LEN : {DATA_MAX_LEN}\n\n')
@@ -99,7 +97,7 @@ class SingleGPU(nn.Module):
 
             # 01-3. Print & Save Loss
             print(f'Train Loop || Epoch : {epoch+1}, Iteration : {idx + 1} / {len(self.train_loader)}, Loss : {loss}')
-            with open(f'./models/{EXP_NAME}/train_loss.csv', 'a', newline='') as f:
+            with open(f'./models/{TRAIN_EXP_NAME}/train_loss.csv', 'a', newline='') as f:
                 wr = csv.writer(f)
                 wr.writerow([epoch*len(self.train_loader) + idx, loss])
 
