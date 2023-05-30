@@ -1,3 +1,7 @@
+# CUDA        : 11.8
+# PyTorch     : 2.0.0
+# Python      : 3.9.16
+
 # 01. Huggingface Download : pip install git+https://github.com/huggingface/transformers
 # 02. Pytorch Download     : https://pytorch.org/get-started/locally/
 

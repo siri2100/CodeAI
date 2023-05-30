@@ -1,28 +1,16 @@
 import csv
 
+import nltk
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from nltk.tokenize import word_tokenize
-# from torchtext.data.utils import get_tokenizer
-# from torchtext.vocab import build_vocab_from_iterator
-# from torchtext.datasets import Multi30k
-# from transformers import AutoTokenizer
-
-
-''' TODO
-    01. 추후 Multi30k 벤치마킹하여 CoNaLa 구현 (아래 코드 참고)
-'''
-
-UNK_IDX = 0
-PAD_IDX = 1
-BOS_IDX = 2
-EOS_IDX = 3
 
 
 class Data_V10(nn.Module):
     def __init__(self, split='train', maxlen=512):
         super(Data_V10, self).__init__()
+        nltk.download('punkt')
         self.src = []
         self.dst = []
         self.src_maxlen = maxlen
@@ -31,7 +19,8 @@ class Data_V10(nn.Module):
         self.tokenizer_dst = {'unk':0, 'pad':1, 'bos':2, 'eos':3}
         with open(f'./data/CoNaLa/{split}.csv', 'r') as f:
             rdr = csv.reader(f)
-            self.tokenizer_idx = 4
+            self.tokenizer_src_idx = 4
+            self.tokenizer_dst_idx = 4
             for idx, ln in enumerate(rdr):
                 if idx > 0:
                     self.src.append(ln[0])
@@ -58,12 +47,12 @@ class Data_V10(nn.Module):
         for word in tmp:
             if split == 'src':
                 if not word in self.tokenizer_src:
-                    self.tokenizer_src[word] = self.tokenizer_idx
-                    self.tokenizer_idx += 1
+                    self.tokenizer_src[word] = self.tokenizer_src_idx
+                    self.tokenizer_src_idx += 1
             else:
                 if not word in self.tokenizer_dst:
-                    self.tokenizer_dst[word] = self.tokenizer_idx
-                    self.tokenizer_idx += 1
+                    self.tokenizer_dst[word] = self.tokenizer_dst_idx
+                    self.tokenizer_dst_idx += 1
 
     def tokenization(self, split, sentence):
         token = []
