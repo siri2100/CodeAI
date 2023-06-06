@@ -1,6 +1,5 @@
 import csv
 import os
-import sys
 
 import torch
 import torch.nn as nn
@@ -15,7 +14,7 @@ from src.model import *
 '''
 
 DEVICE                      = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-TRAIN_EXP_NAME              = 'v1.0_Alpha'
+TRAIN_EXP_NAME              = 'v1.0_Debug'
 TRAIN_EPOCH                 = 100
 TRAIN_LEARNING_RATE         = 1e-4
 TRAIN_BATCH_SIZE            = 8 # 16
@@ -32,6 +31,7 @@ class SingleGPU(nn.Module):
     def __init__(self):
         super().__init__()
         os.makedirs(f'./models/{TRAIN_EXP_NAME}', exist_ok=True)
+        os.makedirs(f'./models/{TRAIN_EXP_NAME}/epoch', exist_ok=True)
 
         # 01. Set Dataset
         data_train = Data_V10(split='train', maxlen=DATA_MAX_LEN)
@@ -103,7 +103,7 @@ class SingleGPU(nn.Module):
 
         # 01-4. Save Model
         epoch_num = str(epoch + 1).rjust(3, '0')
-        torch.save(self.model.state_dict(), f'./models/{TRAIN_EXP_NAME}/epoch_{epoch_num}.pth')
+        torch.save(self.model.state_dict(), f'./models/{TRAIN_EXP_NAME}/epoch/epoch_{epoch_num}.pth')
         
         # 02. Valid
         with torch.no_grad():

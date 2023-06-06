@@ -3,14 +3,13 @@ import csv
 import nltk
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 from nltk.tokenize import word_tokenize
 
 
 class Data_V10(nn.Module):
     def __init__(self, split='train', maxlen=512):
         super(Data_V10, self).__init__()
-        nltk.download('punkt')
+        # nltk.download('punkt')
         self.src = []
         self.dst = []
         self.src_maxlen = maxlen
