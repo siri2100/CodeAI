@@ -1,9 +1,14 @@
-import csv
-
-import nltk
-import torch
-import torch.nn as nn
-from nltk.tokenize import word_tokenize
+def map_to_encoder_decoder_inputs(tokenizer, batch, max_encoder, max_decoder):    
+    inputs = tokenizer(batch["intent"], padding="max_length", truncation=True, max_length=max_encoder)
+    outputs = tokenizer(batch["snippet"], padding="max_length", truncation=True, max_length=max_decoder)
+    batch["input_ids"] = inputs.input_ids
+    batch["attention_mask"] = inputs.attention_mask
+    batch["decoder_input_ids"] = outputs.input_ids
+    batch["labels"] = outputs.input_ids.copy()
+    batch["decoder_attention_mask"] = outputs.attention_mask
+    assert all([len(x) == max_encoder for x in inputs.input_ids])
+    assert all([len(x) == max_decoder for x in outputs.input_ids])
+    return batch
 
 
 class Data_V10(nn.Module):
