@@ -1,3 +1,4 @@
+import torch
 from datasets import load_dataset
 from transformers import AutoTokenizer
 from transformers import AutoModelForSeq2SeqLM
@@ -8,11 +9,12 @@ from transformers import Seq2SeqTrainingArguments
 from src.evaluator import CodeGenerationEvaluator
 
 
-BATCH_SIZE  = 1
+BATCH_SIZE  = 128
+DEVICE      = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 EPOCH       = 10
 LR          = 1e-5
-MAX_ENCODER = 32
-MAX_DECODER = 32
+MAX_ENCODER = 8
+MAX_DECODER = 8
 
 
 def map_to_encoder_decoder_inputs(batch):    
@@ -35,8 +37,10 @@ validset.set_format(type="torch", columns=["input_ids", "attention_mask", "decod
 data_collator = DataCollatorForSeq2Seq(
     tokenizer=tokenizer,
     max_length=MAX_ENCODER,
-    model=model
+    padding='max_length',
+    model=model,
 )
+evaluator = CodeGenerationEvaluator(tokenizer, DEVICE, smooth_bleu=True)
 training_args = Seq2SeqTrainingArguments(
     output_dir="./models/v1.0.0_exp01",
     evaluation_strategy="epoch",
@@ -52,13 +56,13 @@ training_args = Seq2SeqTrainingArguments(
     weight_decay=0.01,
     warmup_ratio=0.05,
     seed=1995,
-    load_best_model_at_end=True
+    load_best_model_at_end=True,
 )
 trainer = Seq2SeqTrainer(
     model=model,
     tokenizer=tokenizer,
     args=training_args,
-    compute_metrics=CodeGenerationEvaluator,
+    compute_metrics=evaluator,
     data_collator=data_collator,
     train_dataset=trainset,
     eval_dataset=validset,
