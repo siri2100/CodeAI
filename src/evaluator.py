@@ -43,7 +43,6 @@ class CodeGenerationEvaluator:
     def postprocessText(self, preds, labels):
         preds = list(map(self.postprocessSingle, preds))
         labels = list(map(self.postprocessSingle, labels))
-
         return preds, labels
 
     def postprocessSingle(self, s):

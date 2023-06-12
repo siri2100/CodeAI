@@ -1,5 +1,6 @@
+import pandas as pd
 import torch
-from datasets import load_dataset
+from datasets import Dataset
 from transformers import AutoTokenizer
 from transformers import AutoModelForSeq2SeqLM
 from transformers import DataCollatorForSeq2Seq
@@ -9,35 +10,47 @@ from transformers import Seq2SeqTrainingArguments
 from src.evaluator import CodeGenerationEvaluator
 
 
-BATCH_SIZE  = 128
+BATCH_SIZE  = 4
 DEVICE      = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 EPOCH       = 10
 LR          = 1e-5
-MAX_ENCODER = 8
-MAX_DECODER = 8
 
 
-def map_to_encoder_decoder_inputs(batch):    
-    inputs = tokenizer(batch["intent"], padding="max_length", truncation=True, max_length=MAX_ENCODER)
-    outputs = tokenizer(batch["snippet"], padding="max_length", truncation=True, max_length=MAX_DECODER)
-    batch["input_ids"] = inputs.input_ids
-    batch["attention_mask"] = inputs.attention_mask
-    batch["decoder_input_ids"] = outputs.input_ids
-    batch["labels"] = outputs.input_ids.copy()
-    batch["decoder_attention_mask"] = outputs.attention_mask
-    return batch
+def preprocess(examples,MAX_LENGTH = 512):
+    model_inputs = tokenizer(examples['intent'],
+                             max_length=MAX_LENGTH,
+                             padding = 'max_length',
+                             truncation=True,
+                             return_attention_mask = True)
+    with tokenizer.as_target_tokenizer():
+        targets = tokenizer(examples['snippet'],
+                            max_length=MAX_LENGTH,
+                            padding='max_length',
+                            truncation=True,
+                            return_attention_mask=True)
+    model_inputs['labels'] = targets['input_ids']
+    model_inputs['decoder_input_ids'] = targets['input_ids']
+    model_inputs['decoder_attention_mask'] = targets['attention_mask']
+    return model_inputs
+
 
 tokenizer = AutoTokenizer.from_pretrained("Helsinki-NLP/opus-mt-en-nl", use_fast=True)
 model = AutoModelForSeq2SeqLM.from_pretrained("Helsinki-NLP/opus-mt-en-nl")
-data = load_dataset("AhmedSSoliman/CoNaLa-Large")
-trainset = data["train"].map(map_to_encoder_decoder_inputs, batched=True, batch_size=1, remove_columns=['intent', 'snippet'])
-validset = data["validation"].map(map_to_encoder_decoder_inputs, batched=True, batch_size=1, remove_columns=['intent', 'snippet'])
-trainset.set_format(type="torch", columns=["input_ids", "attention_mask", "decoder_input_ids", "decoder_attention_mask", "labels"])
-validset.set_format(type="torch", columns=["input_ids", "attention_mask", "decoder_input_ids", "decoder_attention_mask", "labels"])
+
+train_df = pd.read_csv('./data/CoNaLa/train.csv',delimiter=',', quotechar= '"')
+val_df = pd.read_csv('./data/CoNaLa/valid.csv',delimiter=',', quotechar= '"')
+test_df = pd.read_csv('./data/CoNaLa/test.csv',delimiter=',', quotechar= '"')
+trainset = Dataset.from_pandas(train_df)
+validset = Dataset.from_pandas(val_df)
+testset = Dataset.from_pandas(test_df)
+trainset = trainset.map(preprocess, batched=True)
+trainset = trainset.remove_columns(['intent', 'snippet'])
+validset = validset.map(preprocess, batched=True)
+validset = validset.remove_columns(['intent', 'snippet'])
+
 data_collator = DataCollatorForSeq2Seq(
     tokenizer=tokenizer,
-    max_length=MAX_ENCODER,
-    padding='max_length',
+    max_length=512,
     model=model,
 )
 evaluator = CodeGenerationEvaluator(tokenizer, DEVICE, smooth_bleu=True)
@@ -46,7 +59,7 @@ training_args = Seq2SeqTrainingArguments(
     evaluation_strategy="epoch",
     save_strategy="epoch",
     per_device_train_batch_size=BATCH_SIZE,
-    per_device_eval_batch_size=1,
+    per_device_eval_batch_size=BATCH_SIZE,
     num_train_epochs=EPOCH,
     do_train=True,
     do_eval=True,
