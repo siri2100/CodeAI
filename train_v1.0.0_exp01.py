@@ -10,21 +10,21 @@ from transformers import Seq2SeqTrainingArguments
 from src.evaluator import CodeGenerationEvaluator
 
 
-BATCH_SIZE  = 4
+BATCH_SIZE  = 128
 DEVICE      = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 EPOCH       = 10
 LR          = 1e-5
+MAX_LEN     = 8
 
-
-def preprocess(examples,MAX_LENGTH = 512):
+def preprocess(examples):
     model_inputs = tokenizer(examples['intent'],
-                             max_length=MAX_LENGTH,
+                             max_length=MAX_LEN,
                              padding = 'max_length',
                              truncation=True,
                              return_attention_mask = True)
     with tokenizer.as_target_tokenizer():
         targets = tokenizer(examples['snippet'],
-                            max_length=MAX_LENGTH,
+                            max_length=MAX_LEN,
                             padding='max_length',
                             truncation=True,
                             return_attention_mask=True)
@@ -33,27 +33,23 @@ def preprocess(examples,MAX_LENGTH = 512):
     model_inputs['decoder_attention_mask'] = targets['attention_mask']
     return model_inputs
 
-
-tokenizer = AutoTokenizer.from_pretrained("Helsinki-NLP/opus-mt-en-nl", use_fast=True)
-model = AutoModelForSeq2SeqLM.from_pretrained("Helsinki-NLP/opus-mt-en-nl")
-
 train_df = pd.read_csv('./data/CoNaLa/train.csv',delimiter=',', quotechar= '"')
 val_df = pd.read_csv('./data/CoNaLa/valid.csv',delimiter=',', quotechar= '"')
 test_df = pd.read_csv('./data/CoNaLa/test.csv',delimiter=',', quotechar= '"')
 trainset = Dataset.from_pandas(train_df)
 validset = Dataset.from_pandas(val_df)
 testset = Dataset.from_pandas(test_df)
-trainset = trainset.map(preprocess, batched=True)
-trainset = trainset.remove_columns(['intent', 'snippet'])
-validset = validset.map(preprocess, batched=True)
-validset = validset.remove_columns(['intent', 'snippet'])
 
-data_collator = DataCollatorForSeq2Seq(
-    tokenizer=tokenizer,
-    max_length=512,
-    model=model,
-)
+tokenizer = AutoTokenizer.from_pretrained("Helsinki-NLP/opus-mt-en-nl", use_fast=True)
+model = AutoModelForSeq2SeqLM.from_pretrained("Helsinki-NLP/opus-mt-en-nl")
 evaluator = CodeGenerationEvaluator(tokenizer, DEVICE, smooth_bleu=True)
+
+train_input = trainset.map(preprocess, batched=True)
+train_input = train_input.remove_columns(['intent', 'snippet'])
+valid_input = validset.map(preprocess, batched=True)
+valid_input = valid_input.remove_columns(['intent', 'snippet'])
+
+data_collator = DataCollatorForSeq2Seq(tokenizer=tokenizer, max_length=MAX_LEN, model=model)
 training_args = Seq2SeqTrainingArguments(
     output_dir="./models/v1.0.0_exp01",
     evaluation_strategy="epoch",
@@ -62,23 +58,25 @@ training_args = Seq2SeqTrainingArguments(
     per_device_eval_batch_size=BATCH_SIZE,
     num_train_epochs=EPOCH,
     do_train=True,
-    do_eval=True,
-    fp16=False,
+    do_eval=False,
+    fp16=True,
     overwrite_output_dir=True,
     learning_rate=LR,
     weight_decay=0.01,
     warmup_ratio=0.05,
     seed=1995,
+    save_total_limit=2,
     load_best_model_at_end=True,
 )
+
 trainer = Seq2SeqTrainer(
     model=model,
     tokenizer=tokenizer,
     args=training_args,
-    compute_metrics=evaluator,
+    # compute_metrics=evaluator,
     data_collator=data_collator,
-    train_dataset=trainset,
-    eval_dataset=validset,
+    train_dataset=train_input,
+    eval_dataset=valid_input,
 )
 
 trainer.train()

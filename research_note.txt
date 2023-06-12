@@ -1,0 +1,3 @@
+230613
+    1. evaluator.py 디버깅(에러.png참고)
+        - evaluator.py를 없애니깐 잘 돌아감
