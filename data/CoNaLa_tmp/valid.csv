@@ -1,0 +1,129 @@
+intent,snippet
+remove first and last lines of string `s`,s[s.find('\n') + 1:s.rfind('\n')]
+combine or join numpy arrays,"[(0, 0, 1, 1), (0, 1, 0, 1)]"
+pythonic way to insert every 2 elements in a string,"""""""-"""""".join(a + b for a, b in zip(s[::2], s[1::2]))"
+how to make matplotlib scatterplots transparent as a group?,fig.savefig('test_scatter.png')
+get output of python script from within python script,print(proc.communicate()[0])
+how to get output of exe in python script?,p1.communicate()[0]
+sqlalchemy add child in one-to-many relationship,session.commit()
+how do you convert command line args in python to a dictionary?,"{'arg1': ['1', '4'], 'arg2': ['foobar']}"
+execute a jar file 'blender.jar' using subprocess,"subprocess.call(['java', '-jar', 'Blender.jar'])"
+how to convert a string to a function in python?,"eval('add')(x, y)"
+how to use lxml to find an element by text?,"e = root.xpath('.//a[text()=""TEXT A""]')"
+"split a string `text` with comma, question mark or exclamation by non-consuming regex using look-behind","re.split('(?<=[\\.\\?!]) ', text)"
+update the dictionary `mydic` with dynamic keys `i` and values with key 'name' from dictionary `o`,mydic.update({i: o['name']})
+accented characters in matplotlib,"ax.set_yticklabels(['\xe9', '\xe3', '\xe2'])"
+getting task_id inside a celery task,print(celery.current_task.task_id)
+difference between these array shapes in numpy,"np.squeeze(np.array([[1], [2], [3]])).shape"
+split a string `s` by ';' and convert to a dictionary,dict(item.split('=') for item in s.split(';'))
+use regex pattern '((.+?)\\2+)' to split string '44442(2)2(2)44',[m[0] for m in re.compile('((.+?)\\2+)').findall('44442(2)2(2)44')]
+check if string `b` is a number,b.isdigit()
+creating a dictionary from a string,"dict((k, int(v)) for k, v in (e.split(' - ') for e in s.split(',')))"
+check if a string contains a number,return any(i.isdigit() for i in s)
+how to sort a dataframe in python pandas by two or more columns?,"df.sort_values(['b', 'c'], ascending=[True, False], inplace=True)"
+sum the product of each two items at the same index of list `a` and list `b`,"sum(i * j for i, j in zip(a, b))"
+get number in list `mylist` closest in value to number `mynumber`,"min(myList, key=lambda x: abs(x - myNumber))"
+how to truncate a string using str.format in python?,"""""""{:.5}"""""".format('aaabbbccc')"
+remove all whitespaces in string `sentence`,"sentence = re.sub('\\s+', '', sentence, flags=re.UNICODE)"
+list all the files that matches the pattern `hello*.txt`,glob.glob('hello*.txt')
+python numpy: cannot convert datetime64[ns] to datetime64[d] (to use with numba),df['month_15'].astype('datetime64[D]').dtype
+append level to column index in python pandas,"pd.concat([df1, df2, df3], axis=1, keys=['df1', 'df2', 'df3'])"
+symlinks on windows?,system('cmd.exe /c echo Hello World > test.txt')
+dynamically adding functions to a python module,"setattr(current_module, new_name, func)"
+adding calculated column(s) to a dataframe in pandas,"df['isHammer'] = map(is_hammer, df['Open'], df['Low'], df['Close'], df['High'])"
+"using python's datetime module, can i get the year that utc-11 is currently in?",(datetime.datetime.utcnow() - datetime.timedelta(hours=11)).year
+interleaving lists in python,"list(chain.from_iterable(zip(list_a, list_b)))"
+modify list element with list comprehension in python,a = [(b + 4 if b < 0 else b) for b in a]
+applying a function to values in dict,"d2 = dict((k, f(v)) for k, v in list(d1.items()))"
+efficiently finding the last line in a text file,"line = subprocess.check_output(['tail', '-1', filename])"
+how to correctly parse utf-8 encoded html to unicode strings with beautifulsoup?,soup = BeautifulSoup(response.read().decode('utf-8'))
+sum of every two columns in pandas dataframe,np.arange(len(df.columns)) // 2
+how to execute raw sql in sqlalchemy-flask app,result = db.engine.execute('<sql here>')
+defining a global function in a python script,"mercury(1, 1, 2)"
+get all possible combination of items from 2-dimensional list `a`,list(itertools.product(*a))
+return a string from a regex match with pattern '<img.*?>' in string 'line',"imtag = re.match('<img.*?>', line).group(0)"
+how to break time.sleep() in a python concurrent.futures,time.sleep(5)
+how to get only the last part of a path in python?,os.path.basename(os.path.normpath('/folderA/folderB/folderC/folderD/'))
+best way to return a value from a python script,"return [1, 2, 3]"
+getting raw binary representation of a file in python,"binrep = ''.join(bytetable[x] for x in open('file', 'rb').read())"
+how do i generate (and label) a random integer with python 3.2?,"random.randrange(1, 10)"
+removing character in list of strings,"print([s.replace('8', '') for s in lst])"
+how to do many-to-many django query to find book with 2 given authors?,Book.objects.filter(author__id=1).filter(author__id=2)
+how to save a figure remotely with pylab?,fig.savefig('temp.png')
+how to snap to grid a qgraphicstextitem?,painter.restore()
+how do i get the username in python?,print(getpass.getuser())
+how to change the 3d axis settings in matplotlib,ax.w_yaxis.set_ticklabels([])
+find all anchors with a hyperlink that matches the pattern '^(?!(?:[a-za-z][a-za-z0-9+.-]*:|//))',"soup.find_all('a', href=re.compile('^(?!(?:[a-zA-Z][a-zA-Z0-9+.-]*:|//))'))"
+how to plot multiple histograms on same plot with seaborn,"ax.set_xlim([0, 100])"
+numpy `logical_or` for more than two arguments,"functools.reduce(np.logical_or, (x, y, z))"
+how can i get the ip address of eth0 in python?,get_ip_address('eth0')
+how to set up python server side with javascript client side,server.serve_forever()
+make na based on condition in pandas df,test_df.where(~(test_df < 4))
+"pandas : merge two columns, every other row","df.stack().reset_index(level=[0, 1], drop=True)"
+python - the request headers for mechanize,"browser.addheaders = [('User-Agent', 'Mozilla/5.0 blahblah')]"
+how do i get the user agent with flask?,request.headers.get('User-Agent')
+how to merge two python dictionaries in a single expression?,z = dict(list(x.items()) + list(y.items()))
+pandas: how to do multiple groupby-apply operations,"df.groupby(level=0).agg(['sum', 'count', 'std'])"
+how to make several plots on a single page using matplotlib?,fig.add_subplot(111)
+get a list `slice` of array slices of the first two rows and columns from array `arr`,"slice = [arr[i][0:2] for i in range(0, 2)]"
+create a list `result` containing elements form list `list_a` if first element of list `list_a` is in list `list_b`,result = [x for x in list_a if x[0] in list_b]
+running cumulative sum of 1d numpy array,y = np.cumsum(x)
+splitting a list into uneven groups?,"[[1, 2], [3, 4, 5, 6], [7, 8, 9, 10, 11, 12]]"
+"remove all instances of [1, 1] from list `a`","a[:] = [x for x in a if x != [1, 1]]"
+how to get the screen size in tkinter?,screen_height = root.winfo_screenheight()
+extract last two fields from split,s.split(':')[-2:]
+replace the single quote (') character from a string,"""""""A single ' char"""""".replace(""'"", '')"
+pixelate image with pillow,img = img.convert('RGB')
+append to file 'test' content 'koko',"open('test', 'a+b').write('koko')"
+how to convert 2d float numpy array to 2d int numpy array?,"np.asarray([1, 2, 3, 4], dtype=int)"
+proper way in python to raise errors while setting variables,raise ValueError('password must be longer than 6 characters')
+send a non-ascii post request in python?,print(prda.decode('utf-8'))
+python: split numpy array based on values in the array,"np.where(np.diff(arr[:, (1)]))[0] + 1"
+update database with multiple sql statments,cnx.commit()
+using tkinter in python to edit the title bar,"root.wm_title('Hello, world')"
+parallel running of several jobs in a python script,p.wait()
+how to write a python package/module?,"setup(name='cls', py_modules=['cls'])"
+write to utf-8 file in python,file.close()
+python regex for unicode capitalized words,"re.findall('(\\b[A-Z\xc3\x9c\xc3\x96\xc3\x84][a-z.-]+\\b)', words, re.UNICODE)"
+how to set a cell to nan in a pandas dataframe,"pd.to_numeric(df['y'], errors='coerce')"
+add multiple columns to a pandas dataframe quickly,"df.ix[:5, :10]"
+how can i get an email message's text content using python?,msg.get_payload()
+efficient calculation on a pandas dataframe,"C = pd.merge(C, A, on=['Canal', 'Gerencia'])"
+how do i write json data to a file in python?,"f.write(json.dumps(data, ensure_ascii=False))"
+google app engine - auto increment,user.put()
+find an element in a list of tuples,[item for item in a if 1 in item]
+"convert a list of strings `['1', '-1', '1']` to a list of numbers","map(int, ['1', '-1', '1'])"
+write data to a file in python,f.write(str(yEst) + '\n')
+what is the proper way to format a multi-line dict in python?,"nested = {a: [(1, 'a'), (2, 'b')], b: [(3, 'c'), (4, 'd')]}"
+how to fetch a substring from text file in python?,"print(re.sub('.+ \\+(\\d+ ){3}', '', data))"
+python pandas dataframe: retrieve number of columns,len(df.columns)
+get first non-null value per each row from dataframe `df`,df.stack().groupby(level=0).first()
+make python program wait,time.sleep(0.2)
+how to retrieve only arabic texts from a string using regular expression?,"print(re.findall('[0-u]+', my_string))"
+string in python with my unicode?,rawbytes.decode('utf-8')
+python - convert binary data to utf-8,data.decode('latin-1').encode('utf-8')
+removing space in dataframe python,"formatted.columns = [x.strip().replace(' ', '_') for x in formatted.columns]"
+"add header `('cookie', 'cookiename=cookie value')` to mechanize browser `br`","br.addheaders = [('Cookie', 'cookiename=cookie value')]"
+matplotlib savefig image size with bbox_inches='tight',"plt.savefig('/tmp/test.png', dpi=200)"
+"regex in python to find words that follow pattern: vowel, consonant, vowel, consonant","""""""([bcdfghjklmnpqrstvwxz][aeiou])+"""""""
+logarithmic y-axis bins in python,"plt.yscale('log', nonposy='clip')"
+how do i create a file in python without overwriting an existing file,"fd = os.open('x', os.O_WRONLY | os.O_CREAT | os.O_EXCL)"
+set the stdin of the process 'grep f' to be 'one\ntwo\nthree\nfour\nfive\nsix\n',"p = subprocess.Popen(['grep', 'f'], stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+p.stdin.write('one\ntwo\nthree\nfour\nfive\nsix\n')
+p.communicate()[0]
+p.stdin.close()"
+change current working directory,os.chdir('.\\chapter3')
+python map array of dictionaries to dictionary?,"dict(map(operator.itemgetter('city', 'country'), li))"
+python - removing vertical bar lines from histogram,plt.show()
+how to put the legend out of the plot,ax.legend()
+how to fold/accumulate a numpy matrix product (dot)?,"np.einsum('ij,jk,kl,lm', S0, Sx, Sy, Sz)"
+how do you get the text from an html 'datacell' using beautifulsoup,headerRows[0][10].findNext('b').string
+"resize matrix by repeating copies of it, in python","array([[0, 1, 0, 1, 0, 1, 0], [2, 3, 2, 3, 2, 3, 2]])"
+connecting two points in a 3d scatter plot in python and matplotlib,matplotlib.pyplot.show()
+split a unicode string `text` into a list of words and punctuation characters with a regex,"re.findall('\\w+|[^\\w\\s]', text, re.UNICODE)"
+how do i plot multiple x or y axes in matplotlib?,"ax.plot(x, y, 'k^')"
+matplotlib (mplot3d) - how to increase the size of an axis (stretch) in a 3d plot?,"ax.plot(x, y, z, label='parametric curve')"
+pandas dataframe to list,df['a'].values.tolist()
+how to do a 3d revolution plot in matplotlib?,plt.show()
+reverse a string `some_string`,some_string[::(-1)]
+print a floating point number 2.345e-67 without any truncation,print('{:.100f}'.format(2.345e-67))

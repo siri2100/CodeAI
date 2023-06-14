@@ -1,0 +1,129 @@
+intent,snippet
+send a signal `signal.sigusr1` to the current process,"os.kill(os.getpid(), signal.SIGUSR1)"
+decode a hex string '4a4b4c' to utf-8.,bytes.fromhex('4a4b4c').decode('utf-8')
+check if all elements in list `mylist` are identical,all(x == myList[0] for x in myList)
+"format number of spaces between strings `python`, `:` and `very good` to be `20`","print('%*s : %*s' % (20, 'Python', 20, 'Very Good'))"
+how to convert a string from cp-1251 to utf-8?,d.decode('cp1251').encode('utf8')
+get rid of none values in dictionary `kwargs`,"res = {k: v for k, v in list(kwargs.items()) if v is not None}"
+get rid of none values in dictionary `kwargs`,"res = dict((k, v) for k, v in kwargs.items() if v is not None)"
+capture final output of a chain of system commands `ps -ef | grep something | wc -l`,"subprocess.check_output('ps -ef | grep something | wc -l', shell=True)"
+"concatenate a list of strings `['a', 'b', 'c']`",""""""""""""".join(['a', 'b', 'c'])"
+find intersection data between series `s1` and series `s2`,pd.Series(list(set(s1).intersection(set(s2))))
+sending http headers to `client`,client.send('HTTP/1.0 200 OK\r\n')
+format a datetime string `when` to extract date only,"then = datetime.datetime.strptime(when, '%Y-%m-%d').date()"
+split a multi-line string `inputstring` into separate strings,inputString.split('\n')
+split a multi-line string ` a \n b \r\n c ` by new line character `\n`,' a \n b \r\n c '.split('\n')
+"concatenate elements of list `b` by a colon "":""",""""""":"""""".join(str(x) for x in b)"
+get the first object from a queryset in django model `entry`,Entry.objects.filter()[:1].get()
+calculate sum over all rows of 2d numpy array,a.sum(axis=1)
+enable warnings using action 'always',warnings.simplefilter('always')
+concatenate items of list `l` with a space ' ',"print(' '.join(map(str, l)))"
+run script 'hello.py' with argument 'htmlfilename.htm' on terminal using python executable,"subprocess.call(['python.exe', 'hello.py', 'htmlfilename.htm'])"
+how can i parse a time string containing milliseconds in it with python?,"time.strptime('30/03/09 16:31:32.123', '%d/%m/%y %H:%M:%S.%f')"
+convert a string `my_string` with dot and comma into a float number `my_float`,"my_float = float(my_string.replace(',', ''))"
+"convert a string `123,456.908` with dot and comma into a floating number","float('123,456.908'.replace(',', ''))"
+set pythonpath in python script.,sys.path.append('/path/to/whatever')
+"split string 'words, words, words.' using a regex '(\\w+)'","re.split('(\\W+)', 'Words, words, words.')"
+open a file `output.txt` in append mode,"file = open('Output.txt', 'a')"
+"download a file ""http://www.example.com/songs/mp3.mp3"" over http and save to ""mp3.mp3""","urllib.request.urlretrieve('http://www.example.com/songs/mp3.mp3', 'mp3.mp3')"
+download a file `url` over http and save to `file_name`,"u = urllib.request.urlopen(url)
+f = open(file_name, 'wb')
+meta = u.info()
+file_size = int(meta.getheaders('Content-Length')[0])
+print(('Downloading: %s Bytes: %s' % (file_name, file_size)))
+file_size_dl = 0
+block_sz = 8192
+while True:
+    buffer = u.read(block_sz)
+    if (not buffer):
+        break
+    file_size_dl += len(buffer)
+    f.write(buffer)
+    status = ('%10d  [%3.2f%%]' % (file_size_dl, ((file_size_dl * 100.0) / file_size)))
+    status = (status + (chr(8) * (len(status) + 1)))
+    print(status, end=' ')
+f.close()"
+download a file 'http://www.example.com/' over http,"response = urllib.request.urlopen('http://www.example.com/')
+html = response.read()"
+download a file `url` over http,r = requests.get(url)
+"download a file `url` over http and save to ""10mb""","response = requests.get(url, stream=True)
+with open('10MB', 'wb') as handle:
+    for data in tqdm(response.iter_content()):
+        handle.write(data)"
+argparse add argument with flag '--version' and version action of '%(prog)s 2.0' to parser `parser`,"parser.add_argument('--version', action='version', version='%(prog)s 2.0')"
+remove key 'c' from dictionary `d`,{i: d[i] for i in d if i != 'c'}
+"create new dataframe object by merging columns ""key"" of  dataframes `split_df` and `csv_df` and rename the columns from dataframes `split_df` and `csv_df` with suffix `_left` and `_right` respectively","pd.merge(split_df, csv_df, on=['key'], suffixes=('_left', '_right'))"
+split a string `s` by space with `4` splits,"s.split(' ', 4)"
+read keyboard-input,input('Enter your input:')
+enable debug mode on flask application `app`,app.run(debug=True)
+python save list `mylist` to file object 'save.txt',"pickle.dump(mylist, open('save.txt', 'wb'))"
+multiply a matrix `p` with a 3d tensor `t` in scipy,"scipy.tensordot(P, T, axes=[1, 1]).swapaxes(0, 1)"
+"create 3d array of zeroes of size `(3,3,3)`","numpy.zeros((3, 3, 3))"
+cut off the last word of a sentence `content`,""""""" """""".join(content.split(' ')[:-1])"
+convert scalar `x` to array,"x = np.asarray(x).reshape(1, -1)[(0), :]"
+sum all elements of nested list `l`,"sum(sum(i) if isinstance(i, list) else i for i in L)"
+convert hex string '470fc614' to a float number,"struct.unpack('!f', '470FC614'.decode('hex'))[0]"
+multiple each value by `2` for all keys in a dictionary `my_dict`,"my_dict.update((x, y * 2) for x, y in list(my_dict.items()))"
+running bash script 'sleep.sh',"subprocess.call('sleep.sh', shell=True)"
+"join elements of list `l` with a comma `,`",""""""","""""".join(l)"
+make a comma-separated string from a list `mylist`,"myList = ','.join(map(str, myList))"
+reverse the list that contains 1 to 10,list(reversed(list(range(10))))
+"remove substring 'bag,' from a string 'lamp, bag, mirror'","print('lamp, bag, mirror'.replace('bag,', ''))"
+"reverse the order of words, delimited by `.`, in string `s`","""""""."""""".join(s.split('.')[::-1])"
+convert epoch time represented as milliseconds `s` to string using format '%y-%m-%d %h:%m:%s.%f',datetime.datetime.fromtimestamp(s).strftime('%Y-%m-%d %H:%M:%S.%f')
+parse milliseconds epoch time '1236472051807' to format '%y-%m-%d %h:%m:%s',"time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(1236472051807 / 1000.0))"
+get the date 7 days before the current date,(datetime.datetime.now() - datetime.timedelta(days=7)).date()
+sum elements at index `column` of each list in list `data`,print(sum(row[column] for row in data))
+sum columns of a list `array`,[sum(row[i] for row in array) for i in range(len(array[0]))]
+encode binary string 'your string' to base64 code,"base64.b64encode(bytes('your string', 'utf-8'))"
+combine list of dictionaries `dicts` with the same keys in each list to a single dictionary,"dict((k, [d[k] for d in dicts]) for k in dicts[0])"
+merge a nested dictionary `dicts` into a flat dictionary by concatenating nested values with the same key `k`,{k: [d[k] for d in dicts] for k in dicts[0]}
+how do i get the url parameter in a flask view,request.args['myParam']
+identify duplicate values in list `mylist`,"[k for k, v in list(Counter(mylist).items()) if v > 1]"
+insert directory 'apps' into directory `__file__`,"sys.path.insert(1, os.path.join(os.path.dirname(__file__), 'apps'))"
+modify sys.path for python module `subdir`,"sys.path.append(os.path.join(os.path.dirname(__file__), 'subdir'))"
+insert a 'none' value into a sqlite3 table.,"db.execute(""INSERT INTO present VALUES('test2', ?, 10)"", (None,))"
+flatten list `list_of_menuitems`,[image for menuitem in list_of_menuitems for image in menuitem]
+append elements of a set `b` to a list `a`,a.extend(b)
+append elements of a set to a list in python,a.extend(list(b))
+write the data of dataframe `df` into text file `np.txt`,"np.savetxt('c:\\data\\np.txt', df.values, fmt='%d')"
+write content of dataframe `df` into text file 'c:\\data\\pandas.txt',"df.to_csv('c:\\data\\pandas.txt', header=None, index=None, sep=' ', mode='a')"
+split a string `x` by last occurrence of character `-`,print(x.rpartition('-')[0])
+get the last part of a string before the character '-',"print(x.rsplit('-', 1)[0])"
+upload file using ftp,"ftp.storlines('STOR ' + filename, open(filename, 'r'))"
+add one to the hidden web element with id 'xyz' with selenium python script,"browser.execute_script(""document.getElementById('XYZ').value+='1'"")"
+"create array containing the maximum value of respective elements of array `[2, 3, 4]` and array `[1, 5, 2]`","np.maximum([2, 3, 4], [1, 5, 2])"
+print a list `l` and move first 3 elements to the end of the list,print(l[3:] + l[:3])
+loop over files in directory '.',"for fn in os.listdir('.'):
+    if os.path.isfile(fn):
+        pass"
+loop over files in directory `source`,"for (root, dirs, filenames) in os.walk(source):
+    for f in filenames:
+        pass"
+create a random list of integers,[int(1000 * random.random()) for i in range(10000)]
+using %f with strftime() in python to get microseconds,datetime.datetime.now().strftime('%H:%M:%S.%f')
+google app engine execute gql query 'select * from schedule where station = $1' with parameter `foo.key()`,"db.GqlQuery('SELECT * FROM Schedule WHERE station = $1', foo.key())"
+filter rows in pandas starting with alphabet 'f' using regular expression.,df.b.str.contains('^f')
+print a 2 dimensional list `tab` as a table with delimiters,print('\n'.join('\t'.join(str(col) for col in row) for row in tab))
+pandas: delete rows in dataframe `df` based on multiple columns values,"df.set_index(list('BC')).drop(tuples, errors='ignore').reset_index()"
+format the variables `self.goals` and `self.penalties` using string formatting,"""""""({:d} goals, ${:d})"""""".format(self.goals, self.penalties)"
+"format string ""({} goals, ${})"" with variables `goals` and `penalties`","""""""({} goals, ${})"""""".format(self.goals, self.penalties)"
+"format string ""({0.goals} goals, ${0.penalties})""","""""""({0.goals} goals, ${0.penalties})"""""".format(self)"
+convert list of lists `l` to list of integers,[int(''.join(str(d) for d in x)) for x in L]
+combine elements of each list in list `l` into digits of a single integer,[''.join(str(d) for d in x) for x in L]
+convert a list of lists `l` to list of integers,L = [int(''.join([str(y) for y in x])) for x in L]
+write the elements of list `lines` concatenated by special character '\n' to file `myfile`,myfile.write('\n'.join(lines))
+removing an element from a list based on a predicate 'x' or 'n',"[x for x in ['AAT', 'XAC', 'ANT', 'TTA'] if 'X' not in x and 'N' not in x]"
+remove duplicate words from a string `text` using regex,"text = re.sub('\\b(\\w+)( \\1\\b)+', '\\1', text)"
+count non zero values in each column in pandas data frame,df.astype(bool).sum(axis=1)
+search for string that matches regular expression pattern '(?<!distillr)\\\\acrotray\\.exe' in string 'c:\\somedir\\acrotray.exe',"re.search('(?<!Distillr)\\\\AcroTray\\.exe', 'C:\\SomeDir\\AcroTray.exe')"
+split string 'qh qd jc kd js' into a list on white spaces,"""""""QH QD JC KD JS"""""".split()"
+search for occurrences of regex pattern '>.*<' in xml string `line`,"print(re.search('>.*<', line).group(0))"
+erase all the contents of a file `filename`,"open(filename, 'w').close()"
+convert a string into datetime using the format '%y-%m-%d %h:%m:%s.%f',"datetime.datetime.strptime(string_date, '%Y-%m-%d %H:%M:%S.%f')"
+find the index of a list with the first element equal to '332' within the list of lists `thelist`,"[index for index, item in enumerate(thelist) if item[0] == '332']"
+lower a string `text` and remove non-alphanumeric characters aside from space,"re.sub('[^\\sa-zA-Z0-9]', '', text).lower().strip()"
+remove all non-alphanumeric characters except space from a string `text` and lower it,"re.sub('(?!\\s)[\\W_]', '', text).lower().strip()"
+subscript text 'h20' with '2' as subscripted in matplotlib labels for arrays 'x' and 'y'.,"plt.plot(x, y, label='H\u2082O')"
+subscript text 'h20' with '2' as subscripted in matplotlib labels for arrays 'x' and 'y'.,"plt.plot(x, y, label='$H_2O$')"
+loop over a list `mylist` if sublists length equals 3,[x for x in mylist if len(x) == 3]
