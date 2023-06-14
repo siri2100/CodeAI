@@ -21,7 +21,7 @@ def preprocess_v10(batch):
     return batch
 
 
-test_df   = pd.read_csv('./data/CoNaLa_tmp/test.csv', delimiter=',', quotechar= '"')
+test_df   = pd.read_csv('./data/CoNaLa/test.csv', delimiter=',', quotechar= '"')
 testset   = Dataset.from_pandas(test_df)
 model     = AutoModelForSeq2SeqLM.from_pretrained(PATH_MODEL)
 tokenizer = AutoTokenizer.from_pretrained(PATH_MODEL, use_fast=True)
