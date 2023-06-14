@@ -10,11 +10,11 @@ from transformers import Seq2SeqTrainingArguments
 from src.eval import CodeGenerationEvaluator
 
 
-BATCH_SIZE  = 128
+BATCH_SIZE  = 8
 DEVICE      = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
-EPOCH       = 2
+EPOCH       = 30
 LR          = 1e-5
-MAX_LEN     = 8
+MAX_LEN     = 512
 PATH_OUTPUT = "./models/v1.0.0_exp01"
 
 
@@ -28,8 +28,8 @@ def preprocess_v10(examples):
     return model_inputs
 
 
-train_df    = pd.read_csv('./data/CoNaLa_tmp/train.csv', delimiter=',', quotechar= '"')
-valid_df    = pd.read_csv('./data/CoNaLa_tmp/valid.csv', delimiter=',', quotechar= '"')
+train_df    = pd.read_csv('./data/CoNaLa/train.csv', delimiter=',', quotechar= '"')
+valid_df    = pd.read_csv('./data/CoNaLa/valid.csv', delimiter=',', quotechar= '"')
 trainset    = Dataset.from_pandas(train_df)
 validset    = Dataset.from_pandas(valid_df)
 tokenizer   = AutoTokenizer.from_pretrained("Helsinki-NLP/opus-mt-en-nl", use_fast=True)
@@ -64,7 +64,6 @@ trainer = Seq2SeqTrainer(
     model=model,
     tokenizer=tokenizer,
     args=training_args,
-    # compute_metrics=evaluator,
     data_collator=data_col,
     train_dataset=train_input,
     eval_dataset=valid_input,
