@@ -1,0 +1,4 @@
+intent,snippet
+import torch package,import torch
+import torchvision package,import torchvision
+define type transformation to tensor using torchvision package,torchvision.transforms.Compose([transforms.ToTensor()])
