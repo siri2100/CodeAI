@@ -21,9 +21,37 @@ def preprocess_v10(batch):
     return batch
 
 
+def scoring(results):
+    score_bleu = []
+    score_rouge = []
+    score_sacrebleu = []
+    for i in range(len(results)):
+        ref = results["snippet"][i]
+        pred = results["pred_code"][i].replace('_',' ').strip()
+        if pred is not None and pred != "":
+            if ref is not None and ref != "":
+                bleu_metric = evaluator.evaluate([pred], [ref])
+                score_bleu.append(bleu_metric['BLEU'])
+                score_rouge.append(bleu_metric['ROUGE-L'])
+                score_sacrebleu.append(bleu_metric['SacreBLEU'])
+        else:
+            continue
+    return score_bleu, score_rouge, score_sacrebleu
+                
+
 test_df   = pd.read_csv('./data/CoNaLa/test.csv', delimiter=',', quotechar= '"')
 testset   = Dataset.from_pandas(test_df)
 model     = AutoModelForSeq2SeqLM.from_pretrained(PATH_MODEL)
 tokenizer = AutoTokenizer.from_pretrained(PATH_MODEL, use_fast=True)
 evaluator = eval.CodeGenerationEvaluator(tokenizer, DEVICE, smooth_bleu=True)
 result    = testset.map(preprocess_v10, batched=True, batch_size=1)
+score_bleu, score_rouge, score_sacrebleu = scoring(result)
+
+df = pd.DataFrame({'BLEU':[sum(score_bleu)/len(score_bleu)],
+                   'ROUGE Score':[sum(score_rouge)/len(score_rouge)],
+                   'Sacre BLEU':[sum(score_sacrebleu)/len(score_sacrebleu)]})
+df.to_csv(f'{PATH_MODEL}/result.csv')
+
+print(f'BLEU : {sum(score_bleu)/len(score_bleu)}')
+print(f'ROUGE Score : {sum(score_rouge)/len(score_rouge)}')
+print(f'Sacre BLEU : {sum(score_sacrebleu)/len(score_sacrebleu)}')
