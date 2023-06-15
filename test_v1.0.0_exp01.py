@@ -41,7 +41,7 @@ def scoring(results):
 
 test_df   = pd.read_csv('./data/CoNaLa/test.csv', delimiter=',', quotechar= '"')
 testset   = Dataset.from_pandas(test_df)
-model     = AutoModelForSeq2SeqLM.from_pretrained(PATH_MODEL)
+model     = AutoModelForSeq2SeqLM.from_pretrained(PATH_MODEL).to(DEVICE)
 tokenizer = AutoTokenizer.from_pretrained(PATH_MODEL, use_fast=True)
 evaluator = eval.CodeGenerationEvaluator(tokenizer, DEVICE, smooth_bleu=True)
 result    = testset.map(preprocess_v10, batched=True, batch_size=1)
