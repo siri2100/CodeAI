@@ -1,4 +1,41 @@
-intent,snippet
-import torch package,import torch
-import torchvision package,import torchvision
-define type transformation to tensor using torchvision package,torchvision.transforms.Compose([transforms.ToTensor()])
+intent,snippet,type,source
+convert a list to a dictionary in python,"""b = dict(zip(a[0::2], a[1::2]))""",dict,CoNaLa_train.csv_1
+efficient computation of the least-squares algorithm in numpy,"""np.linalg.solve(np.dot(a.T, a), np.dot(a.T, b))""",numpy,CoNaLa_train.csv_6
+flatten a dict of lists into unique values?,sorted({x for v in content.values() for x in v}),sort,CoNaLa_train.csv_24
+how do you create nested dict in python?,dict(d),dict,CoNaLa_train.csv_37
+get count of values associated with key in dict python,sum(1 if d['success'] else 0 for d in s),dict,CoNaLa_train.csv_39
+how to get every first element in 2 dimensional list 'a',[i[0] for i in a],dict,CoNaLa_train.csv_41
+joining two numpy matrices,"""np.hstack([X, Y])""",numpy,CoNaLa_train.csv_44
+sorting numbers in string format with python,"""keys.sort(key=lambda x: map(int, x.split('.')))""",sort,CoNaLa_train.csv_54
+how to check if all items in the list are none?,not any(my_list),list,CoNaLa_train.csv_57
+assign the parameter into attribute,"""setattr(self, k, v)""",class,CoNaLa_train.csv_63
+getting the second to last element of list 'some_list',some_list[(-2)],list,CoNaLa_train.csv_64
+create a list containing elements from list 'list' that are predicate to function 'f',[f(x) for x in list],list,CoNaLa_train.csv_65
+print a digit 'your_number' with exactly 2 digits after decimal,print('{0:.2f}'.format(your_number)),print,CoNaLa_train.csv_66
+sort list 'mylist' alphabetically,mylist.sort(key=lambda x: x.lower()),sort,CoNaLa_train.csv_67
+plot using matplotlib,plt.show(),matplotlib,CoNaLa_train.csv_73
+get a list of the keys in each dictionary in a dictionary of dictionaries 'foo',[k for d in list(foo.values()) for k in d],dict,CoNaLa_train.csv_74
+sort dictionary 'mydict' in descending order based on the sum of each value in it,"""sorted(iter(mydict.items()), key=lambda tup: sum(tup[1]), reverse=True)[:3]""",dict,CoNaLa_train.csv_75
+round number 1.005 up to 2 decimal places,"""round(1.005, 2)""",round,CoNaLa_train.csv_81
+extract dictionary keys within a list,names = [item['name'] for item in data],"dict, list",CoNaLa_train.csv_85
+functional statement to return the sum of certain lists in a list of lists,sum(len(y) for y in x if len(y) > 1),list,CoNaLa_train.csv_89
+how to initialize a two-dimensional array,[[Foo() for x in range(10)] forr y in range(10)],list,CoNaLa_train.csv_99
+finding the index of elements based on a condition using python list comprehension,a[:] = [x for x in a if x <= 2],list,CoNaLa_train.csv_107
+join two lists into a formatted string,"""c = ', '.join('%s=%s' % t for t in zip(a, b))""","list, string",CoNaLa_train.csv_109
+sort an array of dictionaries with custom comparator?,"""key = lambda d: (not 'rank' in d, d['rank'])""",sort,CoNaLa_train.csv_113
+get the sum of the products of each pair of corresponding elements in lists 'a' and 'b',"""sum(x * y for x, y in zip(a, b))""",list,CoNaLa_train.csv_115
+"""create a dictionary of pairs, from a list of tuples?""",dict(x[1:] for x in reversed(myListOfTuples)),dict,CoNaLa_train.csv_121
+how to sort list of lists according to length of sublists,"""sorted(a, key=len)""",sort,CoNaLa_train.csv_124
+convert int into binary,bin(10),binary,CoNaLa_train.csv_128
+getting a list of value from list of dict,[d['value'] for d in l],"dict,list",CoNaLa_train.csv_129
+sort list of tuples by reordering tuples,"""sorted(A, key=operator.itemgetter(2, 0, 1))""","sort,list,tuple",CoNaLa_train.csv_132
+printing numbers rounding up to third decimal place,print('%3.f' % 3.1415),round,CoNaLa_train.csv_137
+"""converting a string of numbers 'example_string' separated by ',' into a list of integers""","""map(int, example_string.split(','))""",map,CoNaLa_train.csv_140
+how to create a dictionary using two lists,"""dict(zip(x, y))""",dict,CoNaLa_train.csv_141
+running python code contained in a string,print('hello'),print,CoNaLa_train.csv_144
+remove newline in string 's' on the left,s.lstrip(),string,CoNaLa_train.csv_145
+convert a list to tuples,zip(*list_of_tuples),"list, tuple",CoNaLa_train.csv_146
+remove duplicates from a list of sets 'l',[set(item) for item in set(frozenset(item) for item in L)],"list, set",CoNaLa_train.csv_150
+check if array 'a' contains all the numbers in array 'b' using numpy,numpy.array([(x in a) for x in b]),numpy,CoNaLa_train.csv_156
+test if value can be converted to an int in a list comprehension,[row for row in listOfLists if row[x].isdigit()],list,CoNaLa_train.csv_161
+json query that returns parent element and child data?,"""dict((k, v['_status']['md5']) for k, v in list(json_result.items()))""","dict, json",CoNaLa_train.csv_166
