@@ -1,126 +1,301 @@
-intent,snippet,type,source,Number
-convert a list to a dictionary in python,"""b = dict(zip(a[0::2], a[1::2]))""",dict,CoNaLa_train.csv,1
-efficient computation of the least-squares algorithm in numpy,"""np.linalg.solve(np.dot(a.T, a), np.dot(a.T, b))""",numpy,CoNaLa_train.csv,6
-flatten a dict of lists into unique values?,sorted({x for v in content.values() for x in v}),sort,CoNaLa_train.csv,24
-how do you create nested dict in python?,dict(d),dict,CoNaLa_train.csv,37
-get count of values associated with key in dict python,sum(1 if d['success'] else 0 for d in s),dict,CoNaLa_train.csv,39
-how to get every first element in 2 dimensional list 'a',[i[0] for i in a],dict,CoNaLa_train.csv,41
-joining two numpy matrices,"""np.hstack([X, Y])""",numpy,CoNaLa_train.csv,44
-sorting numbers in string format with python,"""keys.sort(key=lambda x: map(int, x.split('.')))""",sort,CoNaLa_train.csv,54
-how to check if all items in the list are none?,not any(my_list),list,CoNaLa_train.csv,57
-assign the parameter into attribute,"""setattr(self, k, v)""",class,CoNaLa_train.csv,63
-getting the second to last element of list 'some_list',some_list[(-2)],list,CoNaLa_train.csv,64
-create a list containing elements from list 'list' that are predicate to function 'f',[f(x) for x in list],list,CoNaLa_train.csv,65
-print a digit 'your_number' with exactly 2 digits after decimal,print('{0:.2f}'.format(your_number)),print,CoNaLa_train.csv,66
-sort list 'mylist' alphabetically,mylist.sort(key=lambda x: x.lower()),sort,CoNaLa_train.csv,67
-plot using matplotlib,plt.show(),matplotlib,CoNaLa_train.csv,73
-get a list of the keys in each dictionary in a dictionary of dictionaries 'foo',[k for d in list(foo.values()) for k in d],dict,CoNaLa_train.csv,74
-sort dictionary 'mydict' in descending order based on the sum of each value in it,"""sorted(iter(mydict.items()), key=lambda tup: sum(tup[1]), reverse=True)[:3]""",dict,CoNaLa_train.csv,75
-round number 1.005 up to 2 decimal places,"""round(1.005, 2)""",round,CoNaLa_train.csv,81
-extract dictionary keys within a list,names = [item['name'] for item in data],"dict, list",CoNaLa_train.csv,85
-functional statement to return the sum of certain lists in a list of lists,sum(len(y) for y in x if len(y) > 1),list,CoNaLa_train.csv,89
-how to initialize a two-dimensional array,[[Foo() for x in range(10)] forr y in range(10)],list,CoNaLa_train.csv,99
-finding the index of elements based on a condition using python list comprehension,a[:] = [x for x in a if x <= 2],list,CoNaLa_train.csv,107
-join two lists into a formatted string,"""c = ', '.join('%s=%s' % t for t in zip(a, b))""","list, string",CoNaLa_train.csv,109
-sort an array of dictionaries with custom comparator?,"""key = lambda d: (not 'rank' in d, d['rank'])""",sort,CoNaLa_train.csv,113
-get the sum of the products of each pair of corresponding elements in lists 'a' and 'b',"""sum(x * y for x, y in zip(a, b))""",list,CoNaLa_train.csv,115
-"""create a dictionary of pairs, from a list of tuples?""",dict(x[1:] for x in reversed(myListOfTuples)),dict,CoNaLa_train.csv,121
-how to sort list of lists according to length of sublists,"""sorted(a, key=len)""",sort,CoNaLa_train.csv,124
-convert int into binary,bin(10),binary,CoNaLa_train.csv,128
-getting a list of value from list of dict,[d['value'] for d in l],"dict,list",CoNaLa_train.csv,129
-sort list of tuples by reordering tuples,"""sorted(A, key=operator.itemgetter(2, 0, 1))""","sort,list,tuple",CoNaLa_train.csv,132
-printing numbers rounding up to third decimal place,print('%3.f' % 3.1415),round,CoNaLa_train.csv,137
-"""converting a string of numbers 'example_string' separated by ',' into a list of integers""","""map(int, example_string.split(','))""",map,CoNaLa_train.csv,140
-how to create a dictionary using two lists,"""dict(zip(x, y))""",dict,CoNaLa_train.csv,141
-running python code contained in a string,print('hello'),print,CoNaLa_train.csv,144
-remove newline in string 's' on the left,s.lstrip(),string,CoNaLa_train.csv,145
-convert a list to tuples,zip(*list_of_tuples),"list, tuple",CoNaLa_train.csv,146
-remove duplicates from a list of sets 'l',[set(item) for item in set(frozenset(item) for item in L)],"list, set",CoNaLa_train.csv,150
-check if array 'a' contains all the numbers in array 'b' using numpy,numpy.array([(x in a) for x in b]),numpy,CoNaLa_train.csv,156
-test if value can be converted to an int in a list comprehension,[row for row in listOfLists if row[x].isdigit()],list,CoNaLa_train.csv,161
-json query that returns parent element and child data?,"""dict((k, v['_status']['md5']) for k, v in list(json_result.items()))""","dict, json",CoNaLa_train.csv,166
-get list item by attribute,items = [item for item in container if item.attribute == value],list,CoNaLa_train.csv,167
-extract the 2nd elements from a list of tuples,[x[1] for x in elements],"list, tuple",CoNaLa_train.csv,174
-"""convert a list with string '['1', '2', '3']' into list with integers""","""map(int, ['1', '2', '3'])""",list,CoNaLa_train.csv,175
-intersection of 2d and 1d numpy array,"""A[:, 3:].flat[np.in1d(A[:, 3:], B)] = 0""",numpy,CoNaLa_train.csv,176
-get keys with same value in dictionary 'd',print([key for key in d if d[key] == 1]),dict,CoNaLa_train.csv,179
-code to detect all words that start with a capital letter in a string,print([word for word in words if word[0].isupper()]),string,CoNaLa_train.csv,180
-find numpy array rows which contain any of list,"""np.in1d(a, b).reshape(a.shape).any(axis=1)""",numpy,CoNaLa_train.csv,182
-create list of dictionary,"""[{'data': 2}, {'data': 2}, {'data': 2}]""",dict,CoNaLa_train.csv,184
-post json to python cgi,print(json.dumps(result)),json,CoNaLa_train.csv,191
-regenerate vector of randoms using numpy,"""np.random.normal(0, 1, (100, 3))""",numpy,CoNaLa_train.csv,195
-how can i slice each element of a numpy array of strings?,":""a.view('U1').reshape(4, -1)[: 1:3]""",numpy,CoNaLa_train.csv,196
-join elements of each tuple in list 'a' into one string,[''.join(x) for x in a],"list, tuple",CoNaLa_train.csv,197
-splitting numpy array based on value,zeros = np.where(a == 0)[0],numpy,CoNaLa_train.csv,198
-remove a group of indices from a list of numbers,return [numbers[i] for i in range(len(numbers)) if i not in indices],list,CoNaLa_train.csv,202
-convert list of dicts into list of nametuples,"""items = [some(m['a'].split(), m['d'], m['n']) for m in dl]""","list, dict",CoNaLa_train.csv,207
-how can i create a list of unique random numbers?,"""random.sample(list(range(100)), 10)""",list,CoNaLa_train.csv,210
-how do i index a list with another list?,T = [L[i] for i in index],list,CoNaLa_train.csv,212
-get values from a dictionary 'my_dict' whose key contains the string 'date',"""[v for k, v in list(my_dict.items()) if 'date' in k]""",dict,CoNaLa_train.csv,213
-find the euclidean distance between two 3-d arrays 'a' and 'b' using numpy,np.sqrt(((A - B) ** 2).sum(-1)),numpy,CoNaLa_train.csv,216
-sorting a defaultdict 'd' by value,"""sorted(list(d.items()), key=lambda k_v: k_v[1])""",sort,CoNaLa_train.csv,220
-"""generate all permutations of list `[1, 2, 3]` and list `[4, 5, 6]`""","""print(list(itertools.product([1, 2, 3], [4, 5, 6])))""",list,CoNaLa_train.csv,227
-"""get items from a dictionary `bigdict` where the keys are present in `('l', 'm', 'n')`""","""{k: bigdict.get(k, None) for k in ('l', 'm', 'n')}""",dict,CoNaLa_train.csv,230
-selecting elements of a python dictionary greater than a certain value,"""{k: v for k, v in list(dict.items()) if v > something}""",dict,CoNaLa_train.csv,231
-remove strings from a list that contains numbers,my_list = [item for item in my_list if item.isalpha()],list,CoNaLa_train.csv,233
-for loop,"""list(range(0, 30, 5))""",for,CoNaLa_train.csv,234
-extract all keys from a list of dictionaries,[list(d.keys()) for d in LoD],list,CoNaLa_train.csv,235
-"""how to slice a 2d array? fails with: """"typeerror: list indices must be integers, not tuple""""""","""array([[1, 3], [4, 6], [7, 9]])""",numpy,CoNaLa_train.csv,236
-convert list of key-value tuples into dictionary?,"""dict([('A', 1), ('B', 2), ('C', 3)])""",dict,CoNaLa_train.csv,237
-how do i merge a 2d array into one string with list comprehension?,[item for innerlist in outerlist for item in innerlist],list,CoNaLa_train.csv,240
-filtering out strings that contain 'ab' from a list of strings 'lst',[k for k in lst if 'ab' in k],list,CoNaLa_train.csv,242
-dictionary keys match on list; get key/value pair,new_dict = {k: my_dict[k] for k in my_list if k in my_dict},dict,CoNaLa_train.csv,247
-find max in nested dictionary,"""max(d, key=lambda x: d[x]['count'])""",dict,CoNaLa_train.csv,249
-convert a list to dictionary,"""{k: v for k, v in (e.split(':') for e in lis)}""","list, dict",CoNaLa_train.csv,256
-find the index of the element with the maximum value from a list 'a',"""max(enumerate(a), key=lambda x: x[1])[0]""","list, max",CoNaLa_train.csv,264
-creating a list by iterating over a dictionary,"""['{}_{}'.format(k, v) for k, l in list(d.items()) for v in l]""","list, dict",CoNaLa_train.csv,270
-remove newline in string 's' on the right,s.rstrip(),string,CoNaLa_train.csv,271
-how can i vectorize the averaging of 2x2 sub-arrays of numpy array?,"""y.mean(axis=(1, 3))""",numpy,CoNaLa_train.csv,273
-get key for similiar values in a dict,"""trie = {'a': {'b': {'e': {}, 's': {}}, 'c': {'t': {}, 'k': {}}}}""",dict,CoNaLa_train.csv,275
-how to check whether a method exists in python?,"""hasattr(Dynamo, 'mymethod') and callable(getattr(Dynamo, 'mymethod')):",??,CoNaLa_train.csv,280
-convert a list to dictionary,dict([x.split(':' for x in a]),"list, dict",CoNaLa_train.csv,282
-delete an element 'key' from a dictionary 'd',del d[key],dict,CoNaLa_train.csv,284
-reading a triangle of numbers into a 2d array of ints in python,arr = [[int(i) for i in line.split()] for line in open('input.txt')],list,CoNaLa_train.csv,285
-create a list of integers with duplicate values in python,"""print([u for v in [[i, i] for i in range(5)] for u in v])""",list,CoNaLa_train.csv,289
-how do i sort a list of strings in python?,mylist.sort(key=str.lower),sort,CoNaLa_train.csv,291
-how to sort with lambda,"""a = sorted(a, key=lambda x: x.modified, reverse=True)""",sort,CoNaLa_train.csv,297
-get key-value pairs in dictionary 'my_dictionary' for all keys in list 'my_list' in the order they appear in 'my_list',"""dict(zip(my_list, map(my_dictionary.get, my_list)))""","list, dict",CoNaLa_train.csv,298
-sum a list of numbers,sum(Decimal(i) for i in a),sum,CoNaLa_train.csv,302
-adding a string to a list,b.append(c),list,CoNaLa_train.csv,304
-is it possible to tune parameters with grid search for custom kernels in scikit-learn?,"""model.fit(X_train, y_train)""",scikit-learn,CoNaLa_train.csv,307
-how to sort a list of dictionaries by several values?,"""sorted(A, key=itemgetter('name', 'age'))""",sort,CoNaLa_train.csv,312
-"""extract elements at indices (1, 2, 5) from a list 'a'""","""[a[i] for i in (1, 2, 5)]""",list,CoNaLa_train.csv,314
-for loop,"""list(range(1, 11))""",for,CoNaLa_train.csv,315
-count the number of true values associated with key 'success' in dictionary 'd',sum(1 if d['success'] else 0 for d in s),sum,CoNaLa_train.csv,317
-how to get a list of all integer points in an n-dimensional cube using python?,"""list(itertools.product(list(range(-x, y)), repeat=dim))""",list,CoNaLa_train.csv,321
-"""how do i modify a single character in a string?""",print(''.join(a)),string,CoNaLa_train.csv,322
-convert binary string '01010101111; to integer,"""int('01010101111'), 2)""",string,CoNaLa_train.csv,323
-differences between elements of a list,"""[(j - i) for i, j in zip(t[:-1], t[1:])]""",list,CoNaLa_train.csv,325
-rearrange tuple of tuples in python,tuple(zip(*t)),tuple,CoNaLa_train.csv,326
-how to unpack a dictionary of list (of dictionaries!) and return as grouped tuples?,"""[('A', 1, 2), ('B', 3, 4)]""","list, tuple",CoNaLa_train.csv,328
-remove a specific column in numpy,"""np.delete(a, [1, 3], axis=1)""",numpy,CoNaLa_train.csv,330
-get keys and items of dictionary 'd' as a list,list(d.items()),list,,337
-how to get every element in a list of list of lists?,[a for c in Cards for b in c for a in b],list,,338
-"""extracting a region from an image using slicing in python, opencv""","""cv2.cvtColor(img, cv2.COLOR_BGR2RGB)""",opencv,,339
-convert a list of strings to either int or float,[(float(i) if '.' in i else int(i)) for i in s],list,,341
-how do i use itertools?,"""list(itertools.product(list(range(2)), repeat=3))""",list,,343
-count number of occurences in a list,"""Counter({'1': 6, '2': 4, '7': 3, '10': 2})""",counter,,358
-how to remove duplicate lists in a list of list?,b.sort(key=lambda x: a.index(x)),list,,359
-lambda in python,"""f = lambda x, y: x + y""",lambda,,360
-how to sort?,sort(),sort,,362
-creating an empty list,list(),list,,368
-converting from a string to boolean,str2bool('1'),string bool,,369
-appending to dict of lists adds value to every key,d = {k: [] for k in keys},dict,,371
-convert list to dictionary,"""l = [['a', 'b'], ['c', 'd'], ['e']]""",dict,,372
-sorting a list of dictionary values by date in python,"""list.sort(key=lambda item: item['date'], reverse=True)""","list, sort",,375
-how to multiply all integers inside list,"""l = list(map(lambda x: 2 * x, l))""",list,,378
-reverse a string 'a_string' using method,"""def reversed_string(a_string):\n return a string[::(-1)]""",method,,379
-split a list 'l' into evenly sized chunks 'n',"""[l[i:i + n] for i in range(0, len(l), n)]""",list,,382
-get the first element of each tuple in a list 'rows',[x[0] for x in rows],list,,383
-what is the best way to sort list with custom sorting parameters,li1.sort(key=lambda x: not x.startswith('b.')),sort,,384
-how do you check if a string contains only numbers,str.isdigit(),string,,393
-slicing a multidimensional list,[x[0] for x in listD[2]],list,,397
-get a list of booleans 'z' that shows whether the corresponding items in list 'x' and 'y' are equal,"""z = [(i == j) for i, j in zip(x, y)]""",list,,398
-adding new key inside a new key and assigning value dictionary,dic['Test'].update({'class': {'section': 5}}),dict,,403
-creating list of random numbers,print('{.5f}'.format(randomList[index])),list,,406
-how to build a dict from plain list of keys and values,"""dict(zip(i, i))""",dict,,407
+intent,snippet
+convert a list to a dictionary in python,"""b = dict(zip(a[0::2], a[1::2]))"""
+efficient computation of the least-squares algorithm in numpy,"""np.linalg.solve(np.dot(a.T, a), np.dot(a.T, b))"""
+flatten a dict of lists into unique values?,sorted({x for v in content.values() for x in v})
+how do you create nested dict in python?,dict(d)
+get count of values associated with key in dict python,sum(1 if d['success'] else 0 for d in s)
+how to get every first element in 2 dimensional list 'a',[i[0] for i in a]
+joining two numpy matrices,"""np.hstack([X, Y])"""
+sorting numbers in string format with python,"""keys.sort(key=lambda x: map(int, x.split('.')))"""
+how to check if all items in the list are none?,not any(my_list)
+assign the parameter into attribute,"""setattr(self, k, v)"""
+getting the second to last element of list 'some_list',some_list[(-2)]
+create a list containing elements from list 'list' that are predicate to function 'f',[f(x) for x in list]
+print a digit 'your_number' with exactly 2 digits after decimal,print('{0:.2f}'.format(your_number))
+sort list 'mylist' alphabetically,mylist.sort(key=lambda x: x.lower())
+plot using matplotlib,plt.show()
+get a list of the keys in each dictionary in a dictionary of dictionaries 'foo',[k for d in list(foo.values()) for k in d]
+sort dictionary 'mydict' in descending order based on the sum of each value in it,"""sorted(iter(mydict.items()), key=lambda tup: sum(tup[1]), reverse=True)[:3]"""
+round number 1.005 up to 2 decimal places,"""round(1.005, 2)"""
+extract dictionary keys within a list,names = [item['name'] for item in data]
+functional statement to return the sum of certain lists in a list of lists,sum(len(y) for y in x if len(y) > 1)
+how to initialize a two-dimensional array,[[Foo() for x in range(10)] forr y in range(10)]
+finding the index of elements based on a condition using python list comprehension,a[:] = [x for x in a if x <= 2]
+join two lists into a formatted string,"""c = ', '.join('%s=%s' % t for t in zip(a, b))"""
+sort an array of dictionaries with custom comparator?,"""key = lambda d: (not 'rank' in d, d['rank'])"""
+get the sum of the products of each pair of corresponding elements in lists 'a' and 'b',"""sum(x * y for x, y in zip(a, b))"""
+"""create a dictionary of pairs, from a list of tuples?""",dict(x[1:] for x in reversed(myListOfTuples))
+how to sort list of lists according to length of sublists,"""sorted(a, key=len)"""
+convert int into binary,bin(10)
+getting a list of value from list of dict,[d['value'] for d in l]
+sort list of tuples by reordering tuples,"""sorted(A, key=operator.itemgetter(2, 0, 1))"""
+printing numbers rounding up to third decimal place,print('%3.f' % 3.1415)
+"""converting a string of numbers 'example_string' separated by ',' into a list of integers""","""map(int, example_string.split(','))"""
+how to create a dictionary using two lists,"""dict(zip(x, y))"""
+running python code contained in a string,print('hello')
+remove newline in string 's' on the left,s.lstrip()
+convert a list to tuples,zip(*list_of_tuples)
+remove duplicates from a list of sets 'l',[set(item) for item in set(frozenset(item) for item in L)]
+check if array 'a' contains all the numbers in array 'b' using numpy,numpy.array([(x in a) for x in b])
+test if value can be converted to an int in a list comprehension,[row for row in listOfLists if row[x].isdigit()]
+json query that returns parent element and child data?,"""dict((k, v['_status']['md5']) for k, v in list(json_result.items()))"""
+get list item by attribute,items = [item for item in container if item.attribute == value]
+extract the 2nd elements from a list of tuples,[x[1] for x in elements]
+"""convert a list with string '['1', '2', '3']' into list with integers""","""map(int, ['1', '2', '3'])"""
+intersection of 2d and 1d numpy array,"""A[:, 3:].flat[np.in1d(A[:, 3:], B)] = 0"""
+get keys with same value in dictionary 'd',print([key for key in d if d[key] == 1])
+code to detect all words that start with a capital letter in a string,print([word for word in words if word[0].isupper()])
+find numpy array rows which contain any of list,"""np.in1d(a, b).reshape(a.shape).any(axis=1)"""
+create list of dictionary,"""[{'data': 2}, {'data': 2}, {'data': 2}]"""
+post json to python cgi,print(json.dumps(result))
+regenerate vector of randoms using numpy,"""np.random.normal(0, 1, (100, 3))"""
+how can i slice each element of a numpy array of strings?,":""a.view('U1').reshape(4, -1)[: 1:3]"""
+join elements of each tuple in list 'a' into one string,[''.join(x) for x in a]
+splitting numpy array based on value,zeros = np.where(a == 0)[0]
+remove a group of indices from a list of numbers,return [numbers[i] for i in range(len(numbers)) if i not in indices]
+convert list of dicts into list of nametuples,"""items = [some(m['a'].split(), m['d'], m['n']) for m in dl]"""
+how can i create a list of unique random numbers?,"""random.sample(list(range(100)), 10)"""
+how do i index a list with another list?,T = [L[i] for i in index]
+get values from a dictionary 'my_dict' whose key contains the string 'date',"""[v for k, v in list(my_dict.items()) if 'date' in k]"""
+find the euclidean distance between two 3-d arrays 'a' and 'b' using numpy,np.sqrt(((A - B) ** 2).sum(-1))
+sorting a defaultdict 'd' by value,"""sorted(list(d.items()), key=lambda k_v: k_v[1])"""
+"""generate all permutations of list `[1, 2, 3]` and list `[4, 5, 6]`""","""print(list(itertools.product([1, 2, 3], [4, 5, 6])))"""
+"""get items from a dictionary `bigdict` where the keys are present in `('l', 'm', 'n')`""","""{k: bigdict.get(k, None) for k in ('l', 'm', 'n')}"""
+selecting elements of a python dictionary greater than a certain value,"""{k: v for k, v in list(dict.items()) if v > something}"""
+remove strings from a list that contains numbers,my_list = [item for item in my_list if item.isalpha()]
+for loop,"""list(range(0, 30, 5))"""
+extract all keys from a list of dictionaries,[list(d.keys()) for d in LoD]
+"""how to slice a 2d array? fails with: """"typeerror: list indices must be integers, not tuple""""""","""array([[1, 3], [4, 6], [7, 9]])"""
+convert list of key-value tuples into dictionary?,"""dict([('A', 1), ('B', 2), ('C', 3)])"""
+how do i merge a 2d array into one string with list comprehension?,[item for innerlist in outerlist for item in innerlist]
+filtering out strings that contain 'ab' from a list of strings 'lst',[k for k in lst if 'ab' in k]
+dictionary keys match on list; get key/value pair,new_dict = {k: my_dict[k] for k in my_list if k in my_dict}
+find max in nested dictionary,"""max(d, key=lambda x: d[x]['count'])"""
+convert a list to dictionary,"""{k: v for k, v in (e.split(':') for e in lis)}"""
+find the index of the element with the maximum value from a list 'a',"""max(enumerate(a), key=lambda x: x[1])[0]"""
+creating a list by iterating over a dictionary,"""['{}_{}'.format(k, v) for k, l in list(d.items()) for v in l]"""
+remove newline in string 's' on the right,s.rstrip()
+how can i vectorize the averaging of 2x2 sub-arrays of numpy array?,"""y.mean(axis=(1, 3))"""
+get key for similiar values in a dict,"""trie = {'a': {'b': {'e': {}, 's': {}}, 'c': {'t': {}, 'k': {}}}}"""
+how to check whether a method exists in python?,"""hasattr(Dynamo, 'mymethod') and callable(getattr(Dynamo, 'mymethod')):"
+convert a list to dictionary,dict([x.split(':' for x in a])
+delete an element 'key' from a dictionary 'd',del d[key]
+reading a triangle of numbers into a 2d array of ints in python,arr = [[int(i) for i in line.split()] for line in open('input.txt')]
+create a list of integers with duplicate values in python,"""print([u for v in [[i, i] for i in range(5)] for u in v])"""
+how do i sort a list of strings,mylist.sort(key=str.lower)
+how to sort with lambda,"""a = sorted(a, key=lambda x: x.modified, reverse=True)"""
+get key-value pairs in dictionary 'my_dictionary' for all keys in list 'my_list' in the order they appear in 'my_list',"""dict(zip(my_list, map(my_dictionary.get, my_list)))"""
+sum a list of numbers,sum(Decimal(i) for i in a)
+adding a string to a list,b.append(c)
+is it possible to tune parameters with grid search for custom kernels in scikit-learn?,"""model.fit(X_train, y_train)"""
+how to sort a list of dictionaries by several values?,"""sorted(A, key=itemgetter('name', 'age'))"""
+"""extract elements at indices (1, 2, 5) from a list 'a'""","""[a[i] for i in (1, 2, 5)]"""
+for loop,"""list(range(1, 11))"""
+count the number of true values associated with key 'success' in dictionary 'd',sum(1 if d['success'] else 0 for d in s)
+how to get a list of all integer points in an n-dimensional cube using python?,"""list(itertools.product(list(range(-x, y)), repeat=dim))"""
+"""how do i modify a single character in a string?""",print(''.join(a))
+convert binary string '01010101111; to integer,"""int('01010101111'), 2)"""
+differences between elements of a list,"""[(j - i) for i, j in zip(t[:-1], t[1:])]"""
+rearrange tuple of tuples in python,tuple(zip(*t))
+how to unpack a dictionary of list (of dictionaries!) and return as grouped tuples?,"""[('A', 1, 2), ('B', 3, 4)]"""
+remove a specific column in numpy,"""np.delete(a, [1, 3], axis=1)"""
+get keys and items of dictionary 'd' as a list,list(d.items())
+how to get every element in a list of list of lists?,[a for c in Cards for b in c for a in b]
+"""extracting a region from an image using slicing in python, opencv""","""cv2.cvtColor(img, cv2.COLOR_BGR2RGB)"""
+convert a list of strings to either int or float,[(float(i) if '.' in i else int(i)) for i in s]
+how do i use itertools?,"""list(itertools.product(list(range(2)), repeat=3))"""
+count number of occurences in a list,"""Counter({'1': 6, '2': 4, '7': 3, '10': 2})"""
+how to remove duplicate lists in a list of list?,b.sort(key=lambda x: a.index(x))
+lambda in python,"""f = lambda x, y: x + y"""
+how to sort?,sort()
+creating an empty list,list()
+converting from a string to boolean,str2bool('1')
+appending to dict of lists adds value to every key,d = {k: [] for k in keys}
+convert list to dictionary,"""l = [['a', 'b'], ['c', 'd'], ['e']]"""
+sorting a list of dictionary values by date in python,"""list.sort(key=lambda item: item['date'], reverse=True)"""
+how to multiply all integers inside list,"""l = list(map(lambda x: 2 * x, l))"""
+reverse a string 'a_string' using method,"""def reversed_string(a_string):\n return a string[::(-1)]"""
+split a list 'l' into evenly sized chunks 'n',"""[l[i:i + n] for i in range(0, len(l), n)]"""
+get the first element of each tuple in a list 'rows',[x[0] for x in rows]
+what is the best way to sort list with custom sorting parameters,li1.sort(key=lambda x: not x.startswith('b.'))
+how do you check if a string contains only numbers,str.isdigit()
+slicing a multidimensional list,[x[0] for x in listD[2]]
+get a list of booleans 'z' that shows whether the corresponding items in list 'x' and 'y' are equal,"""z = [(i == j) for i, j in zip(x, y)]"""
+adding new key inside a new key and assigning value dictionary,dic['Test'].update({'class': {'section': 5}})
+creating list of random numbers,print('{.5f}'.format(randomList[index]))
+how to build a dict from plain list of keys and values,"""dict(zip(i, i))"""
+organizing list of tuples,"""[(1, 4), (4, 8), (8, 10)]"""
+convert a list to a dictionary in python,"""b = {a[i]: a[i + 1] for i in range(0, len(a), 2)}"""
+get a list of last trailing words from another list of strings 'original_list',new_list = [x.split()[-1] for x in Original_List]
+extracting first n columns of a numpy matrix,"""a[:, :2]"""
+"""saving dictionary whose keys are tuples with json""","""json.dumps({str(k): v for k, v in data.items()})"""
+row-wise indexing in numpy,"""i = np.array([[0], [1]])"""
+named tuples in a list,a = [mynamedtuple(*el) for el in a]
+how to modify a variable inside a lambda function?,"""myFunc(lambda a, b: iadd(a, b))"""
+create a list that contain each line of a file,"""my_list = [line.split(',') for line in open('filename.txt')]"""
+get a list of indices of non zero elements in a list 'a',"""[i for i, e in enumerate(a) if e != 0]"""
+how to convert an ordereddict into a regular dict,"""dict(OrderedDict([('method', 'constant'), ('data', '1.225')]))"""
+convert dictionary of pairs 'd' to a list of tuples,"""[(v, k) for k, v in d.items()]"""
+remove items from a list while iterating,somelist = [x for x in somelist if not determine(x)]
+return multiple lists from comprehension,"""x, y = zip(*[i, -1 * j) for i, j in enumerate(range(10))])"""
+how to remove values from 2 lists based on what's in 1 list,ind = [i for i in range(len(yVar)) if yVar[i] < 100]
+how to count the number of words in a sentence?,len(s.split())
+sorting - a list of objects,somelist.sort(key=lambda x: x.resultType)
+"""distance between numpy arrays, columnwise""","""arr2.T[numpy.array(zip(list(range(0, 3)), list(range(1, 4))))]"""
+fors in python list comprehension,[y for y in x for x in data]
+finding index of an item closest to the value in a list that's not entirely sorted,"""min(list(range(len(a))), key=lambda i: abs(a[i] - 11.5))"""
+how to sort a list of lists by the fourth element in each list?,unsorted_list.sort(key=lambda x: x[3])
+delete items from list 'my_list' if the item exist in list 'to_del',my_list = [[x for x in sublist if x not in to_del] for sublist in my_list]
+get a list 'myList' from 1 to 10,myList = [i for i in range(10)]
+creating a dictionary with list of lists,inlinkDict[docid] = adoc[1:] if adoc[1:] else 0
+how to convert a python set to a numpy array?,numpy.array(list(c))
+how do i move the last item in a list to the front?,a = a[-1:] + a[:-1]
+declare an array with element 'i',intarray = array('i')
+custom sort an alphanumeric list 'l',"""sorted(l, key=lambda x: x.replace('0', 'Z'))"""
+"""tetch all elements in a dictionary 'parent_dict', falling between two keys 2 and 4""","""dict((k, v) for k, v in parent_dict.items() if 2 < k < 4)"""
+alias for dictionary operation,"""{frozenset([1, 2, 3]): 4, frozenset([1]): 5}"""
+dictionary values sorting,"""OrderedDict(sorted(list(d.items()), key=d.get))"""
+how can i convert a python dictionary to a list of tuples?,"""[(k, v) for k, v in a.items()]"""
+check if any item from list 'b' is in list 'a',print(any(x in a for x in b))
+max length of j-th item across sublists of a list,[max(len(b) for b in a) for a in zip(*x)]
+how to remove a key from a python dictionary?,"""my_dict.pop('key', None)"""
+reading data into numpy array from text file,"""data = numpy.getfromtxt(yourFileName, skiprows=n)"""
+pull a value with key 'name' from a json object 'item',print(item['name'])
+sort a list of dictionary provided an order,"""sorted(list_of_dict, key=lambda x: order.index(list(x.values())[0]))"""
+how to remove all duplicate items from a list,x = list(set(x))
+convert string to dict using list comprehension,dict([x.split('=') for x in s.split()])
+taking the floor of a float,int(3.1415)
+zip lists,"""zip(a, b, c)"""
+sorting the content of a dictionary by the value and by the key,"""sorted(list(d.items()), key=lambda x: x[::-1])"""
+dict comprehension with two ranges,"""{k: v for k, v in zip(range(1, 5), count(7))}"""
+merge two or more lists with given order of merging,"""list(ordered_merge([[3, 4], [1, 5], [2, 6]], [1, 2, 0, 0, 1, 2]))"""
+remove dictionary from list 'a' if the value associated with its key 'link' is in list 'b',a = [x for x in a if x['link'] not in b]
+pupil detection in opencv & python,contour = cv2.convexHull(contour)
+how to make a list of n numbers and randomly select any number?,mylist = list(range(10))
+comparing values in two lists,"""z = [(i == j) for i, j in zip(x, y)]"""
+multiplying a tuple by a scalar,tuple([(10 * x) for x in img.size])
+json load/dump,"""the_dump = json.dumps(['foo', {'baz', None, 1.0, 2]}])"""
+sorting a text file alphabetically,lines.sort()
+select value from list of tuples where condition,results = [t[1] for t in mylist if t[0] == 10]
+"""list comprehension - converting strings in one list, to integers in another""","""[sum(map(int, s)) for s in example.split()]"""
+how do i write a float list of lists to file,file.write(str(m))
+find out the number of non-matched elements at the same index of list 'a' and list 'b',"""sum(1 for i, j in zip(a, b) if i != j)"""
+function with arguments in two lists,"""[peaks([x, y]) for x, y in zip(xscat, yscat)]"""
+sort dict by value,"""sorted(data, key=data.get)"""
+from a list of lists to a dictionary,{x[1]: x for x in lol}
+list comprehension for loops,"""[(x + y) for x, y in zip('ab', '12345')]"""
+how to delete an item in a list if it exists?,cleaned_list = [x for x in some_list if x is not thing]
+deleting rows in numpy array,"x = numpy.delete(x, 0, axis=0)"
+python find list lengths in a sublist,[len(x) for x in a[0]]
+ordering a list of dictionaries `mylist` by elements 'weight' and 'factor',"mylist.sort(key=lambda d: (d['weight'], d['factor']))"
+sort a list in python based on another sorted list,"sorted(unsorted_list, key=lambda x: order.get(x, -1))"
+how do i access a object's method when the method's name is in a variable?,"getattr(test, method)()"
+fast way to put ones beetween ones in each row of a numpy 2d array,"np.maximum.accumulate(Q[:, ::-1], axis=1)[:, ::-1]"
+parse a tuple from a string?,"new_tuple = tuple('(1,2,3,4,5)'[1:-1].split(','))"
+what is the simplest way to swap char in a string?,""""""""""""".join([s[x:x + 2][::-1] for x in range(0, len(s), 2)])"
+iterate over a dictionary by comprehension and get a dictionary,"dict((k, mimes[k]) for k in mimes if mimes[k] == 'image/tiff')"
+split a string into n equal parts?,"parts = [your_string[i:i + n] for i in range(0, len(your_string), n)]"
+case insensitive dictionary search,"a_lower = {k.lower(): v for k, v in list(a.items())}"
+python - iterating over a subset of a list of tuples,[x for x in l if x[1] == 1]
+python: how to add three text files into one variable and then split it into a list,"msglist = [hextotal[i:i + 4096] for i in range(0, len(hextotal), 4096)]"
+removing elements from an array that are in another array,A = [i for i in A if i not in B]
+find object by its member inside a list in python,[x for x in myList if x.age == 30]
+get all the second values from a list of lists `a`,[row[1] for row in A]
+comparing two lists in python,"['a', 'c']"
+remove multiple values from a list `my_list` at the same time with index starting at `2` and ending just before `6`.,del my_list[2:6]
+list manipulation in python with pop(),"newlist = [x for x in oldlist if x not in ['a', 'c']]"
+"combine two dictionaries `d ` and `d1`, concatenate string values with identical `keys`","dict((k, d.get(k, '') + d1.get(k, '')) for k in keys)"
+spaces inside a list,print(' '.join(['{: 3d}'.format(x) for x in rij3]))
+numpy 2d array indexing,"b[a[1, 1]]"
+how to append new elements in a list of list?,a = [[] for i in range(3)]
+get the dictionary values for every key in a list,values = [d[k] for k in a]
+check if a given key `key` exists in dictionary `d`,"if (key in d):
+    pass"
+access item in a list of lists,list1[0][2]
+numpy array assignment using slicing,"values = np.array([i for i in range(100)], dtype=np.float64)"
+how do i remove identical items from a list and sort it in python?,sorted(set(my_list))
+insert string `string1` after each character of `string2`,"string2.replace('', string1)[len(string1):-len(string1)]"
+find indices of large array if it contains values in smaller array,"np.where(np.in1d(a, b))"
+how do i slice a numpy array to get both the first and last two rows,"x[[0, 1, -2, -1]]"
+sort a list of tuples `my_list` by second parameter in the tuple,my_list.sort(key=lambda x: x[1])
+sorting list in python,l.sort(key=alphanum_key)
+reverse sort items in dictionary `mydict` by value,"sorted(iter(mydict.items()), key=itemgetter(1), reverse=True)"
+how to convert triangle matrix to square in numpy?,"np.where(np.eye(A.shape[0], dtype=bool), A, A.T + A)"
+get a list `c` by subtracting values in one list `b` from corresponding values in another list `a`,"C = [(a - b) for a, b in zip(A, B)]"
+lowercase keys and values in dictionary `{'my key': 'my value'}`,"{k.lower(): v.lower() for k, v in list({'My Key': 'My Value'}.items())}"
+"how to ""scale"" a numpy array?","np.kron(a, np.ones((n, n)))"
+how can i declare a dynamic array,"lst = [1, 2, 3]"
+sort a list in python based on another sorted list,"sorted(unsorted_list, key=presorted_list.index)"
+python list of dictionaries[int : tuple] sum,sum(v[1] for d in myList for v in d.values())
+find the mean of elements in list `l`,sum(l) / float(len(l))
+convert strings to int or float in python 3?,print('2 + ' + str(integer) + ' = ' + str(rslt))
+interleaving lists in python,"[x for t in zip(list_a, list_b) for x in t]"
+add single element to array in numpy,"numpy.append(a, a[0])"
+how to generate all permutations of a list in python,"print(list(itertools.permutations([1, 2, 3, 4], 2)))"
+best way to extract subset of key-value pairs from python dictionary object,"{k: bigdict[k] for k in ('l', 'm', 'n')}"
+how to split a string into integers in python?,l = [int(x) for x in s.split()]
+get all combination of n binary values,"lst = map(list, itertools.product([0, 1], repeat=n))"
+how to check if all elements of a list matches a condition?,[x for x in items if x[2] == 0]
+how to check if all values in the columns of a numpy matrix are the same?,"a == a[(0), :]"
+is there a way to know if a list of elements is on a larger list without using 'in' keyword?,"print(in_list([1, 2, 3], [1, 2, 4]))"
+"how to change [1,2,3,4] to '1234' using python",""""""""""""".join([1, 2, 3, 4])"
+python max function using 'key' and lambda expression,"max(lis, key=lambda x: int(x))"
+python finding index of maximum in list,"max(enumerate(a), key=lambda x: x[1])[0]"
+convert `a` to string,str(a)
+how to generate all permutations of a list in python,"print(list(itertools.product([1, 2], repeat=3)))"
+"how to join a list of tuples into one list?",list(itertools.chain(*a))
+flattening a list of numpy arrays?,out = np.concatenate(input_list).ravel().tolist()
+reverse list `yourdata`,"sorted(yourdata, reverse=True)"
+python: lambda function in list comprehensions,[(lambda x: x * i) for i in range(4)]
+how to generate random numbers that are different?,"random.sample(range(1, 50), 6)"
+how to get a max string length in nested lists,"len(max(i, key=len))"
+printing multiples of numbers,"print(list(range(0, (m + 1) * n, n))[1:])"
+"in python, how to convert list of float numbers to string with certain format?",str_list = [['{0:.8e}'.format(flt) for flt in sublist] for sublist in lst]
+writing a list to a csv file,"writer = csv.writer(output, delimiter='\n')"
+how to write a only integers numpy 2d array on a txt file,"np.savetxt(fname='newPicksData.txt', X=new_picks.astype(int), fmt='%i')"
+possible to capture the returned value from a python list comprehension for use a condition?,[expensive_function(x) for x in range(5) if expensive_function(x) % 2 == 0]
+how to sort a list according to another list?,a.sort(key=lambda x_y: b.index(x_y[0]))
+convert dictionary into list with length based on values,[i for i in d for j in range(d[i])]
+numpy: cannot convert datetime64[ns] to datetime64[d] (to use with numba),df['month_15'].astype('datetime64[D]').tolist()
+sum / average an attribute of a list of objects in python,sum(c.A for c in c_list)
+convert list `l` to dictionary having each two adjacent elements as key/value pair,"dict(zip(l[::2], l[1::2]))"
+check if string `string` starts with a number,string[0].isdigit()
+get the value of the minimum element in the second column of array `a`,"a[np.argmin(a[:, (1)])]"
+get a minimum value from a list of tuples `list` with values of type `string` and `float` with nan,"min(list, key=lambda x: float('inf') if math.isnan(x[1]) else x[1])"
+how to add an integer to each element in a list?,new_list = [(x + 1) for x in my_list]
+python - numpy - tuples as elements of an array,"a = zeros((ph, pw), dtype=(float, 3))"
+python - sort a list of nested lists,"sorted(l, key=asum)"
+pythonic way to use range with excluded last number?,"list(range(0, 100, 5))"
+print float `a` with two decimal points,"print(('{0:.2f}'.format(round(a, 2))))"
+what is the easiest way to convert list with str into list with int?,"list(map(int, ['1', '2', '3']))"
+round number 4.0005 up to 3 decimal places,"round(4.0005, 3)"
+is there any performance reason to use ndim 1 or 2 vectors in numpy?,"b = np.array([[1, 2], [3, 4]])"
+how can i produce a nice output of a numpy matrix?,numpy.set_printoptions(formatter={'float': lambda x: 'float: ' + str(x)})
+how to find all positions of the maximum value in a list?,"[i for i, j in enumerate(a) if j == m]"
+sort at various levels in python,"top_n.sort(key=lambda t: (-t[1], t[0]))"
+how to compute the accumulative sum of a list of tuples,"list(itertools.accumulate(lst, lambda a, b: tuple(map(sum, zip(a, b)))))"
+choosing a maximum randomly in the case of a tie?,"max(l, key=lambda x: (x[1], random.random()))"
+python - create list with numbers between 2 values?,"list(range(11, 17))"
+"get an element at index `[1,1]`in a numpy array `arr`","print(arr[1, 1])"
+remove lines from textfile with python,"open('newfile.txt', 'w').writelines(lines[3:-1])"
+"python - combine two dictionaries, concatenate string values?","dict((k, d.get(k, '') + d1.get(k, '')) for k in keys)"
+how do i sort a key:list dictionary by values in list?,"mydict = {'name': ['peter', 'janice', 'andy'], 'age': [10, 30, 15]}"
+how to convert numbers in a string without using lists?,"return sum(map(float, s.split()))"
+"python list of dicts, get max value index","max(enumerate(ld), key=lambda item: item[1]['size'])"
+numpy fancy indexing in multiple dimensions,"print(A.reshape(-1, k)[np.arange(n * m), B.ravel()])"
+how to transform string into dict,"out = [a, b, c, d, e, f]"
+sum each value in a list of tuples,[sum(x) for x in zip(*l)]
+numpy matrix to array,A = np.squeeze(np.asarray(M))
+python: removing a single element from a nested list,"list = [[6, 5, 4], [4, 5, 6]]"
+mapping a nested list with list comprehension in python?,nested_list = [[s.upper() for s in xs] for xs in nested_list]
+sort list `li` in descending order based on the second element of each list inside list`li`,"sorted(li, key=operator.itemgetter(1), reverse=True)"
+image library: how to combine 4 images into a 2 x 2 grid?,"blank_image = Image.new('RGB', (800, 600))"
+can a function return an array and a variable?,"my_array, my_variable = my_function()"
+case insensitive dictionary search with python,"a_lower = dict((k.lower(), v) for k, v in list(a.items()))"
+how to reverse a string using recursion?,return reverse(str1[1:] + str1[0])
+sorting associative arrays in python,"sorted(people, key=lambda dct: dct['name'])"
+"get a dict of variable names `['some', 'list', 'of', 'vars']` as a string and their values","dict((name, eval(name)) for name in ['some', 'list', 'of', 'vars'])"
+"how to check if all values of a dictionary are 0, in python?",all(value == 0 for value in list(your_dict.values()))
+sum all values of a counter in python,sum(my_counter.values())
+join two lists by interleaving,"map(list, zip(charlist, numlist))"
+python max function using 'key' and lambda expression,"max(lis, key=lambda x: x[1])"
