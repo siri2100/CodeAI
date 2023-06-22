@@ -299,3 +299,80 @@ sorting associative arrays in python,"sorted(people, key=lambda dct: dct['name']
 sum all values of a counter in python,sum(my_counter.values())
 join two lists by interleaving,"map(list, zip(charlist, numlist))"
 python max function using 'key' and lambda expression,"max(lis, key=lambda x: x[1])"
+"append dict `{'f': var6, 'g': var7, 'h': var8}` to value of key `e` in dict `jsobj['a']['b']`","jsobj['a']['b']['e'].append({'f': var6, 'g': var7, 'h': var8})"
+convert currency string `dollars` to decimal `cents_int`,cents_int = int(round(float(dollars.strip('$')) * 100))
+map two lists into a dictionary in python,"zip(keys, values)"
+sort a list 'lst' in descending order.,"sorted(lst, reverse=True)"
+list indexes of duplicate values in a list with python,"print(list_duplicates([1, 2, 3, 2, 1, 5, 6, 5, 5, 5]))"
+how to initialise a 2d array in python?,"numpy.zeros((3, 3))"
+generate a 12-digit random number,"'%0.12d' % random.randint(0, 999999999999)"
+merge two integers in python,z = int(str(x) + str(y))
+how to make python format floats with certain amount of significant digits?,"print('%.6g' % (i,))"
+create dictionary from list of variables,"dict((k, globals()[k]) for k in ('foo', 'bar'))"
+prepend string 'hello' to all items in list 'a',['hello{0}'.format(i) for i in a]
+max value within a list of lists of tuple,"map(lambda x: max(x, key=lambda y: y[1]), lists)"
+delete the last column of numpy array `a` and assign resulting array to `b`,"b = np.delete(a, -1, 1)"
+get the union of values in list of lists `result_list`,return list(set(itertools.chain(*result_list)))
+how to make a shallow copy of a list in python,newprefix = list(prefix)
+how to efficiently compare two unordered lists (not sets) in python?,len(a) == len(b) and all(a.count(i) == b.count(i) for i in a)
+how to read from a zip file within zip file in python?,return zipfile.ZipFile(path)
+delete the element 6 from list `a`,a.remove(6)
+sorting a list of lists of dictionaries in python,"key = lambda x: sum(map(itemgetter('play'), x))"
+how to reverse the elements in a sublist?,[sublist[::-1] for sublist in to_reverse[::-1]]
+list comprehension to extract a list of tuples from dictionary,"[(movie_dict['title'], movie_dict['year']) for movie_dict in movie_dicts]"
+check if all string elements in list `words` are upper-cased,print(all(word[0].isupper() for word in words))
+list of ints into a list of tuples python,"print(zip(my_list[0::2], my_list[1::2]))"
+numpy int array: find indices of multiple target ints,"np.where(np.in1d(values, searchvals))"
+list duplicated elements in two lists `lista` and `listb`,list(set(listA) & set(listB))
+remove identical items from list `my_list` and sort it alphabetically,sorted(set(my_list))
+how to convert from boolean array to int array in python,new_data = np.vectorize(boolstr_to_floatstr)(data).astype(float)
+how to find duplicate elements in array using for loop in python?,[i for i in y if y[i] == 1]
+anaphoric list comprehension in python,[s for s in (square(x) for x in range(12)) if s > 50]
+numpy: unexpected result when dividing a vertical array by one of its own elements,"x = np.random.rand(5, 1)"
+converting integer to list in python,"map(int, str(num))"
+python sort multidimensional array based on 2nd element of subarray,"sorted(lst, key=operator.itemgetter(1), reverse=True)"
+get keys from a dictionary 'd' where the value is '1'.,"print([key for key, value in list(d.items()) if value == 1])"
+finding index of the same elements in a list,[i for i in range(len(word)) if word[i] == letter]
+getting a dictionary value where part of the key is in a string,"{i: functools.reduce(dict.__getitem__, keys, d[i]) for i in d}"
+return a random word from a word list in python,return random.choice(words)
+a list as a key for pyspark's reducebykey,"rdd.map(lambda k_v: (tuple(k_v[0]), k_v[1])).groupByKey()"
+get the directory path of absolute file path in python,os.path.dirname(fullpath)
+sort a multidimensional list by a variable number of keys,"a.sort(key=operator.itemgetter(2, 3))"
+how do i fill two (or more) numpy arrays from a single iterable of tuples?,"arr.sort(order=['f0', 'f1'])"
+convert generator object to a dictionary,{i: (i * 2) for i in range(10)}
+python - fastest way to check if a string contains specific characters in any of the items in a list,[(e in lestring) for e in lelist if e in lestring]
+"get list of string elements in string `data` delimited by commas, putting `0` in place of empty strings","[(int(x) if x else 0) for x in data.split(',')]"
+python: one-liner to perform an operation upon elements in a 2d array (list of lists)?,"[list(map(int, x)) for x in values]"
+how to count the total number of lines in a text file using python,count = sum(1 for line in myfile if line.rstrip('\n'))
+two combination lists from one list,"print([[l[:i], l[i:]] for i in range(1, len(l))])"
+empty a list `lst`,lst[:] = []
+how can i get an array of alternating values in python?,"np.resize([1, -1], 10)"
+how to create a numpy array of all true or all false?,"array([[True, True], [True, True]], dtype=bool)"
+sort list of date strings,"sorted(d, key=lambda x: datetime.datetime.strptime(x, '%m-%Y'))"
+create tuples containing elements that are at the same index of list `lst` and list `lst2`,"[(i, j) for i, j in zip(lst, lst2)]"
+how do you programmatically set an attribute in python?,"setattr(x, attr, 'magic')"
+can i use a class attribute as a default value for an instance method?,my_instance = MyClass(name='new name')
+removing items from a nested list python,[[j for j in families[i] if i != j] for i in range(len(families))]
+python sorting list of dictionaries by multiple keys,"mylist = sorted(mylist, key=lambda k: (k['name'].lower(), -k['age']))"
+sorting a list of tuples with multiple conditions,"sorted_by_length = sorted(list_, key=lambda x: (x[0], len(x[1]), float(x[1])))"
+split a string into 2 in python,"firstpart, secondpart = string[:len(string) / 2], string[len(string) / 2:]"
+cross product of a vector in numpy,"np.cross(a, b, axis=0)"
+order a list of lists `l1` by the first value,l1.sort(key=lambda x: int(x[0]))
+how to get the indices list of all nan value in numpy array?,"array([[1, 2], [2, 0]])"
+merge two lists `a` and `b` into a single list,"[j for i in zip(a, b) for j in i]"
+"sort list of strings `the_list` by integer suffix before ""_""","sorted(the_list, key=lambda x: int(x.split('_')[1]))"
+how do i sort a python list of time values?,"sorted(['14:10:01', '03:12:08'])"
+sorting python list based on the length of the string,"xs.sort(lambda x, y: cmp(len(x), len(y)))"
+how to get the concrete class name as a string?,instance.__class__.__name__
+pythonic way to filter list for elements with unique length,list({len(s): s for s in jones}.values())
+convert numbers to grades in python list,"li = map(lambda x: '{0} - {1}'.format(x, grade(x)), s)"
+python: create list of tuples from lists,"z = zip(x, y)"
+building up an array in numpy/scipy by iteration in python?,"array([0, 1, 4, 9, 16])"
+"check if  dictionary `d` contains all keys in list `['somekey', 'someotherkey', 'somekeyggg']`","all(word in d for word in ['somekey', 'someotherkey', 'somekeyggg'])"
+convert list of tuples to multiple lists in python,"map(list, zip(*[(1, 2), (3, 4), (5, 6)]))"
+"list all "".txt"" files of a directory ""/home/adam/""",print(glob.glob('/home/adam/*.txt'))
+5 maximum values in a python dictionary,"max(A, key=A.get)"
+"in python, how to join a list of tuples into one list?",b = [i for sub in a for i in sub]
+index the first and the last n elements of a list,l[:3] + l[-3:]
+equivalent of j in numpy,np.array([1j])
+how to check if string has the same characters in python,len(set('aaaa')) == 1
