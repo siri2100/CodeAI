@@ -376,3 +376,429 @@ convert list of tuples to multiple lists in python,"map(list, zip(*[(1, 2), (3, 
 index the first and the last n elements of a list,l[:3] + l[-3:]
 equivalent of j in numpy,np.array([1j])
 how to check if string has the same characters in python,len(set('aaaa')) == 1
+list comprehension that produces integers between 11 and 19,[i for i in range(100) if i > 10 if i < 20]
+how to add a new row to an empty numpy array,"arr = np.append(arr, np.array([[4, 5, 6]]), axis=0)"
+adding values from tuples of same length,"coord = tuple(sum(x) for x in zip(coord, change))"
+how to check if a column exists in pandas,df['sum'] = df['A'] + df['C']
+python print array with new line,print('\n'.join(op))
+how to avoid python/pandas creating an index in a saved csv?,"pd.to_csv('your.csv', index=False)"
+how to remove multiple columns that end with same text in pandas?,"df.select(lambda x: re.search('prefix$', str(x)) is None, axis=1)"
+what pandas data type is passed to transform or apply in a groupby,"df.groupby(['category'])[['data_1', 'data_2']].transform(f)"
+divide the values of two dictionaries in python,{k: (float(d2[k]) / d1[k]) for k in d2}
+check if all values of iterable are zero,list(l) == [0] * len(l)
+"check if ""blah"" is in string `somestring`","if ('blah' not in somestring):
+    pass"
+how to convert a list of multiple integers into a single integer?,"x = [1, 3, 5]"
+reverse string 'foo',''.join(reversed('foo'))
+how to merge two dataframe in pandas to replace nan,"a.where(~np.isnan(a), other=b, inplace=True)"
+how do i add space between two variables after a print in python,print(str(count) + '  ' + str(conv))
+how to convert a hex string to hex number,print(hex(new_int)[2:])
+python json encoding,"json.dumps({'apple': 'cat', 'banana': 'dog', 'pear': 'fish'})"
+extract values not equal to 0 from numpy array `a`,a[a != 0]
+splitting a string based on a certain set of words,"re.split('_(?:for|or|and)_', 'sad_pandas_and_happy_cats_for_people')"
+pandas: best way to select all columns starting with x,"df.filter(regex='^foo\\.', axis=1)"
+how to write text on a image in windows using python opencv2,"cv2.putText(image, 'Hello World!!!', (x, y), cv2.FONT_HERSHEY_SIMPLEX, 2, 255)"
+pandas: check if row exists with certain values,((df['A'] == 1) & (df['B'] == 2)).any()
+get `3` unique items from a list,"random.sample(list(range(1, 16)), 3)"
+python convert list to dictionary,"dict([['two', 2], ['one', 1]])"
+get the canonical path of file `path`,os.path.realpath(path)
+split a list into parts based on a set of indexes in python,"[[0, 1, 2, 3, 4], [5, 6, 7, 8, 9, 10, 11], [12, 13, 14, 15, 16], [17, 18, 19]]"
+count occurrences of number by column in pandas data frame,(df == 1).sum()
+convert list of dictionaries `l` into a flat dictionary,dict(pair for d in L for pair in list(d.items()))
+subset of dictionary keys,{v[0]: data[v[0]] for v in list(by_ip.values())}
+calculating difference between two rows in python / pandas,data.set_index('Date').diff()
+add column sum as new column in pyspark dataframe,"newdf = df.withColumn('total', sum(df[col] for col in df.columns))"
+"reorder indexed rows `['z', 'c', 'a']` based on a list in pandas data frame `df`","df.reindex(['Z', 'C', 'A'])"
+return rows of data associated with the maximum value of column 'value' in dataframe `df`,df.loc[df['Value'].idxmax()]
+set index equal to field 'trx_date' in dataframe `df`,df = df.set_index(['TRX_DATE'])
+how to merge two columns together in pandas,"pd.melt(df, id_vars='Date')[['Date', 'value']]"
+pandas: how to run a pivot with a multi-index?,"df.groupby(['year', 'month', 'item'])['value'].sum().unstack('item')"
+drop column based on a string condition,"df.drop(df.columns[df.columns.str.match('chair')], axis=1)"
+add leading zeros to strings in pandas dataframe,df['ID'] = df['ID'].apply(lambda x: '{0:0>15}'.format(x))
+"add row `['8/19/2014', 'jun', 'fly', '98765']` to dataframe `df`","df.loc[len(df)] = ['8/19/2014', 'Jun', 'Fly', '98765']"
+plotting categorical data with pandas and matplotlib,df.colour.value_counts().plot(kind='bar')
+how to sort pandas data frame using values from several columns?,"df.sort(['c1', 'c2'], ascending=[False, True])"
+python pandas dataframe slicing by date conditions,df.sort_index()
+python pandas - how to flatten a hierarchical index in columns,df.columns = df.columns.get_level_values(0)
+python pandas: replace values multiple columns matching multiple columns from another dataframe,"df2.rename(columns={'OCHR': 'chr', 'OSTOP': 'pos'}, inplace=True)"
+replace rarely occurring values in a pandas dataframe,g = df.groupby('column_name')
+how to replace values with none in pandas data frame in python?,"df.replace('-', np.nan)"
+create new columns in pandas from python nested lists,"df.A.apply(lambda x: pd.Series(1, x)).fillna(0).astype(int)"
+how to flatten a pandas dataframe with some columns as json?,"df[['id', 'name']].join([A, B])"
+how to do pearson correlation of selected columns of a pandas data frame,"df.corr().iloc[:-1, (-1)]"
+append to file 'test1' content 'koko',"with open('test1', 'ab') as f:
+    pass"
+merge column  'word' in dataframe `df2` with column 'word' on dataframe `df1`,"df1.merge(df2, how='left', on='word')"
+read pandas data frame csv `comma.csv` with extra commas in column specifying string delimiter `'`,"df = pd.read_csv('comma.csv', quotechar=""'"")"
+"how to duplicate rows in pandas, based on items in a list",df['data'] = df['data'].apply(clean_string_to_list)
+reading gps rinex data with pandas,"df.set_index(['%_GPST', 'satID'])"
+"search for ""does-not-contain"" on a dataframe in pandas",~df['col'].str.contains(word)
+how to group dataframe by a period of time?,"df.groupby([df['Source'], pd.TimeGrouper(freq='Min')])"
+select dataframe rows between two dates,df['date'] = pd.to_datetime(df['date'])
+pandas create new column based on values from other columns,"df.apply(lambda row: label_race(row), axis=1)"
+pandas: best way to select all columns starting with x,df.columns.map(lambda x: x.startswith('foo'))
+how to extract tuple values in pandas dataframe for use of matplotlib?,"pd.pivot(index=df['B1'], columns=df.index, values=df['B2']).plot()"
+pandas remove column by index,"df = df.ix[:, 0:2]"
+rename index of a pandas dataframe,"df.ix['c', '3']"
+pandas subtract a row from dataframe `df2` from dataframe `df`,"pd.DataFrame(df.values - df2.values, columns=df.columns)"
+compare two columns using pandas,df2 = df.astype(float)
+combining rows in pandas,df.reset_index().groupby('city_id').sum()
+pandas + dataframe - select by partial string,df[df['A'].str.contains('hello')]
+get a list of all the duplicate items in dataframe `df` using pandas,"pd.concat(g for _, g in df.groupby('ID') if len(g) > 1)"
+create new column `a_perc` in dataframe `df` with row values equal to the value in column `a` divided by the value in column `sum`,df['A_perc'] = df['A'] / df['sum']
+python pandas - how to flatten a hierarchical index in columns,pd.DataFrame(df.to_records())
+"how to use applymap, lambda and dataframe together to filter / modify dataframe in python?",df.fillna('o')
+convert column of date objects in pandas dataframe to strings,df['A'].apply(lambda x: x.strftime('%d%m%Y'))
+how to give a pandas/matplotlib bar graph custom colors,"df.plot(kind='bar', stacked=True, color=my_colors)"
+how to swap a group of column headings with their values in pandas,"df = df.assign(a5=['Foo', 'Bar', 'Baz'])"
+dropping a single (sub-) column from a multiindex,"df.drop('a', level=1, axis=1)"
+select all rows in dataframe `df` where the values of column 'columnx' is bigger than or equal to `x` and smaller than or equal to `y`,df[(x <= df['columnX']) & (df['columnX'] <= y)]
+how to sort a dataframe in python pandas by two or more columns?,"df.sort_values(['a', 'b'], ascending=[True, False])"
+pandas groupby: how to get a union of strings,"df.groupby('A')['C'].apply(lambda x: '{%s}' % ', '.join(x))"
+combining rows in pandas,df.groupby(df.index).sum()
+concatenate dataframe `df_1` to dataframe `df_2` sorted by values of the column 'y',"pd.concat([df_1, df_2.sort_values('y')])"
+calcuate mean for selected rows for selected columns in pandas data frame,"df[['b', 'c']].iloc[[2, 4]].mean(axis=0)"
+python pandas - how to flatten a hierarchical index in columns,[' '.join(col).strip() for col in df.columns.values]
+pandas: joining items with same index,"df.assign(id=df.groupby([0]).cumcount()).set_index(['id', 0]).unstack(level=1)"
+pandas to_csv call is prepending a comma,df.to_csv('c:\\data\\t.csv')
+replacing 'abc' and 'ab' values in column 'brandname' of dataframe `df` with 'a',"df['BrandName'].replace(['ABC', 'AB'], 'A')"
+how can i replace all the nan values with zero's in a column of a pandas dataframe,df.fillna(0)
+python pandas write to sql with nan values,"df2 = df.astype(object).where(pd.notnull(df), None)"
+python pandas identify duplicated rows with additional column,"df.groupby(['PplNum', 'RoomNum']).cumcount() + 1"
+extract dictionary values by key 'feature3' from data frame `df`,feature3 = [d.get('Feature3') for d in df.dic]
+append string 'str' at the beginning of each value in column 'col' of dataframe `df`,df['col'] = 'str' + df['col'].astype(str)
+filter pyspark dataframe column with none value,df.filter('dt_mvmt is NULL')
+how to deal with settingwithcopywarning in pandas?,"df.ix[0, 'a'] = 3"
+convert rows in pandas data frame `df` into list,"df.apply(lambda x: x.tolist(), axis=1)"
+apply multiple functions to multiple groupby columns,df.groupby('GRP').agg(f)
+access index of last element in data frame,df['date'][df.index[-1]]
+pandas: selection with multiindex,df[pd.Series(df.index.get_level_values('A')).isin(vals[vals['values']].index)]
+replace nan values in a pandas data frame with the average of columns,"df.apply(lambda x: x.fillna(x.mean()), axis=0)"
+remove dollar sign '$' from second to last column data in dataframe 'df' and convert the data into floats,"df[df.columns[1:]].replace('[\\$,]', '', regex=True).astype(float)"
+how to group dataframe by a period of time?,df.groupby(df.index.map(lambda t: t.minute))
+how to append rows in a pandas dataframe in a for loop?,print('{}\n'.format(df))
+python numpy: cannot convert datetime64[ns] to datetime64[d] (to use with numba),df['month_15'].astype('datetime64[D]').tolist()
+find numeric columns in pandas (python),df._get_numeric_data()
+pandas subtract dataframe with a row from another dataframe,"pd.DataFrame(df.values - df2.values, columns=df.columns)"
+flatten a dataframe df to a list,df.values.flatten()
+convert float series into an integer series in pandas,"df.resample('1Min', how=np.mean)"
+pandas - make a column dtype object or factor,df['col_name'] = df['col_name'].astype('category')
+pandas groupby: how to get a union of strings,df.groupby('A')['B'].agg(lambda col: ''.join(col))
+adding up all columns in a dataframe,df['sum'] = df.sum(axis=1)
+python pandas extract unique dates from time series,df['Date'][0].date()
+replace '-' in pandas dataframe `df` with `np.nan`,"df.replace('-', np.nan)"
+remove square bracket '[]' from pandas dataframe `df` column 'value',df['value'] = df['value'].str.strip('[]')
+pandas: how do i select first row in each group by group?,df.drop_duplicates(subset='A')
+break values of one column into two columns,df['last_updated_time'] = d.dt.strftime('%H:%M:%S')
+faster way to remove outliers by group in large pandas dataframe,grouped = df.groupby(level='DATE')
+add multiple columns to pandas dataframe from function,"df[['hour', 'weekday', 'weeknum']] = df.apply(lambdafunc, axis=1)"
+set values on the diagonal of pandas.dataframe,"np.fill_diagonal(df.values, 0)"
+python : getting the row which has the max value in groups using groupby,"df.groupby(['Mt'], sort=False)['count'].max()"
+write dataframe `df` to csv file 'mycsv.csv',df.write.csv('mycsv.csv')
+how to calculate quantiles in a pandas multiindex dataframe?,"df.groupby(level=[0, 1]).median()"
+multiply column 'a' and column 'b' by column 'c' in datafram `df`,"df[['A', 'B']].multiply(df['C'], axis='index')"
+convert pandas dataframe `df` to a dictionary using `id` field as the key,df.set_index('id').to_dict()
+"get  value at index `[2, 0]` in dataframe `df`","df.iloc[2, 0]"
+applying functions to groups in pandas dataframe,df.groupby('type').apply(foo)
+convert nan values to 'n/a' while reading rows from a csv `read_csv` with pandas,"df = pd.read_csv('my.csv', na_values=['n/a'])"
+reading a csv into pandas where one column is a json string,"df = pandas.read_csv(f1, converters={'stats': CustomParser}, header=0)"
+how to remove duplicates from a dataframe?,"df = pd.DataFrame({'a': [1, 2, 3, 3, 3], 'b': [1, 2, None, 1, None]})"
+python pandas: drop rows of a timeserie based on time range,"pd.concat([df[:start_remove], df[end_remove:]])"
+grouping pandas dataframe by n days starting in the begining of the day,df['dateonly'] = df['time'].apply(lambda x: x.date())
+replace parentheses and all data within it with empty string '' in column 'name' of dataframe `df`,"df['name'].str.replace('\\(.*\\)', '')"
+"using pandas, how do i subsample a large dataframe by group in an efficient manner?",subsampled = df.ix[(choice(x) for x in list(grouped.groups.values()))]
+summarizing dataframe into a dictionary,df.groupby('date')['level'].first().apply(np.ceil).astype(int).to_dict()
+make new column 'c' in panda dataframe by adding values from other columns 'a' and 'b',df['C'] = df['A'] + df['B']
+splitting dictionary/list inside a pandas column into separate columns,"pd.concat([df.drop('b', axis=1), pd.DataFrame(df['b'].tolist())], axis=1)"
+changing time frequency in pandas dataframe,"new = df.resample('T', how='mean')"
+how to generate all possible strings in python?,"map(''.join, itertools.product('ABC', repeat=3))"
+fastest way of deleting certain keys from dict in python,"dict((k, v) for k, v in somedict.items() if not k.startswith('someprefix'))"
+removing items from unnamed lists in python,[item for item in my_sequence if item != 'item']
+resampling within a pandas multiindex,df['Date'] = pd.to_datetime(df['Date'])
+convert generator object to a dictionary,{i: (i * 2) for i in range(10)}
+how to select specific columns in numpy array?,"A = np.delete(A, 50, 1)"
+how can i split and parse a string in python?,print(mystring.split(' '))
+rename index of a pandas dataframe,df.ix['c']
+"pythonic way to fetch all elements in a dictionary, falling between two keys?","dict((k, v) for k, v in parent_dict.items() if 2 < k < 4)"
+specific sort a list of numbers separated by dots,"print(sorted(L, key=lambda x: int(x.split('.')[2])))"
+split a string by backslash in python,print(a.split('\\'))
+replace value 0 with 'female' and value 1 with 'male' in column 'sex' of dataframe `data`,"data['sex'].replace([0, 1], ['Female', 'Male'], inplace=True)"
+"convert tuple elements in list `[(1,2),(3,4),(5,6),]` into lists","map(list, zip(*[(1, 2), (3, 4), (5, 6)]))"
+python: rename single column header in pandas dataframe,"data.rename(columns={'gdp': 'log(gdp)'}, inplace=True)"
+summing 2nd list items in a list of lists of lists,[sum(zip(*x)[1]) for x in data]
+how to post data structure like json to flask?,content = request.json['content']
+how do i remove the background from this kind of image?,cv2.waitKey()
+"remove all instances of `[1, 1]` from a list `a`","[x for x in a if x != [1, 1]]"
+easiest way to replace a string using a dictionary of replacements?,"from functools import reduce
+reduce(lambda x, y: x.replace(y, dict[y]), dict, s)"
+remove multiple values from [list] dictionary python,"{k: [x for x in v if x != 'x'] for k, v in myDict.items()}"
+how to print dataframe without index,print(df.to_string(index=False))
+remove items from a list while iterating without using extra memory in python,li = [x for x in li if condition(x)]
+how to remove parentheses and all data within using pandas/python?,"df['name'].str.replace('\\(.*\\)', '')"
+convert a list of lists `list_of_lists` into a list of strings keeping empty sub-lists as empty string '',[''.join(l) for l in list_of_lists]
+how do you select choices in a form using python?,forms[3]['sex'] = 'male'
+switching keys and values in a dictionary in python,"dict((v, k) for k, v in my_dict.items())"
+check if elements in list `my_list` are coherent in order,"return my_list == list(range(my_list[0], my_list[-1] + 1))"
+"open image ""picture.jpg""","img = Image.open('picture.jpg')
+Img.show"
+replace values in pandas series with dictionary,s.replace({'abc': 'ABC'})
+multi index sorting in pandas,"df.sort([('Group1', 'C')], ascending=False)"
+how do i sort a list with positives coming before negatives with values sorted respectively?,"sorted(lst, key=lambda x: (x < 0, x))"
+how to multiply two vector and get a matrix?,"numpy.outer(numpy.array([1, 2]), numpy.array([3, 4]))"
+convert list of tuples to list?,[i[0] for i in e]
+calculate the mean of columns with same name in dataframe `df`,"df.groupby(by=df.columns, axis=1).mean()"
+saving a video capture in python with opencv : empty video,cap = cv2.VideoCapture(0)
+sorting values of python dict using sorted builtin function,"sorted(list(mydict.values()), reverse=True)"
+what is the most efficient way to check if a value exists in a numpy array?,"np.any(my_array[:, (0)] == value)"
+how can i extract all values from a dictionary in python?,list(d.values())
+merge dictionaries form array `dicts` in a single expression,"dict((k, v) for d in dicts for k, v in list(d.items()))"
+how can i fill out a python string with spaces?,"print(""'%-100s'"" % 'hi')"
+indexing numpy array with another numpy array,a[tuple(b)]
+index the first and the last n elements of a list,l[:3] + l[-3:]
+"pandas read_csv expects wrong number of columns, with ragged csv file",pd.read_csv('D:/Temp/tt.csv')
+sort a list of strings based on regular expression match or something similar,"strings.sort(key=lambda str: re.sub('.*%', '', str))"
+python: elementwise join of two lists of same length,"[(x + b[i]) for i, x in enumerate(a)]"
+how to split a string at line breaks in python?,"print([map(solve, x.split('\t')) for x in s.rstrip().split('\r\n')])"
+python program to read a matrix from a given file,"l = [map(int, line.split(',')) for line in f if line.strip() != '']"
+how to make a numpy array from an array of arrays?,"np.concatenate(counts_array).reshape(len(counts_array), -1)"
+python randomly sort items of the same value,"sorted(a, key=lambda v: (v, random.random()))"
+pandas fillna() based on specific column attribute,"df.loc[df['Type'] == 'Dog', ['Killed']]"
+get a list comprehension in list of lists `x`,[[X[i][j] for j in range(len(X[i]))] for i in range(len(X))]
+convert a string 'mystr' to numpy array of integer values,"print(np.array(list(mystr), dtype=int))"
+how to convert this particular json string into a python dictionary?,"json.loads('[{""name"":""sam""}]')"
+python- trying to multiply items in list,[i for i in a if i.isdigit()]
+revers correlating bits of integer `n`,"int('{:08b}'.format(n)[::-1], 2)"
+swap letters in a string in python,return strg[n:] + strg[:n]
+finding in elements in a tuple and filtering them,[x for x in l if x[0].startswith('img')]
+pandas: elementwise multiplication of two dataframes,"pd.DataFrame(df.values * df2.values, columns=df.columns, index=df.index)"
+concatenate elements of a tuple in a list in python,new_data = (' '.join(w) for w in sixgrams)
+iterating key and items over dictionary `d`,"for (k, v) in list(d.items()):
+    pass"
+what is the best way to sort list with custom sorting parameters in python?,li1.sort(key=lambda x: not x.startswith('b.'))
+how to build and fill pandas dataframe from for loop?,"pd.DataFrame(d, columns=('Player', 'Team', 'Passer Rating'))"
+numpy select fixed amount of values among duplicate values in array,"array([1, 2, 2, 3, 3])"
+how to pass a dictionary as value to a function in python,"{'physics': 1}, {'volume': 1, 'chemistry': 1}, {'chemistry': 1}"
+convert string to boolean from defined set of strings,"s in ['true', '1', 't', 'y', 'yes', 'yeah', 'yup', 'certainly', 'uh-huh']"
+find first item with alphabetical precedence in list with numbers,"min(x for x in lst if isinstance(x, str))"
+convert tab-delimited txt file into a csv file using python,"open('demo.txt', 'rb').read()"
+avoiding regex in pandas str.replace,"df['a'] = df['a'].str.replace('in.', ' in. ')"
+"merge values of same key, in list of dicts","[{'id1': k, 'price': temp[k]} for k in temp]"
+how to transform a pair of values into a sorted unique array?,sorted(set().union(*input_list))
+precision in python,print('{0:.2f}'.format(your_number))
+reverse mapping of dictionary with python,"revdict = dict((v, k) for k, v in list(ref.items()))"
+"pandas, filter rows which column contain another column",df[df['B'].str.contains('|'.join(df['A']))]
+swap values in a tuple/list inside a list in python?,"map(lambda t: (t[1], t[0]), mylist)"
+blank lines in file after sorting content of a text file in python,lines.sort()
+delete row based on nulls in certain columns (pandas),"df.dropna(subset=['city', 'latitude', 'longitude'], how='all')"
+sorting associative arrays in python,"sorted(people, key=operator.itemgetter('name'))"
+python numpy: how to count the number of true elements in a bool array,"sum([True, True, True, False, False])"
+get top `3` items from a dictionary `mydict` with largest sum of values,"heapq.nlargest(3, iter(mydict.items()), key=lambda tup: sum(tup[1]))"
+how to filter a dictionary according to an arbitrary condition function?,"dict((k, v) for k, v in list(points.items()) if all(x < 5 for x in v))"
+how do i pull a recurring key from a json?,print(item['name'])
+index confusion in numpy arrays,"A[np.ix_([0, 2], [0, 1], [1, 2])]"
+split string `s` into strings of repeating elements,"print([a for a, b in re.findall('((\\w)\\2*)', s)])"
+how can i count the occurrences of an item in a list of dictionaries?,sum(1 for d in my_list if d.get('id') == 20)
+splitting a list inside a pandas dataframe,"pd.melt(split, id_vars=['a', 'b'], value_name='TimeStamp')"
+increment numpy array with repeated indices,"array([0, 0, 2, 1, 0, 1])"
+pandas - dataframe expansion with outer join,"df.columns = ['user', 'tweet']"
+select everything but a list of columns from pandas dataframe,df[df.columns - ['T1_V6']]
+removing nan values from an array,x = x[numpy.logical_not(numpy.isnan(x))]
+generate a 12-digit random number,"random.randint(100000000000, 999999999999)"
+python finding index of maximum in list,a.index(max(a))
+how to convert list of intable strings to int,[[try_int(x) for x in lst] for lst in list_of_lists]
+list all the contents of the directory 'path'.,os.listdir('path')
+how to round a number to significant figures in python,"round(1234, -3)"
+how to set default value to all keys of a dict object in python?,d['foo']
+remove certain keys from a dictionary in python,"FieldSet = dict((k, v) for k, v in FieldSet.items() if len(v) != 1)"
+what's the simplest way to extend a numpy array in 2 dimensions?,"array([[1, 2, 0], [3, 4, 0]])"
+finding index of maximum value in array with numpy,np.where(x == 5)
+converting a dict into a list,[y for x in list(dict.items()) for y in x]
+how to subset a data frame using pandas based on a group criteria?,df.groupby('User')['X'].filter(lambda x: x.sum() == 0)
+counting the number of true booleans in a python list,"sum([True, True, False, False, False, True])"
+get the index of the last negative value in a 2d array per column,"np.maximum.accumulate((A2 < 0)[:, ::-1], axis=1)[:, ::-1]"
+decoding json string in python,data = json.load(f)
+sort dictionary of lists `mydict` by the third item in each list,"sorted(list(myDict.items()), key=lambda e: e[1][2])"
+divide each element in list `mylist` by integer `myint`,myList[:] = [(x / myInt) for x in myList]
+sorting files in a list,files.sort(key=file_number)
+print list of items `mylist`,print('\n'.join(str(p) for p in myList))
+array initialization in python,[(i * y + x) for i in range(10)]
+how can i read inputs as integers in python?,y = int(eval(input('Enter a number: ')))
+how to reliably open a file in the same directory as a python script,print(os.path.dirname(os.path.abspath(sys.argv[0])))
+python - how to extract the last x elements from a list,my_list[-10:]
+sum all the values in a counter variable `my_counter`,sum(my_counter.values())
+flask and sqlalchemy how to delete records from manytomany table?,db.session.commit()
+count unique index values in column 'a' in pandas dataframe `ex`,ex.groupby(level='A').agg(lambda x: x.index.get_level_values(1).nunique())
+return a random word from a word list 'words',print(random.choice(words))
+python: how to generate a 12-digit random number?,'%012d' % random.randrange(10 ** 12)
+round number 6.005 up to 2 decimal places,"round(6.005, 2)"
+how to extract first two characters from string using regex,"df.c_contofficeID.str.replace('^12(?=.{4}$)', '')"
+how to create a range of random decimal numbers between 0 and 1,"[random.random() for _ in range(0, 10)]"
+how to get the n next values of a generator in a list (python),"list(itertools.islice(it, 0, n, 1))"
+printing each item of a variable on a separate line in python,print('\n'.join(str(port) for port in ports))
+using name of list as a string to access list,"x = {'0': [], '2': [], '16': []}"
+how to convert ndarray to array?,"np.zeros((3, 3)).ravel()"
+python - download images from google image search?,img = Image.open(file)
+how to add multiple values to a key in a python dictionary,print(dict(new_dict))
+calculate the mean of the nonzero values' indices of dataframe `df`,np.flatnonzero(x).mean()
+plot timeseries of histograms in python,"bins = np.linspace(0, 360, 10)"
+how to create a number of empty nested lists in python,lst = [[] for _ in range(a)]
+"""pythonic"" method to parse a string of comma-separated integers into a list of integers?","mylist = [int(x) for x in '3 ,2 ,6 '.split(',') if x.strip().isdigit()]"
+get the number of all keys in a dictionary of dictionaries in python,"n = sum([(len(v) + 1) for k, v in list(dict_test.items())])"
+hexadecimal string to byte array in python,bytearray.fromhex('de ad be ef 00')
+find maximum with limited length in a list,"[max(abs(x) for x in arr[i:i + 4]) for i in range(0, len(arr), 4)]"
+implementing a kolmogorov smirnov test in python scipy,"stats.kstest(np.random.normal(0, 1, 10000), 'norm')"
+calculating cumulative minimum with numpy arrays,"numpy.minimum.accumulate([5, 4, 6, 10, 3])"
+"is it possible to take an ordered ""slice"" of a dictionary in python based on a list of keys?","res = [(x, my_dictionary[x]) for x in my_list]"
+summation of elements of dictionary that are list of lists,"{k: [(a + b) for a, b in zip(*v)] for k, v in list(d.items())}"
+convert a string of bytes into an int (python),"int.from_bytes('y\xcc\xa6\xbb', byteorder='little')"
+find array corresponding to minimal values along an axis in another array,"np.repeat(np.arange(x), y)"
+how to get the symmetric difference of two dictionaries,"dict_symmetric_difference({'a': 1, 'b': 2}, {'b': 2, 'c': 3})"
+how can i split a single tuple into multiple using python?,d = {t[0]: t[1:] for t in l}
+how to extract all upper from a string? python,""""""""""""".join([c for c in s if c.isupper()])"
+find all n-dimensional lines and diagonals with numpy,"np.split(x.reshape(x.shape[0], -1), 9, axis=1)"
+"use multiple groupby and agg operations `sum`, `count`, `std` for pandas data frame `df`","df.groupby(level=0).agg(['sum', 'count', 'std'])"
+find the index of sub string 'cc' in string 'sdfasdf','sdfasdf'.index('cc')
+how can i count the occurrences of an item in a list of dictionaries?,sum(1 for d in my_list if d.get('id') == 1)
+efficient way to convert numpy record array to a list of dictionary,"[dict(zip(r.dtype.names, x)) for x in r]"
+create list `listy` containing 3 empty lists,listy = [[] for i in range(3)]
+how to write a simple bittorrent application?,time.sleep(1)
+"from a list of floats, how to keep only mantissa in python?",[(a - int(a)) for a in l]
+how to safely open/close files in python 2.4,f.close()
+sorting list based on values from another list?,"[x for y, x in sorted(zip(Y, X))]"
+trying to converting a matrix 1*3 into a list,my_list = [col for row in matrix for col in row]
+get the number of all keys in a dictionary of dictionaries in python,len(dict_test) + sum(len(v) for v in dict_test.values())
+how to get all sub-elements of an element tree with python elementtree?,[elem.tag for elem in a.iter()]
+python: how to ignore #comment lines when reading in a file,print(line.rstrip())
+remove null columns in a dataframe `df`,"df = df.dropna(axis=1, how='all')"
+how to read numbers from file in python?,array.append([int(x) for x in line.split()])
+unpythonic way of printing variables in python?,"print('{foo}, {bar}, {baz}'.format(**locals()))"
+how to calculate moving average in python 3?,"print(sum(map(int, x[num - n:num])))"
+python dictionary match key values in two dictionaries,set(aa.items()).intersection(set(bb.items()))
+convert string to image in python,"img = Image.new('RGB', (200, 100), (255, 255, 255))"
+how to extract nested lists?,list(chain.from_iterable(list_of_lists))
+finding the average of a list,sum(l) / float(len(l))
+"given a list of variable names in python, how do i a create a dictionary with the variable names as keys (to the variables' values)?","dict((name, locals()[name]) for name in list_of_variable_names)"
+"how to write list of strings to file, adding newlines?","data.write('%s%s\n' % (c, n))"
+python: how to calculate the sum of a list without creating the whole list first?,sum(a)
+python dictionary creation syntax,"d1 = {'yes': [1, 2, 3], 'no': [4]}"
+python converting lists into 2d numpy array,"array([[2.0, 18.0, 2.3], [7.0, 29.0, 4.6], [8.0, 44.0, 8.9], [5.0, 33.0, 7.7]])"
+"is it possible to take an ordered ""slice"" of a dictionary in python based on a list of keys?","zip(my_list, map(my_dictionary.get, my_list))"
+find the newest folder in a directory in python,all_subdirs = [d for d in os.listdir('.') if os.path.isdir(d)]
+python: setting an element of a numpy matrix,"a[i, j] = 5"
+get unique values from a list in python,mynewlist = list(myset)
+writing a pandas dataframe into a csv file with some empty rows,"df.to_csv('pandas_test.txt', header=False, index=False, na_rep=' ')"
+python: how to calculate the sum of a list without creating the whole list first?,"result = sum(x for x in range(1, 401, 4))"
+"searching if the values on a list is in the dictionary whose format is key-string, value-list(strings)","[key for key, value in list(my_dict.items()) if set(value).intersection(lst)]"
+iteration order of sets in python,"set(['a', 'b', 'c'])"
+find the coordinates of a cuboid using list comprehension in python,"[list(l) for l in it.product([0, 1], repeat=3) if sum(l) != 2]"
+numpy: find the euclidean distance between two 3-d arrays,np.sqrt(((A - B) ** 2).sum(-1))
+how to drop duplicate from dataframe taking into account value of another column,"df.drop_duplicates('name', keep='last')"
+"add key ""item3"" and value ""3"" to dictionary `default_data `","default_data.update({'item3': 3, })"
+python-numpy: apply a function to each row of a ndarray,np.random.seed(1)
+how to merge two python dictionaries in a single expression?,"dict((k, v) for d in dicts for k, v in list(d.items()))"
+convert python list with none values to numpy array with nan values,"np.array(my_list, dtype=np.float)"
+operate on a list in a pythonic way when output depends on other elements,"['*abc', '*de', '*f', '*g']"
+get max key in dictionary `mycount`,"max(list(MyCount.keys()), key=int)"
+element-wise minimum of multiple vectors in numpy,"np.minimum.reduce([np.arange(3), np.arange(2, -1, -1), np.ones((3,))])"
+how to remove two chars from the beginning of a line,[line[2:] for line in lines]
+sort a data `a` in descending order based on the `modified` attribute of elements using lambda function,"a = sorted(a, key=lambda x: x.modified, reverse=True)"
+"python, zip multiple lists where one list requires two items each","list(zip(a, b, zip(c[0::2], c[1::2]), d))"
+distributed programming in python,"print(p.map_async(f, [1, 2, 3]))"
+get the path of the python module `amodule`,path = os.path.abspath(amodule.__file__)
+convert dictionary `adict` into string,""""""""""""".join('{}{}'.format(key, val) for key, val in sorted(adict.items()))"
+how to count the occurrence of certain item in an ndarray in python?,collections.Counter(a)
+how to count number of rows in a group in pandas group by object?,"df[['col1', 'col2', 'col3', 'col4']]"
+how to indent python list-comprehensions?,[transform(x) for x in results if condition(x)]
+removing items from unnamed lists in python,[x for x in something_iterable if x != 'item']
+how to remove multiple indexes from a list at the same time?,del my_list[2:6]
+inserting an element before each element of a list,[item for sublist in l for item in sublist]
+find array corresponding to minimal values along an axis in another array,"np.tile(np.arange(y), x)"
+"copy 2d array into 3rd dimension, n times (python)","c = np.array([1, 2, 3])"
+finding the first list element for which a condition is true,"next((e for e in mylist if my_criteria(e)), None)"
+return the column for value 38.15 in dataframe `df`,"df.ix[:, (df.loc[0] == 38.15)].columns"
+create file path from variables,"os.path.join('/my/root/directory', 'in', 'here')"
+how to find duplicate elements in array using for loop in python?,[i for i in y if y[i] > 1]
+check if all elements in list `mylist` are the same,len(set(mylist)) == 1
+how to filter rows of pandas dataframe by checking whether sub-level index value within a list?,df[df.index.levels[0].isin([int(i) for i in stk_list])]
+python - remove dictionary from list if key is equal to value,a = [x for x in a if x['link'] not in b]
+how to access all dictionaries within a dictionary where a specific key has a particular value,list([x for x in list(all_dicts.values()) if x['city'] == 'bar'])
+convert a row in pandas into list,"df.apply(lambda x: x.tolist(), axis=1)"
+python pandas: how to move one row to the first row of a dataframe?,df.set_index('a')
+python pandas pivot table,"df.pivot_table('Y', rows='X', cols='X2')"
+get all indexes of a letter `e` from a string `word`,"[index for index, letter in enumerate(word) if letter == 'e']"
+split elements of a list in python,myList = [i.split('\t')[0] for i in myList]
+most pythonic way to fit a variable to a range?,"result = min(max_value, max(min_value, result))"
+python string and integer concatenation,[('string' + str(i)) for i in range(11)]
+finding whether a list contains a particular numpy array,"any(np.array_equal(np.array([[0, 0], [0, 0]]), x) for x in my_list)"
+finding the index value of the smallest number in a list?,n.index(min(n))
+how to read a csv file in reverse order in python,"print(', '.join(row))"
+how to make good reproducible pandas examples,"df = pd.DataFrame([[1, 2], [1, 3], [4, 6]], columns=['A', 'B'])"
+simple way of creating a 2d array with random numbers (python),"np.random.random((N, N))"
+convert a string of integers `x` separated by spaces to a list of integers,x = [int(i) for i in x.split()]
+python: how to normalize a confusion matrix?,C / C.astype(np.float).sum(axis=1)
+python merging two lists with all possible permutations,"[list(zip(a, p)) for p in permutations(b)]"
+python - how to cut a string in python?,s[:s.rfind('&')]
+converting from a string to boolean in python?,str2bool('0')
+combine or join numpy arrays,"[(0, 0), (0, 1), (1, 0), (1, 1)]"
+finding index of maximum element from python list,"from functools import reduce
+reduce(lambda a, b: [a, b], [1, 2, 3, 4])"
+how to sort a dataframe in python pandas by two or more columns?,"df1.sort(['a', 'b'], ascending=[True, False])"
+convert array `x` into a correlation matrix,np.corrcoef(x)
+sort a set `s` by numerical value,"sorted(s, key=float)"
+how to count occurences at the end of the list,"print(list_end_counter([1, 2, 1, 1, 1, 1, 1, 1]))"
+sort order of lists in multidimensional array in python,"test = sorted(test, key=lambda x: len(x) if type(x) == list else 1)"
+python: how to convert a list of dictionaries' values into int/float from string?,"[dict([a, int(x)] for a, x in b.items()) for b in list]"
+using multiple indicies for arrays in python,test_rec[(test_rec.age == 1) & (test_rec.sex == 1)]
+how to remove positive infinity from numpy array...if it is already converted to a number?,"np.array([fnan, pinf, ninf]) < 0"
+how to copy files to network path or drive using python,"shutil.copyfile('foo.txt', 'P:\\foo.txt')"
+is there a way to set all values of a dictionary to zero?,{x: (0) for x in string.printable}
+convert list of tuples to multiple lists in python,"map(list, zip(*[(1, 2), (3, 4), (5, 6)]))"
+insert 0s into 2d array,"array([[-1, -1], [0, 0], [1, 1]])"
+python: intersection indices numpy array,"numpy.argwhere(numpy.in1d(a, b))"
+forcing elements in a numpy array to be within a specified range,"numpy.clip(x, 0, 255)"
+trim whitespace (including tabs) in `s` on the right side,s = s.rstrip()
+how to initialize nested dictionaries in python,my_tree['a']['b']['c']['d']['e'] = 'whatever'
+converting a string to list in python,"x = map(int, '0,1,2'.split(','))"
+pandas get position of a given index in dataframe,base = df.index.get_loc(18)
+group dictionary key values in python,mylist.sort(key=itemgetter('mc_no'))
+how to keep a list of lists sorted as it is created,dataList.sort(key=lambda x: x[1])
+check if dictionary `l[0].f.items()` is in dictionary `a3.f.items()`,set(L[0].f.items()).issubset(set(a3.f.items()))
+remove strings containing only white spaces from list,[name for name in starring if name.strip()]
+replace each value in column 'prod_type' of dataframe `df` with string 'responsive',df['prod_type'] = 'responsive'
+pandas: create another column while splitting each row from the first column,"df['B'] = df['A'].apply(lambda x: '#' + x.replace(' ', ''))"
+create a dictionary `d` from list `iterable`,"d = {key: value for (key, value) in iterable}"
+how can i create a set of sets in python?,"t = [[], [1, 2], [5], [1, 2, 5], [1, 2, 3, 4], [1, 2, 3, 6]]"
+pandas: how to run a pivot with a multi-index?,"df.pivot_table(values='value', index=['year', 'month'], columns='item')"
+how to filter a dictionary in python?,"dict((k, 'updated') for k, v in d.items() if v != 'None')"
+pandas (python): how to add column to dataframe for index?,df = df.reset_index()
+sorting list of nested dictionaries in python,"yourdata.sort(key=lambda e: e['key']['subkey'], reverse=True)"
+python - how to cut a string in python?,"""""""foobar""""""[:4]"
+pandas merge - how to avoid duplicating columns,cols_to_use = df2.columns.difference(df.columns)
+sorting a list of tuples by the addition of second and third element of the tuple,"sorted(lst, key=lambda x: (sum(x[1:]), x[0]))"
+get the value of attribute 'property' of object `a` with default value 'default value',"getattr(a, 'property', 'default value')"
+is there a simple way to change a column of yes/no to 1/0 in a pandas dataframe?,"pd.Series(np.searchsorted(['no', 'yes'], sample.housing.values), sample.index)"
+subtracting the mean of each row in numpy with broadcasting,"Y = X - X.mean(axis=1).reshape(-1, 1)"
+efficient way to convert a list to dictionary,dict(x.split(':') for x in lis)
+convert a list of booleans to string,"print(''.join(chr(ord('A') + i) if b else ' ' for i, b in enumerate(bools)))"
+any functional programming method of traversing a nested dictionary?,"from functools import reduce
+reduce(dict.__getitem__, l, d)"
+sort numpy matrix row values in ascending order,"arr[arr[:, (2)].argsort()]"
+add value to each element in array python,"[(a + i.reshape(2, 2)) for i in np.identity(4)]"
+replace values of dataframe `df` with true if numeric,"df.applymap(lambda x: isinstance(x, (int, float)))"
+else if in list comprehension in python3,"['A', 'b', 'C', 'D', 'E', 'F']"
+can i read and write file in one line with python?,"f.write(open('xxx.mp4', 'rb').read())"
+getting an element from tuple of tuples in python,[x[1] for x in COUNTRIES if x[0] == 'AS'][0]
+testing whether a numpy array contains a given row,"equal([1, 2], a).all(axis=1).any()"
+finding the most popular words in a list,"[('all', 3), ('yeah', 2), ('bye', 1), ('awesome', 1)]"
+convert the elements of list `l` from hex byte strings to hex integers,"[int(x, 16) for x in L]"
+transpose/rotate a block of a matrix in python,"block3[:] = np.rot90(block3.copy(), -1)"
+creating a list of dictionaries in python,"[{'A': 1, 'C': 4, 'B': 2, 'D': 4}, {'A': 1, 'C': 4, 'B': 1, 'D': 5}]"
+convert column of date objects in pandas dataframe to strings,df['DateStr'] = df['DateObj'].dt.strftime('%d%m%Y')
+converting file from .txt to .csv doesn't write last column of data,writer.writerows(row.strip().split() for row in infile if row.strip())
+what is the easiest way to convert list with str into list with int?,new = [int(i) for i in old]
+conditional removing of duplicates pandas python,"df.drop_duplicates(['Col1', 'Col2'])"
+how to add multiple values to a dictionary key in python?,"a['abc'] = [1, 2, 'bob']"
+how to sort python list of strings of numbers,"a = sorted(a, key=lambda x: float(x))"
+check if a python list item contains a string inside another string,[x for x in lst if 'abc' in x]
+python - find index postion in list based of partial string,"indices = [i for i, s in enumerate(mylist) if 'aa' in s]"
+how to delete a character from a string using python?,s = s[:pos] + s[pos + 1:]
